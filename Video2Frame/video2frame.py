@@ -19,7 +19,7 @@ def args_parser() -> Namespace:
     parser = ArgumentParser(description="Convert video to frames.")
     parser.add_argument("-i", "--input", help="Input path", required=False, type=str)
     parser.add_argument("-o", "--output", help="Output path", required=False, type=str)
-    parser.add_argument("-n", "--number", help="Number of images", required=False)
+    parser.add_argument("-n", "--images", help="Number of images", required=False)
     args = parser.parse_args()
     return args
 
@@ -201,7 +201,7 @@ if __name__ == "__main__":
     # If no argv are provided, try to get from config.yaml.
     input_path = args.input or config["input"]
     output_path = args.output or config["output"]
-    number_images = args.number or config["number"]
+    number_images = args.images or config["number_images"]
 
     # If any of previous values is not provided, raise error.
     if not input_path or not output_path or not number_images:
