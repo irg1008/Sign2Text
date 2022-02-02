@@ -1,0 +1,4 @@
+# Paths of input and output folder. Relative to this file or absolute.
+input: ../data/WLASL2000
+output: ../data/WLASL2000_frames
+number: all # "all", number
