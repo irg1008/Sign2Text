@@ -145,7 +145,6 @@ def check_number(
             log(
                 f"Number of images ({number_images}) is larger than number of videos in folder ({n_videos}). Using {n_videos}."
             )
-
         n_images = n_videos
     else:
         n_images = int(number_images)
@@ -170,7 +169,7 @@ def get_videos_path_and_name(
     paths = [abs_path(path.join(input_path, vid)) for vid in videos][:n_videos]
 
     # Video names.
-    names = [vid.split(".")[0] for vid in videos]
+    names = [vid.split(".")[0] for vid in videos][:n_videos]
 
     return paths, names
 
@@ -191,14 +190,14 @@ def extract_frames(videos_path, videos_name, output_path) -> None:
 
         cap.set(1, mid_frame)
         _, frame = cap.read()
-        cv2.imwrite(f"{output_path}/{vid_name}.jpg", frame)
+        cv2.imwrite(f"{output_path}/{vid_name}.png", frame)
 
 
 if __name__ == "__main__":
     args = args_parser()
     config = read_config()
 
-    # If no argv are provided, try to get from config.yaml.
+    # If no args are provided, try to get from config.yaml.
     input_path = args.input or config["input"]
     output_path = args.output or config["output"]
     number_images = args.images or config["number_images"]
