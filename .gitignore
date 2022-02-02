@@ -1,2 +1,5 @@
 # Datasets
 data
+
+# Python cache
+__pycache__
