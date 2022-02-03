@@ -1,0 +1,7 @@
+pyyaml
+argparse
+typing
+cv2
+pylint
+black
+black[jupyter]
