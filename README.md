@@ -1,5 +1,7 @@
 # UBU-Sign2Text
 
+![Pipeline Status](https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/badges/main/pipeline.svg)
+
 Transcripción de lenguaje de signos (a nivel de palabra) mediante DL
 
 ## Instalación
