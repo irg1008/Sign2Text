@@ -1,17 +1,9 @@
 import json
-from os import (
-    path,
-)
-from typing import (
-    Dict,
-    List,
-)
+from os import path
+from typing import Dict, List
 
 
-labels: Dict[
-    str,
-    List[int],
-] = {}
+labels: Dict[str, List[int]] = {}
 
 
 def load_labels() -> None:
@@ -24,7 +16,7 @@ def load_labels() -> None:
         )
     )
 
-    with open(file_path) as ipf:
+    with open(file_path, encoding="utf8") as ipf:
         content = json.load(ipf)
 
     for entry in content:
@@ -52,8 +44,8 @@ def get_label_from_id(
     if not labels:
         load_labels()
 
-    for label in labels:
-        if video_id in labels[label]:
+    for label, ids in labels.items():
+        if video_id in ids:
             return label
     raise ValueError("Video ID not found")
 

@@ -1,0 +1,5 @@
+[RULES]
+disable=line-too-long,
+    redefined-outer-name,
+    C0114, ; missing-module-docstring
+    no-member
