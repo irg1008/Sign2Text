@@ -1,7 +1,7 @@
 pyyaml
 argparse
 typing
-cv2
+opencv-python
 pylint
 black
 black[jupyter]
