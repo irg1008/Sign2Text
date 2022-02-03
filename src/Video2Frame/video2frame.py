@@ -1,8 +1,18 @@
-from ast import List
-from typing import Literal, List, Tuple, Union
+from typing import (
+    Literal,
+    List,
+    Tuple,
+    Union,
+)
+from os import (
+    path,
+    listdir,
+)
+from argparse import (
+    ArgumentParser,
+    Namespace,
+)
 import yaml
-from os import path, listdir
-from argparse import ArgumentParser, Namespace
 import cv2
 
 
@@ -17,14 +27,33 @@ def args_parser() -> Namespace:
     """
     # Config the argparser and get the args.
     parser = ArgumentParser(description="Convert video to frames.")
-    parser.add_argument("-i", "--input", help="Input path", required=False, type=str)
-    parser.add_argument("-o", "--output", help="Output path", required=False, type=str)
-    parser.add_argument("-n", "--images", help="Number of images", required=False)
+    parser.add_argument(
+        "-i",
+        "--input",
+        help="Input path",
+        required=False,
+        type=str,
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="Output path",
+        required=False,
+        type=str,
+    )
+    parser.add_argument(
+        "-n",
+        "--images",
+        help="Number of images",
+        required=False,
+    )
     args = parser.parse_args()
     return args
 
 
-def abs_path(custom_path: str) -> str:
+def abs_path(
+    custom_path: str,
+) -> str:
     """Returns the absolute path of a relative path.
 
     Args:
@@ -39,10 +68,17 @@ def abs_path(custom_path: str) -> str:
         return custom_path
 
     # If not absolute, use relative to current directoy.
-    return path.abspath(path.join(path.abspath(path.dirname(__file__)), custom_path))
+    return path.abspath(
+        path.join(
+            path.abspath(path.dirname(__file__)),
+            custom_path,
+        )
+    )
 
 
-def raise_error(error: str) -> None:
+def raise_error(
+    error: str,
+) -> None:
     """Raises custom Video2Frame error.
 
     Args:
@@ -54,7 +90,13 @@ def raise_error(error: str) -> None:
     raise ValueError(f" Video2Frame: {error}")
 
 
-def log(msg: str, type: Literal["Info", "Warning"] = "Info") -> None:
+def log(
+    msg: str,
+    type: Literal[
+        "Info",
+        "Warning",
+    ] = "Info",
+) -> None:
     """Log msg.
 
     Args:
@@ -64,7 +106,12 @@ def log(msg: str, type: Literal["Info", "Warning"] = "Info") -> None:
     print(f"({type}) - Video2Frame: {msg}")
 
 
-def is_number(s: Union[str, int]) -> bool:
+def is_number(
+    string: Union[
+        str,
+        int,
+    ]
+) -> bool:
     """Check if string is number.
 
     Args:
@@ -74,7 +121,7 @@ def is_number(s: Union[str, int]) -> bool:
         bool: string is number.
     """
     try:
-        int(s)
+        int(string)
         return True
     except ValueError:
         return False
@@ -93,7 +140,10 @@ def read_config() -> dict:
     return config
 
 
-def check_path(custom_path: str, name: str) -> str:
+def check_path(
+    custom_path: str,
+    name: str,
+) -> str:
     """Check if path exists.
 
     Args:
@@ -109,12 +159,17 @@ def check_path(custom_path: str, name: str) -> str:
 
 
 def check_number(
-    number_images: Union[str, int], input_path: str
-) -> Tuple[List[str], int]:
+    number_images: Union[
+        str,
+        int,
+    ],
+    input_path: str,
+) -> Tuple[List[str], int,]:
     """Check number is correct.
 
     Args:
-        number_images (Union[str, int]): number of videos wanted. Should be a number or the constant value "all".
+        number_images (Union[str, int]): number of videos wanted.
+        Should be a number or the constant value "all".
         input_path (str): path the videos are in.
 
     Returns:
@@ -149,12 +204,17 @@ def check_number(
     else:
         n_images = int(number_images)
 
-    return videos, n_images
+    return (
+        videos,
+        n_images,
+    )
 
 
 def get_videos_path_and_name(
-    input_path, videos, n_videos
-) -> Tuple[List[str], List[str]]:
+    input_path,
+    videos,
+    n_videos,
+) -> Tuple[List[str], List[str],]:
     """Get videos path and name.
 
     Args:
@@ -166,15 +226,30 @@ def get_videos_path_and_name(
         Tuple[List[str], List[str]]: videos path and name.
     """
     # Videos absolute path.
-    paths = [abs_path(path.join(input_path, vid)) for vid in videos][:n_videos]
+    paths = [
+        abs_path(
+            path.join(
+                input_path,
+                vid,
+            )
+        )
+        for vid in videos
+    ][:n_videos]
 
     # Video names.
     names = [vid.split(".")[0] for vid in videos][:n_videos]
 
-    return paths, names
+    return (
+        paths,
+        names,
+    )
 
 
-def extract_frames(videos_path, videos_name, output_path) -> None:
+def extract_frames(
+    videos_path,
+    videos_name,
+    output_path,
+) -> None:
     """Extract frames from videos.
 
     Args:
@@ -182,15 +257,27 @@ def extract_frames(videos_path, videos_name, output_path) -> None:
         videos_name (List[str]): list of videos name.
         output_path (str): path to output frames.
     """
-    for vid_path, vid_name in zip(videos_path, videos_name):
+    for (vid_path, vid_name,) in zip(
+        videos_path,
+        videos_name,
+    ):
         cap = cv2.VideoCapture(vid_path)
 
         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         mid_frame = frame_count // 2
 
-        cap.set(1, mid_frame)
-        _, frame = cap.read()
-        cv2.imwrite(f"{output_path}/{vid_name}.png", frame)
+        cap.set(
+            1,
+            mid_frame,
+        )
+        (
+            _,
+            frame,
+        ) = cap.read()
+        cv2.imwrite(
+            f"{output_path}/{vid_name}.png",
+            frame,
+        )
 
 
 if __name__ == "__main__":
@@ -208,12 +295,27 @@ if __name__ == "__main__":
             "Invalid values (empty or wrong types). Check config file or provide arguments via terminal (-h for help)."
         )
 
-    input_path = check_path(input_path, "input")
-    output_path = check_path(output_path, "output")
-    videos, number_images = check_number(number_images, input_path)
-
-    videos_path, videos_name = get_videos_path_and_name(
-        input_path, videos, number_images
+    input_path = check_path(
+        input_path,
+        "input",
+    )
+    output_path = check_path(
+        output_path,
+        "output",
+    )
+    (videos, number_images,) = check_number(
+        number_images,
+        input_path,
     )
 
-    extract_frames(videos_path, videos_name, output_path)
+    (videos_path, videos_name,) = get_videos_path_and_name(
+        input_path,
+        videos,
+        number_images,
+    )
+
+    extract_frames(
+        videos_path,
+        videos_name,
+        output_path,
+    )
