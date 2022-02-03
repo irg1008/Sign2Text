@@ -19,10 +19,10 @@ def load_labels() -> None:
         labels[label] = []
 
         for video in entry["instances"]:
-            labels[label].append(int(video["video_id"]))
+            labels[label].append(video["video_id"])
 
 
-def get_label_from_id(video_id: int) -> str:
+def get_label_from_id(video_id: str) -> str:
     """Get label from video id.
 
     Args:
@@ -45,3 +45,4 @@ def get_label_from_id(video_id: int) -> str:
 
 if __name__ == "__main__":
     load_labels()
+    print(get_label_from_id("35463"))
