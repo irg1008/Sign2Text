@@ -9,3 +9,6 @@ venv
 
 # Prototypes
 prototypes
+
+# Trained models
+models
