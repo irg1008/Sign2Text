@@ -1,5 +1,5 @@
 import json
-from os import path, mkdir
+from os import path
 from typing import Dict, List
 
 
@@ -50,7 +50,6 @@ def load_labels() -> None:
 #         label_path = path.join(pytorch_path, "/", label)
 #         if not path.exists(label_path):
 #             mkdir(label_path)
-        
 
 
 def get_label_from_id(

@@ -208,14 +208,14 @@ def get_videos_path_and_name(
     for i, (label, ids) in enumerate(labels.items()):
         if i > n_labels:
             break
-        for id in ids:
-            input_paths.append(abs_path(path.join(input_path, f"{id}.mp4")))
+        for vid_id in ids:
+            input_paths.append(abs_path(path.join(input_path, f"{vid_id}.mp4")))
 
             out_dir = path.join(output_path, label)
             if not path.exists(out_dir):
                 makedirs(out_dir)
 
-            output_paths.append(abs_path(path.join(out_dir, f"{id}.png")))
+            output_paths.append(abs_path(path.join(out_dir, f"{vid_id}.png")))
 
     return input_paths, output_paths
 
@@ -240,9 +240,8 @@ def extract_frames(
 
         perc = (i + 1) / len(videos_input_path) * 100
         normal_perc = perc * bar_len / 100
-        perc_str = "{:.2f}".format(perc)
         log(
-            f"Converting {i+1}/{len(videos_input_path)} videos - ({perc_str}%) [{'#' * int(normal_perc):<{bar_len}}]",
+            f"Converting {i+1}/{len(videos_input_path)} videos - ({perc:.2f}%) [{'#' * int(normal_perc):<{bar_len}}]",
             delete_previous=True,
         )
 
@@ -327,6 +326,3 @@ if __name__ == "__main__":
     config_path = args.config or config["wlasl_config"]
 
     main(input_path, output_path, number_labels, config_path)
-
-# TODO:
-# - Improve checking on input, output and config paths (config is JSON, etc).
