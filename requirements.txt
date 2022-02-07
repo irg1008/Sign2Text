@@ -5,3 +5,5 @@ opencv-python
 pylint
 black
 black[jupyter]
+numpy
+matplotlib
