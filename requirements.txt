@@ -5,3 +5,4 @@ opencv-python
 pylint
 black
 black[jupyter]
+json

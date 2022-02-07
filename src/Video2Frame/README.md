@@ -23,7 +23,8 @@ Si queremos ejecutar el script con parámetros, podemos pasarle los siguientes p
 
 - -i, --input: Carpeta con los videos a procesar (Opcional).
 - -o, --output: Carpeta donde se guardaran los frames (Opcional).
-- -n, --image: Número de videos a procesar. Puede ser un número o "all" para procesar todos (Opcional).
+- -n, --labels: Número de labels a procesar. Puede ser un número o "all" para procesar todos (Opcional).
+- -c, --config: Archivo de configuración con las etiquetas (Opcional).
 
 ### Ejemplos
 
@@ -32,9 +33,13 @@ python video2frame.py -i ./videos_input/ -o ./frames_output/ -n all
 ```
 
 ```bash
-python video2frame.py -n 10
+python video2frame.py -n 10 -c ./config.json
 ```
 
 ```bash
 python video2frame.py -o ./frames_output/
+```
+
+```bash
+python video2frame.py -n 40
 ```

@@ -1,5 +1,5 @@
 import json
-from os import path
+from os import path, mkdir
 from typing import Dict, List
 
 
@@ -25,6 +25,32 @@ def load_labels() -> None:
 
         for video in entry["instances"]:
             labels[label].append(video["video_id"])
+
+
+# def set_pytorch_directory() -> None:
+#     """
+#     Prepares the pytorch directory divided by labels of dataset.
+#     """
+#     if not labels:
+#         load_labels()
+
+#     pytorch_path = "../../data/WLASL2000_frames_labels"
+#     pytorch_path = path.abspath(
+#         path.join(
+#             path.abspath(path.dirname(__file__)),
+#             pytorch_path,
+#         )
+#     )
+
+#     if not path.exists(pytorch_path):
+#         mkdir(pytorch_path)
+
+#     for label, ids in labels.items():
+#         # Create folder for label and move all images to it.
+#         label_path = path.join(pytorch_path, "/", label)
+#         if not path.exists(label_path):
+#             mkdir(label_path)
+        
 
 
 def get_label_from_id(

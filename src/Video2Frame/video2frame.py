@@ -1,5 +1,6 @@
-from typing import Literal, List, Tuple, Union
-from os import path, listdir
+import json
+from typing import Dict, Literal, List, Tuple, Union
+from os import makedirs, path, listdir
 from argparse import ArgumentParser, Namespace
 import yaml
 import cv2
@@ -7,12 +8,16 @@ import cv2
 # Constants for config file.
 MAX_N = "all"
 
+# Custom types.
+Labels = Dict[str, List[int]]
+
 
 def args_parser() -> Namespace:
     """Parse arguments.
         1. (-i) -> Input path
         2. (-o) -> Output path
-        3. (-n) -> N images
+        3. (-n) -> N of labels to get
+        4. (-c) -> Dataset config
 
     Returns:
         Namespace: parsed arguments.
@@ -21,7 +26,10 @@ def args_parser() -> Namespace:
     parser = ArgumentParser(description="Convert video to frames.")
     parser.add_argument("-i", "--input", help="Input path", required=False, type=str)
     parser.add_argument("-o", "--output", help="Output path", required=False, type=str)
-    parser.add_argument("-n", "--images", help="Number of images", required=False)
+    parser.add_argument("-n", "--labels", help="Number of images", required=False)
+    parser.add_argument(
+        "-c", "--config", help="Dataset config file (labels info)", required=False
+    )
     args = parser.parse_args()
     return args
 
@@ -64,25 +72,22 @@ def raise_error(error: str) -> None:
 def log(
     msg: str,
     mode: Literal[
-        "Info",
-        "Warning",
-    ] = "Info",
+        "info",
+        "warning",
+    ] = "info",
+    delete_previous: bool = False,
 ) -> None:
     """Log msg.
 
     Args:
         msg (str): msg to log.
         type (Literal[, optional): type of msg. Defaults to "Info".
+        delete_previous (bool, optional): delete previous log. Defaults to False.
     """
-    print(f"({mode}) - Video2Frame: {msg}")
+    print(f"({mode}) - Video2Frame: {msg}", end="\r" if delete_previous else "\n")
 
 
-def is_number(
-    string: Union[
-        str,
-        int,
-    ]
-) -> bool:
+def is_number(string: Union[str, int]) -> bool:
     """Check if string is number.
 
     Args:
@@ -131,93 +136,185 @@ def check_path(
     return custom_abs_path
 
 
-def check_number(
-    number_images: Union[
-        str,
-        int,
-    ],
-    input_path: str,
-) -> Tuple[List[str], int,]:
-    """Check number is correct.
+def get_videos(input_path: str) -> List[str]:
+    """Get videos from input path.
 
     Args:
-        number_images (Union[str, int]): number of videos wanted.
-        Should be a number or the constant value "all".
-        input_path (str): path the videos are in.
+        input_path (str): path to get videos from.
 
     Returns:
-        List[str]: n videos for input path.
+        List[str]: videos path.
     """
-    n_images = 0
-
     # The number of videos should be more than 0.
     videos = [vid for vid in listdir(input_path) if vid.endswith(".mp4")]
     n_videos = len(videos)
     if n_videos == 0:
         raise_error(f"No videos found in input path ({input_path}).")
+    return videos
+
+
+def check_number(number_labels: Union[str, int], max_n_labels: int) -> int:
+    """Check if number of labels is valid.
+
+    Args:
+        number_labels (Union[str, int]): number of labels.
+        max_n_labels (int): number of video labels.
+
+    Returns:
+        int: number of labels.
+    """
+    n_labels = 0
 
     # Check validity of number of images "all" or number.
-    if is_number(number_images) and int(number_images) <= 0:
+    if is_number(number_labels) and int(number_labels) <= 0:
         raise_error(
-            f"Invalid number of images ({number_images}). Cannot use negative values or 0."
+            f"Invalid number of labels ({number_labels}). Cannot use negative values or 0."
         )
-    elif not is_number(number_images) and number_images != MAX_N:
-        raise_error(f'Invalid string ({number_images}). Valid string is "{MAX_N}".')
-    elif number_images == MAX_N or int(number_images) > n_videos:
-        if number_images == MAX_N:
+    elif not is_number(number_labels) and number_labels != MAX_N:
+        raise_error(f'Invalid string ({number_labels}). Valid string is "{MAX_N}".')
+    elif number_labels == MAX_N or int(number_labels) > max_n_labels:
+        if number_labels == MAX_N:
             log(
-                f'Detected "{MAX_N}" string for number of images. Using max value ({n_videos}).'
+                f'Detected "{MAX_N}" string for number of labels. Using max value ({max_n_labels}).',
+                "warning",
             )
         else:
             log(
-                f"Number of images ({number_images}) is larger than number of videos in folder ({n_videos}). Using {n_videos}."
+                f"Number of labels ({number_labels}) is larger than number of valid labels ({n_labels}). Using {max_n_labels}."
             )
-        n_images = n_videos
+        n_labels = max_n_labels
     else:
-        n_images = int(number_images)
+        n_labels = int(number_labels)
 
-    return (videos, n_images)
+    return n_labels
 
 
 def get_videos_path_and_name(
-    input_path, videos, n_videos
+    input_path: str, output_path: str, labels: Labels, n_labels: int
 ) -> Tuple[List[str], List[str]]:
     """Get videos path and name.
 
     Args:
-        input_path ([type]): path to get videos from.
-        videos ([type]): list of videos.
-        n_videos ([type]): number of videos.
+        input_path (str): path to get videos from.
+        output_path (str): path to extract the frames to.
+        labels (Labels): labels info.
+        n_labels (int): number of labels.
 
     Returns:
-        Tuple[List[str], List[str]]: videos path and name.
+        Tuple[List[str], List[str]]: videos input and output path.
     """
-    # Videos absolute path.
-    paths = [abs_path(path.join(input_path, vid)) for vid in videos][:n_videos]
 
-    # Video names.
-    names = [vid.split(".")[0] for vid in videos][:n_videos]
+    input_paths = []
+    output_paths = []
+    for i, (label, ids) in enumerate(labels.items()):
+        if i > n_labels:
+            break
+        for id in ids:
+            input_paths.append(abs_path(path.join(input_path, f"{id}.mp4")))
 
-    return (paths, names)
+            out_dir = path.join(output_path, label)
+            if not path.exists(out_dir):
+                makedirs(out_dir)
+
+            output_paths.append(abs_path(path.join(out_dir, f"{id}.png")))
+
+    return input_paths, output_paths
 
 
-def extract_frames(videos_path, videos_name, output_path) -> None:
+def extract_frames(
+    videos_input_path: List[str],
+    videos_output_path: List[str],
+) -> None:
     """Extract frames from videos.
 
     Args:
-        videos_path (List[str]): list of videos path.
-        videos_name (List[str]): list of videos name.
-        output_path (str): path to output frames.
+        videos_input_path (List[str]): videos input path.
+        videos_output_path (List[str]): videos output path.
     """
-    for (vid_path, vid_name) in zip(videos_path, videos_name):
-        cap = cv2.VideoCapture(vid_path)
+    bar_len = 20
+
+    for i, (in_path, out_path) in enumerate(zip(videos_input_path, videos_output_path)):
+        cap = cv2.VideoCapture(in_path)
 
         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         mid_frame = frame_count // 2
 
+        perc = (i + 1) / len(videos_input_path) * 100
+        normal_perc = perc * bar_len / 100
+        perc_str = "{:.2f}".format(perc)
+        log(
+            f"Converting {i+1}/{len(videos_input_path)} videos - ({perc_str}%) [{'#' * int(normal_perc):<{bar_len}}]",
+            delete_previous=True,
+        )
+
         cap.set(1, mid_frame)
         (_, frame) = cap.read()
-        cv2.imwrite(f"{output_path}/{vid_name}.png", frame)
+        cv2.imwrite(out_path, frame)
+
+
+def load_labels(config_path: str, n_videos: int) -> Labels:
+    """Load labels from config file.
+
+    Args:
+        config_path (str): path to config file.
+        n_videos (int): number of videos that should have config info.
+
+    Returns:
+        Labels: labels from config file.
+    """
+    with open(config_path, encoding="utf8") as ipf:
+        content = json.load(ipf)
+
+    labels: Labels = {}
+    n_videos_config = 0
+
+    for entry in content:
+        label = entry["gloss"]
+        labels[label] = [video["video_id"] for video in entry["instances"]]
+        n_videos_config += len(labels[label])
+
+    if not n_videos_config == n_videos:
+        raise_error(
+            f"Number of videos in config file ({n_videos_config}) does not match number of videos ({n_videos}) in input folder."
+        )
+
+    return labels
+
+
+def main(
+    input_path: str, output_path: str, number_labels: Union[str, int], config_path: str
+) -> None:
+    """Main function.
+
+    Args:
+        input_path (str): path to input videos.
+        output_path (str): path to output frames.
+        number_labels (Union[str, int]): number of labels.
+        config_path (str): path to config file.
+    """
+    if not input_path or not output_path or not number_labels or not config_path:
+        raise_error(
+            "Invalid values (empty or wrong types). Check config file or provide arguments via terminal (-h for help)."
+        )
+
+    input_path = check_path(input_path, "input")
+    videos = get_videos(input_path)
+
+    output_path = check_path(output_path, "output")
+
+    # Load labels from config.
+    config_path = check_path(config_path, "config")
+    labels = load_labels(config_path, n_videos=len(videos))
+
+    # Get correct number of labels.
+    number_labels = check_number(number_labels, max_n_labels=len(labels))
+
+    # Get videos path and name structures as a pytorch dataset directory.
+    videos_input_path, videos_output_path = get_videos_path_and_name(
+        input_path, output_path, labels, number_labels
+    )
+
+    extract_frames(videos_input_path, videos_output_path)
 
 
 if __name__ == "__main__":
@@ -227,20 +324,10 @@ if __name__ == "__main__":
     # If no args are provided, try to get from config.yaml.
     input_path = args.input or config["input"]
     output_path = args.output or config["output"]
-    number_images = args.images or config["number_images"]
+    number_labels = args.labels or config["number_labels"]
+    config_path = args.config or config["wlasl_config"]
 
-    # If any of previous values is not provided, raise error.
-    if not input_path or not output_path or not number_images:
-        raise_error(
-            "Invalid values (empty or wrong types). Check config file or provide arguments via terminal (-h for help)."
-        )
+    main(input_path, output_path, number_labels, config_path)
 
-    input_path = check_path(input_path, "input")
-    output_path = check_path(output_path, "output")
-    (videos, number_images) = check_number(number_images, input_path)
-
-    (videos_path, videos_name) = get_videos_path_and_name(
-        input_path, videos, number_images
-    )
-
-    extract_frames(videos_path, videos_name, output_path)
+# TODO:
+# - Improve checking on input, output and config paths (config is JSON, etc).
