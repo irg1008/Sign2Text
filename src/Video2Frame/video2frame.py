@@ -176,7 +176,6 @@ def check_number(number_labels: Union[str, int], max_n_labels: int) -> int:
         if number_labels == MAX_N:
             log(
                 f'Detected "{MAX_N}" string for number of labels. Using max value ({max_n_labels}).',
-                "warning",
             )
         else:
             log(
