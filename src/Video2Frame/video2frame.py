@@ -206,7 +206,7 @@ def get_videos_path_and_name(
     input_paths = []
     output_paths = []
     for i, (label, ids) in enumerate(labels.items()):
-        if i > n_labels:
+        if i >= n_labels:
             break
         for vid_id in ids:
             input_paths.append(abs_path(path.join(input_path, f"{vid_id}.mp4")))
