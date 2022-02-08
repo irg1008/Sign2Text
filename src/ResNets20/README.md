@@ -7,3 +7,5 @@ https://pytorch.org/hub/pytorch_vision_resnet/
 ## Labels
 
 ## Procedimiento
+
+## Problemas encontrados
