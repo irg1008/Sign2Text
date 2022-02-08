@@ -249,6 +249,11 @@ def extract_frames(
         (_, frame) = cap.read()
         cv2.imwrite(out_path, frame)
 
+    log(
+        f"All {len(videos_input_path)} videos converted successfully",
+        delete_previous=True,
+    )
+
 
 def load_labels(config_path: str, n_videos: int) -> Labels:
     """Load labels from config file.
