@@ -232,16 +232,16 @@ def extract_frames(
     """
     bar_len = 20
 
-    for i, (in_path, out_path) in enumerate(zip(videos_input_path, videos_output_path)):
-        cap = cv2.VideoCapture(in_path)
-
-        frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-
-        # Get 2 frames in 1/3 and 2/3 of the video.
+    def get_frames(frame_count: int) -> List[int]:
         frame_first = frame_count // 3
         mid_frame = frame_count // 2
         frame_second = frame_first * 2
         frames = [frame_first, mid_frame, frame_second]
+        return frames
+
+    for i, (in_path, out_path) in enumerate(zip(videos_input_path, videos_output_path)):
+        cap = cv2.VideoCapture(in_path)
+        frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
         perc = (i + 1) / len(videos_input_path) * 100
         normal_perc = perc * bar_len / 100
@@ -250,7 +250,7 @@ def extract_frames(
             delete_previous=True,
         )
 
-        for frame in frames:
+        for frame in get_frames(frame_count):
             cap.set(1, frame)
             _, img = cap.read()
             cv2.imwrite(f"{out_path}_{frame}.png", img)
