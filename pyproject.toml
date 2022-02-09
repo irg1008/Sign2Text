@@ -1,2 +1,18 @@
 [tool.black]
 line-length = 88
+
+[mypy]
+
+[mypy-cv2]
+ignore_missing_imports = true
+
+
+# Disable pylint rules.
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+  "line-too-long",
+  "redefined-outer-name",
+  "C0114",                # missing-module-docstring
+  "no-member",
+  "consider-using-with",
+]
