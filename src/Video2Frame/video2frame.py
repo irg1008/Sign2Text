@@ -110,11 +110,13 @@ def read_config() -> dict:
         dict: config file.
     """
     # Read config.yaml in case agruments are not recieved.
-    config_file = "config.yml"
-    yaml_file_path = abs_path(config_file)
+    config_file_path = "config.yml"
+    yaml_file_path = abs_path(config_file_path)
 
-    with open(yaml_file_path, encoding="utf8") as config_file:
-        config = yaml.safe_load(config_file)
+    config_file = open(yaml_file_path, "r", encoding="utf-8")
+    config = yaml.safe_load(config_file)
+    config_file.close()
+
     return config
 
 
@@ -271,8 +273,9 @@ def load_labels(config_path: str, n_videos: int) -> Labels:
     Returns:
         Labels: labels from config file.
     """
-    with open(config_path, encoding="utf8") as ipf:
-        content = json.load(ipf)
+    ipf = open(config_path, "r", encoding="utf-8")
+    content = json.load(ipf)
+    ipf.close()
 
     labels: Labels = {}
     n_videos_config = 0
