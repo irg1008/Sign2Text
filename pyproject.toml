@@ -6,7 +6,6 @@ line-length = 88
 [mypy-cv2]
 ignore_missing_imports = true
 
-
 # Disable pylint rules.
 [tool.pylint."MESSAGES CONTROL"]
 disable = [
