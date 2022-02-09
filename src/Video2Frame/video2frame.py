@@ -215,7 +215,7 @@ def get_videos_path_and_name(
             if not path.exists(out_dir):
                 makedirs(out_dir)
 
-            output_paths.append(abs_path(path.join(out_dir, f"{vid_id}.png")))
+            output_paths.append(abs_path(path.join(out_dir, f"{vid_id}")))
 
     return input_paths, output_paths
 
@@ -236,7 +236,12 @@ def extract_frames(
         cap = cv2.VideoCapture(in_path)
 
         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+        # Get 2 frames in 1/3 and 2/3 of the video.
+        frame_first = frame_count // 3
         mid_frame = frame_count // 2
+        frame_second = frame_first * 2
+        frames = [frame_first, mid_frame, frame_second]
 
         perc = (i + 1) / len(videos_input_path) * 100
         normal_perc = perc * bar_len / 100
@@ -245,9 +250,10 @@ def extract_frames(
             delete_previous=True,
         )
 
-        cap.set(1, mid_frame)
-        (_, frame) = cap.read()
-        cv2.imwrite(out_path, frame)
+        for frame in frames:
+            cap.set(1, frame)
+            _, img = cap.read()
+            cv2.imwrite(f"{out_path}_{frame}.png", img)
 
     log(
         f"All {len(videos_input_path)} videos converted successfully",
