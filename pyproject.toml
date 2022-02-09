@@ -1,12 +1,16 @@
+# [Formatter] - black 
 [tool.black]
 line-length = 88
 
-[mypy]
+# [Type-Checking] - mypy 
+[tool.mypy]
 
-[mypy-cv2]
+[[tool.mypy.overrides]]
+module = ["cv2"]
 ignore_missing_imports = true
 
-# Disable pylint rules.
+
+# [Linter] - pylint
 [tool.pylint."MESSAGES CONTROL"]
 disable = [
   "line-too-long",
