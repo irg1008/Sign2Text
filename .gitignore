@@ -12,6 +12,3 @@ prototypes
 
 # Trained models
 models
-
-# Mypy (type-checking) cache folder
-cache
