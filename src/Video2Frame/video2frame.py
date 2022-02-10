@@ -84,7 +84,7 @@ def log(
         type (Literal[, optional): type of msg. Defaults to "Info".
         delete_previous (bool, optional): delete previous log. Defaults to False.
     """
-    print(f"({mode}) - Video2Frame: {msg}", end="\r" if delete_previous else "\n")
+    print(f"[{mode}] - Video2Frame: {msg}", end="\r" if delete_previous else "\n")
 
 
 def is_number(string: Union[str, int]) -> bool:
@@ -239,6 +239,9 @@ def extract_frames(
         mid_frame = frame_count // 2
         frame_second = frame_first * 2
         frames = [frame_first, mid_frame, frame_second]
+
+        # All frames.
+        # frames = list(range(frame_count))
         return frames
 
     for i, (in_path, out_path) in enumerate(zip(videos_input_path, videos_output_path)):
