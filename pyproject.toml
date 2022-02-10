@@ -2,6 +2,7 @@
 [tool.black]
 line-length = 88
 
+
 # [Type-Checking] - mypy 
 [tool.mypy]
 
