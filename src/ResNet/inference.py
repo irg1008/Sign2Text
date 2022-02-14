@@ -5,12 +5,26 @@ from config import device, transform
 import cv2
 
 
-def Webcam_720p(cap):
+def webcam_720p(cap):
+    """_summary_
+
+    Args:
+        cap (_type_): _description_
+    """
     cap.set(3, 1280)
     cap.set(4, 720)
 
 
 def argmax(scores, classes):
+    """_summary_
+
+    Args:
+        scores (_type_): _description_
+        classes (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     percentage = F.softmax(scores, dim=1)[0] * 100
     _, indices = torch.sort(scores, descending=True)
     first_five = [(classes[idx], percentage[idx].item()) for idx in indices[0][:5]]
@@ -25,6 +39,14 @@ def argmax(scores, classes):
 
 
 def preprocess(image):
+    """_summary_
+
+    Args:
+        image (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     image = transform(image)
     image = image.float()
     image = image.to(device)
@@ -33,18 +55,22 @@ def preprocess(image):
 
 
 def webcam_inference(model, classes):
+    """_summary_
+
+    Args:
+        model (_type_): _description_
+        classes (_type_): _description_
+    """
     model.to(device)
     model.eval()
 
     cap = cv2.VideoCapture(0)  # Set the webcam
-    Webcam_720p(cap)
+    webcam_720p(cap)
 
     fps = 0
-    show_score = 0
     first_five = []
-    sequence = 0
     while True:
-        ret, frame = cap.read()  # Capture each frame
+        _, frame = cap.read()  # Capture each frame
 
         if fps == 15:
             image = frame  # [100:400, 150:550]
@@ -58,13 +84,13 @@ def webcam_inference(model, classes):
 
         fps += 1
 
-        y = 150
+        screen_y = 150
         for label, score in first_five:
-            y += 50
+            screen_y += 50
             cv2.putText(
                 frame,
                 f"{label} - {score:.2f}",
-                (900, y),
+                (900, screen_y),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 1,
                 (0, 0, 255),
@@ -82,6 +108,16 @@ def webcam_inference(model, classes):
 
 
 def path_inference(model, classes, img_path: str):
+    """_summary_
+
+    Args:
+        model (_type_): _description_
+        classes (_type_): _description_
+        img_path (str): _description_
+
+    Returns:
+        _type_: _description_
+    """
     image = Image.open(img_path).convert("RGB")
     image = preprocess(image)
     output = model(image)

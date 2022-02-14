@@ -1,12 +1,20 @@
 import torch
-from torch import nn
+from torchvision.models import ResNet
 
 
-def quantize_model(model):
+def quantize_model(model: ResNet) -> ResNet:
+    """Quantize the model.
+
+    Args:
+        model (ResNet): The model to quantize.
+
+    Returns:
+        ResNet: The quantized model.
+    """
     cpu_model = model.cpu()
     quantized_model = torch.quantization.quantize_dynamic(
         cpu_model,
-        {nn.Linear},
+        {torch.nn.Linear},
         dtype=torch.qint8,
     )
     return quantized_model

@@ -7,7 +7,7 @@ line-length = 88
 [tool.mypy]
 
 [[tool.mypy.overrides]]
-module = ["cv2"]
+module = ["cv2", "PIL", "matplotlib", "torchvision.*"]
 ignore_missing_imports = true
 
 
@@ -19,4 +19,5 @@ disable = [
   "C0114",                # missing-module-docstring
   "no-member",
   "consider-using-with",
+  "import-error",
 ]

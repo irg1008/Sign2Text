@@ -1,10 +1,10 @@
 from typing import List, Tuple
-from torch.utils.data.sampler import SubsetRandomSampler
-from config import transform, num_workers
-from torch.utils.data import DataLoader
-import torch
 import numpy as np
+from config import transform, NUM_WORKERS
+import torch
 from torchvision import datasets
+from torch.utils.data import DataLoader
+from torch.utils.data.sampler import SubsetRandomSampler
 
 
 def load_split_dataset(
@@ -40,13 +40,13 @@ def load_split_dataset(
         dataset,
         sampler=train_sampler,
         batch_size=batch_size,
-        num_workers=num_workers,
+        num_workers=NUM_WORKERS,
     )
     test_loader = DataLoader(
         dataset,
         sampler=test_sampler,
         batch_size=batch_size,
-        num_workers=num_workers,
+        num_workers=NUM_WORKERS,
     )
 
     return train_loader, test_loader, classes

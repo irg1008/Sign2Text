@@ -5,6 +5,13 @@ from config import device
 
 
 def check_accuracy(loader, model, classes):
+    """_summary_
+
+    Args:
+        loader (_type_): _description_
+        model (_type_): _description_
+        classes (_type_): _description_
+    """
     model.to(device)
     model.eval()
 
@@ -12,23 +19,23 @@ def check_accuracy(loader, model, classes):
     num_samples = 0
 
     with torch.no_grad():
-        for i, (x, y) in enumerate(loader):
-            x, y = x.to(device), y.to(device)
+        for i, (images, targets) in enumerate(loader):
+            images, targets = images.to(device), targets.to(device)
 
-            scores = model(x)
+            scores = model(images)
             _, predictions = scores.max(1)
-            num_correct += (predictions == y).sum()
+            num_correct += (predictions == targets).sum()
             num_samples += predictions.size(0)
 
             # Output both images to compare.
             print(f"Images for {i+1}")
-            imshow(make_grid(x.cpu()))
+            imshow(make_grid(images.cpu()))
 
             print(f"Predictions for batch {i+1} ")
             print([classes[int(i)] for i in predictions])
 
             print(f"Ground truth for batch {i+1}")
-            print([classes[int(i)] for i in y])
+            print([classes[int(i)] for i in targets])
 
             print("---------------------------------\n\n")
             break
@@ -39,6 +46,14 @@ def check_accuracy(loader, model, classes):
 
 
 def predict_class(loader, model, classes, debug_class):
+    """_summary_
+
+    Args:
+        loader (_type_): _description_
+        model (_type_): _description_
+        classes (_type_): _description_
+        debug_class (_type_): _description_
+    """
     model.to(device)
     model.eval()
 

@@ -1,8 +1,17 @@
-from config import num_epochs, device
+from config import NUM_EPOCHS, device
 from model import optim_model
 
 
 def train_model(model, train_loader):
+    """_summary_
+
+    Args:
+        model (_type_): _description_
+        train_loader (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     model.to(device)
     model.train()
 
@@ -13,7 +22,7 @@ def train_model(model, train_loader):
     # Train network.
     costs = []
 
-    for epoch in range(num_epochs):
+    for epoch in range(NUM_EPOCHS):
         losses = []
 
         for data, targets in train_loader:

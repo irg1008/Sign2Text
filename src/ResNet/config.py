@@ -1,25 +1,31 @@
+from typing import Tuple
 from torchvision import transforms
 import torch
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-learning_rate = 1e-3
-batch_size = 128
-num_epochs = 25
-train_split = 0.7
-image_size = (224, 224)
-num_workers = 2
+LEARNING_RATE = 1e-3
+BATCH_SIZE = 128
+NUM_EPOCHS = 25
+TRAIN_SPLIT = 0.7
+IMAGE_SIZE = (224, 224)
+NUM_WORKERS = 2
 
 transform = transforms.Compose(
     [
-        transforms.Resize(image_size),
+        transforms.Resize(IMAGE_SIZE),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ]
 )
 
 
-def get_path_and_names():
+def get_path_and_names() -> Tuple[str, str, str, str]:
+    """Get the path to the dataset and the names of the classes.
+
+    Returns:
+        Tuple[str, str, str, str]: The path to the dataset, the path to the train set, the path to the test set and the list of classes.
+    """
     datasets_info = {
         "WLASL": {"name": "WLASL_frames_100", "path": "WLASL/frames_100"},
         "animals": {"name": "animals_simple", "path": "animals/all"},
