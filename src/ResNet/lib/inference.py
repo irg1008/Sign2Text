@@ -1,7 +1,6 @@
 import torch
 import torch.nn.functional as F
 from PIL import Image
-from config import device, transform
 import cv2
 
 
@@ -38,7 +37,7 @@ def argmax(scores, classes):
     return first_five
 
 
-def preprocess(image):
+def preprocess(image, device, transform):
     """_summary_
 
     Args:
@@ -54,7 +53,7 @@ def preprocess(image):
     return image
 
 
-def webcam_inference(model, classes):
+def webcam_inference(model, classes, device, transform):
     """_summary_
 
     Args:
@@ -75,7 +74,7 @@ def webcam_inference(model, classes):
         if fps == 15:
             image = frame  # [100:400, 150:550]
             image = Image.fromarray(image)
-            image_data = preprocess(image)
+            image_data = preprocess(image, device, transform)
 
             scores = model(image_data)
             first_five = argmax(scores, classes)
@@ -107,7 +106,7 @@ def webcam_inference(model, classes):
     cv2.destroyWindow("ASL SIGN DETECTER")
 
 
-def path_inference(model, classes, img_path: str):
+def path_inference(model, classes, device, transform, img_path: str):
     """_summary_
 
     Args:
@@ -119,6 +118,6 @@ def path_inference(model, classes, img_path: str):
         _type_: _description_
     """
     image = Image.open(img_path).convert("RGB")
-    image = preprocess(image)
+    image = preprocess(image, device, transform)
     output = model(image)
     return argmax(output, classes)

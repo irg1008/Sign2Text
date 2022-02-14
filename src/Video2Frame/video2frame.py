@@ -235,10 +235,11 @@ def extract_frames(
     bar_len = 20
 
     def get_frames(frame_count: int) -> List[int]:
-        frame_first = frame_count // 3
+        # frame_first = frame_count // 3
         mid_frame = frame_count // 2
-        frame_second = frame_first * 2
-        frames = [frame_first, mid_frame, frame_second]
+        frames = [mid_frame]
+        # frame_second = frame_first * 2
+        # frames = [frame_first, mid_frame, frame_second]
 
         # All frames.
         # frames = list(range(frame_count))
@@ -262,7 +263,6 @@ def extract_frames(
 
     log(
         f"All {len(videos_input_path)} videos converted successfully",
-        delete_previous=True,
     )
 
 

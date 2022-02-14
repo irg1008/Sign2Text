@@ -1,10 +1,8 @@
 from torchvision.models import ResNet, resnet50
-from torch import nn, optim
-from config import LEARNING_RATE
-import torch
+from torch import nn, save, load
 
 
-def create_model() -> ResNet:
+def create_model(num_classes: int) -> ResNet:
     """_summary_
 
     Returns:
@@ -15,12 +13,12 @@ def create_model() -> ResNet:
     # Load pretrain model & modify it.
     # model = models.resnet18(pretrained=True)
     model = resnet50(pretrained=True)
-
+    update_last_layer(model, num_classes)
     return model
 
 
 # Change last layer.
-def change_last_layer(model: ResNet, num_classes: int):
+def update_last_layer(model: ResNet, num_classes: int) -> ResNet:
     """_summary_
 
     Args:
@@ -39,21 +37,7 @@ def change_last_layer(model: ResNet, num_classes: int):
     )
 
     # model.fc = nn.Linear(2048, num_classes)
-
-
-def optim_model(model):
-    """_summary_
-
-    Args:
-        model (_type_): _description_
-
-    Returns:
-        _type_: _description_
-    """
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.fc.parameters(), lr=LEARNING_RATE)
-
-    return criterion, optimizer
+    return model
 
 
 def export_model(model, path: str):
@@ -63,7 +47,7 @@ def export_model(model, path: str):
         model (_type_): _description_
         path (str): _description_
     """
-    torch.save(model, path)
+    save(model, path)
 
 
 def load_model(model_path: str):
@@ -75,5 +59,5 @@ def load_model(model_path: str):
     Returns:
         _type_: _description_
     """
-    model = torch.load(model_path)
+    model = load(model_path)
     return model

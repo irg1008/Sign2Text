@@ -1,8 +1,22 @@
-from config import NUM_EPOCHS, device
-from model import optim_model
+from torch import nn, optim
 
 
-def train_model(model, train_loader):
+def optim_model(model, learning_rate: float):
+    """_summary_
+
+    Args:
+        model (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.fc.parameters(), lr=learning_rate)
+
+    return criterion, optimizer
+
+
+def train_model(model, train_loader, device, learning_rate, num_epochs):
     """_summary_
 
     Args:
@@ -12,17 +26,17 @@ def train_model(model, train_loader):
     Returns:
         _type_: _description_
     """
+    criterion, optimizer = optim_model(model, learning_rate)
+
     model.to(device)
     model.train()
-
-    criterion, optimizer = optim_model(model)
 
     print(f"Training on device: {device}")
 
     # Train network.
     costs = []
 
-    for epoch in range(NUM_EPOCHS):
+    for epoch in range(num_epochs):
         losses = []
 
         for data, targets in train_loader:

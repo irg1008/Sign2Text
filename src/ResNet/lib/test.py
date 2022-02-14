@@ -1,10 +1,9 @@
 import torch
-from output import imshow
+from utils.output import imshow
 from torchvision.utils import make_grid
-from config import device
 
 
-def check_accuracy(loader, model, classes):
+def check_accuracy(loader, model, classes, device):
     """_summary_
 
     Args:
@@ -28,7 +27,7 @@ def check_accuracy(loader, model, classes):
             num_samples += predictions.size(0)
 
             # Output both images to compare.
-            print(f"Images for {i+1}")
+            print(f"Images grid")
             imshow(make_grid(images.cpu()))
 
             print(f"Predictions for batch {i+1} ")
@@ -45,7 +44,7 @@ def check_accuracy(loader, model, classes):
         )
 
 
-def predict_class(loader, model, classes, debug_class):
+def predict_class(loader, model, classes, debug_class, device):
     """_summary_
 
     Args:

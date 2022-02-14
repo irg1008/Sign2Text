@@ -16,12 +16,13 @@ def plot_costs(costs):
     plt.show()
 
 
-def show_image(img):
+def show_image(img_path):
     """_summary_
 
     Args:
         img (_type_): _description_
     """
+    img = cv2.imread(img_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     plt.imshow(img)
     plt.show()
@@ -33,7 +34,7 @@ def imshow(img):
     Args:
         img (_type_): _description_
     """
-    img = img / 2 + 0.5  # unnormalize
+    # img = img / 2 + 0.5  # unnormalize
     npimg = img.numpy()  # convert to numpy objects
     plt.imshow(np.transpose(npimg, (1, 2, 0)))
     plt.show()

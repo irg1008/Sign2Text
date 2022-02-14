@@ -9,7 +9,7 @@ def check_balance_status(loader, classes) -> List[Tuple[str, int]]:
         classes ([type]): List of classes.
 
     Returns:
-        List[Tuple[str, int]]: [description]
+        List[Tuple[str, int]]: List of tuples with the class name and the number of images.
     """
     class_count = {}
 
