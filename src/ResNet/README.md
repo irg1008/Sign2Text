@@ -2,7 +2,9 @@
 
 https://pytorch.org/hub/pytorch_vision_resnet/
 
-TO DO: Comentarios y limpiar los parámetros de las funciones y así
+TO DO: Tipos en todos los archivos, limpiar en general y hacer docs.
+
+TO DO: Hacer resnet desde cero
 
 ## Dataset usado
 
