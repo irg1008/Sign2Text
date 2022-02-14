@@ -27,7 +27,7 @@ def check_accuracy(loader, model, classes, device):
             num_samples += predictions.size(0)
 
             # Output both images to compare.
-            print(f"Images grid")
+            print("Images grid")
             imshow(make_grid(images.cpu()))
 
             print(f"Predictions for batch {i+1} ")
@@ -69,8 +69,7 @@ def predict_class(loader, model, classes, debug_class, device):
                 continue
 
             # Predict label for image.
-            prediction_id = predictions[i]
-            prediction = classes[prediction_id]
+            prediction = classes[predictions[i]]
 
             # Show image.
             imshow(image.cpu())
