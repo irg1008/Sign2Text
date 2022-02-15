@@ -28,15 +28,15 @@ def update_last_layer(model: ResNet, num_classes: int) -> ResNet:
     for param in model.parameters():
         param.requires_grad = False
 
-    model.fc = nn.Sequential(
-        nn.Linear(2048, 512),
-        nn.ReLU(),
-        nn.Dropout(0.2),
-        nn.Linear(512, num_classes),
-        nn.LogSoftmax(dim=1),
-    )
+    # model.fc = nn.Sequential(
+    #     nn.Linear(2048, 512),
+    #     nn.ReLU(),
+    #     nn.Dropout(0.2),
+    #     nn.Linear(512, num_classes),
+    #     nn.LogSoftmax(dim=1),
+    # )
 
-    # model.fc = nn.Linear(2048, num_classes)
+    model.fc = nn.Linear(2048, num_classes)
     return model
 
 
