@@ -20,4 +20,6 @@ disable = [
   "no-member",
   "consider-using-with",
   "import-error",
+  "too-many-locals",
+  "too-many-arguments",
 ]
