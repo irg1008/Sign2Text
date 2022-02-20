@@ -5,7 +5,6 @@ from argparse import ArgumentParser, Namespace
 import yaml
 import cv2
 import numpy as np
-from PIL import Image
 
 # Constants for config file.
 MAX_N = "all"
@@ -254,8 +253,12 @@ def extract_frames(
     def get_frames(frame_count: int) -> List[int]:
         n_frames = check_number(number_frames, max_n_labels=frame_count)
         padding = int(frame_count * 0.2)
-        frames = np.linspace(padding, frame_count - padding, n_frames, dtype=int)
-        return frames.tolist()
+        frames = (
+            np.linspace(padding, frame_count - padding, n_frames, dtype=int).tolist()
+            if n_frames > 1
+            else [frame_count // 2]
+        )
+        return frames
 
     for i, (in_path, out_path) in enumerate(zip(videos_input_path, videos_output_path)):
         cap = cv2.VideoCapture(in_path)
