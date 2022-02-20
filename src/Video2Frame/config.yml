@@ -3,3 +3,5 @@ input: ../../data/WLASL/videos
 output: ../../data/WLASL/frames
 wlasl_config: "../../data/WLASL/info.json"
 number_labels: all # "all", number
+number_frames: 5 # "all", number
+merge_frames: False # True, False

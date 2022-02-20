@@ -25,6 +25,9 @@ Si queremos ejecutar el script con parámetros, podemos pasarle los siguientes p
 - -o, --output: Carpeta donde se guardaran los frames (Opcional).
 - -n, --labels: Número de labels a procesar. Puede ser un número o "all" para procesar todos (Opcional).
 - -c, --config: Archivo de configuración con las etiquetas (Opcional).
+- -f, --frames: Número de frames aleatorios del video (Opcional).
+- -m, --merge: Indica si se debe unir los frames en una imagen (Opcional).
+- -h, --help: Muestra esta ayuda.
 
 ### Ejemplos
 

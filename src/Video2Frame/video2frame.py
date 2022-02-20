@@ -4,6 +4,8 @@ from os import makedirs, path, listdir
 from argparse import ArgumentParser, Namespace
 import yaml
 import cv2
+import numpy as np
+from PIL import Image
 
 # Constants for config file.
 MAX_N = "all"
@@ -18,6 +20,8 @@ def args_parser() -> Namespace:
         2. (-o) -> Output path
         3. (-n) -> N of labels to get
         4. (-c) -> Dataset config
+        5. (-f) -> Number of frames to extract
+        6. (-m) -> Merge frames into one single image
 
     Returns:
         Namespace: parsed arguments.
@@ -29,6 +33,12 @@ def args_parser() -> Namespace:
     parser.add_argument("-n", "--labels", help="Number of images", required=False)
     parser.add_argument(
         "-c", "--config", help="Dataset config file (labels info)", required=False
+    )
+    parser.add_argument(
+        "-f", "--frames", help="Number of frames to extract", required=False
+    )
+    parser.add_argument(
+        "-m", "--merge", help="Merge frames into one single image", required=False
     )
     args = parser.parse_args()
     return args
@@ -76,6 +86,7 @@ def log(
         "warning",
     ] = "info",
     delete_previous: bool = False,
+    double_new_line: bool = False,
 ) -> None:
     """Log msg.
 
@@ -84,7 +95,11 @@ def log(
         type (Literal[, optional): type of msg. Defaults to "Info".
         delete_previous (bool, optional): delete previous log. Defaults to False.
     """
-    print(f"[{mode}] - Video2Frame: {msg}", end="\r" if delete_previous else "\n")
+    print(
+        "\n" if double_new_line else "",
+        f"[{mode}] - Video2Frame: {msg}",
+        end="\r" if delete_previous else "",
+    )
 
 
 def is_number(string: Union[str, int]) -> bool:
@@ -225,6 +240,8 @@ def get_videos_path_and_name(
 def extract_frames(
     videos_input_path: List[str],
     videos_output_path: List[str],
+    number_frames: int,
+    merge: bool,
 ) -> None:
     """Extract frames from videos.
 
@@ -235,15 +252,10 @@ def extract_frames(
     bar_len = 20
 
     def get_frames(frame_count: int) -> List[int]:
-        # frame_first = frame_count // 3
-        mid_frame = frame_count // 2
-        frames = [mid_frame]
-        # frame_second = frame_first * 2
-        # frames = [frame_first, mid_frame, frame_second]
-
-        # All frames.
-        # frames = list(range(frame_count))
-        return frames
+        n_frames = check_number(number_frames, max_n_labels=frame_count)
+        padding = int(frame_count * 0.2)
+        frames = np.linspace(padding, frame_count - padding, n_frames, dtype=int)
+        return frames.tolist()
 
     for i, (in_path, out_path) in enumerate(zip(videos_input_path, videos_output_path)):
         cap = cv2.VideoCapture(in_path)
@@ -256,13 +268,23 @@ def extract_frames(
             delete_previous=True,
         )
 
-        for frame in get_frames(frame_count):
+        frames = get_frames(frame_count)
+        images = []
+        for frame in frames:
             cap.set(1, frame)
             _, img = cap.read()
-            cv2.imwrite(f"{out_path}_{frame}.png", img)
+            images.append(img)
+
+        if merge:
+            merged_img = np.concatenate(images, axis=1)
+            cv2.imwrite(f"{out_path}_merged.png", merged_img)
+        else:
+            for i, img in enumerate(images):
+                cv2.imwrite(f"{out_path}_{frames[i]}.png", img)
 
     log(
         f"All {len(videos_input_path)} videos converted successfully",
+        double_new_line=True,
     )
 
 
@@ -297,7 +319,12 @@ def load_labels(config_path: str, n_videos: int) -> Labels:
 
 
 def main(
-    input_path: str, output_path: str, number_labels: Union[str, int], config_path: str
+    input_path: str,
+    output_path: str,
+    number_labels: Union[str, int],
+    config_path: str,
+    number_frames: int,
+    merge: bool,
 ) -> None:
     """Main function.
 
@@ -329,7 +356,7 @@ def main(
         input_path, output_path, labels, number_labels
     )
 
-    extract_frames(videos_input_path, videos_output_path)
+    extract_frames(videos_input_path, videos_output_path, number_frames, merge)
 
 
 if __name__ == "__main__":
@@ -341,5 +368,9 @@ if __name__ == "__main__":
     output_path = args.output or config["output"]
     number_labels = args.labels or config["number_labels"]
     config_path = args.config or config["wlasl_config"]
+    number_frames = args.frames or config["number_frames"]
+    merge_frames = args.merge or config["merge_frames"]
 
-    main(input_path, output_path, number_labels, config_path)
+    main(
+        input_path, output_path, number_labels, config_path, number_frames, merge_frames
+    )
