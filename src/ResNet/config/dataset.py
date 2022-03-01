@@ -1,4 +1,4 @@
-from typing import Dict, Literal, Tuple
+from typing import Dict, Tuple
 from os import path
 
 
@@ -9,13 +9,14 @@ def get_datasets() -> Dict[str, Dict[str, str]]:
         Dict[str, Dict[str, str]]: The list of available datasets.
     """
     datasets = {
-        "WLASL": {"name": "WLASL_frames_100", "path": "WLASL/frames_100"},
+        "WLASL": {"name": "WLASL_frames_100", "path": "WLASL/frames_5"},
         "animals": {"name": "animals_simple", "path": "animals/all"},
+        "signs": {"name": "signs", "path": "signs"},
     }
     return datasets
 
 
-def get_dataset_info(dataset: Literal["WLASL", "animals"]) -> Tuple[str, str]:
+def get_dataset_info(dataset: str) -> Tuple[str, str]:
     """Get the path for dataset data and output model path.
 
     Args:

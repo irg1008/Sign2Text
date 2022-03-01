@@ -1,4 +1,4 @@
-from torchvision.models import ResNet, resnet50
+from torchvision.models import ResNet, resnet50, resnet18
 from torch import nn, save, load
 
 
@@ -12,7 +12,7 @@ def create_model(num_classes: int) -> ResNet:
 
     # Load pretrain model & modify it.
     # model = models.resnet18(pretrained=True)
-    model = resnet50(pretrained=True)
+    model = resnet18(pretrained=True)
     update_last_layer(model, num_classes)
     return model
 
@@ -36,7 +36,7 @@ def update_last_layer(model: ResNet, num_classes: int) -> ResNet:
     #     nn.LogSoftmax(dim=1),
     # )
 
-    model.fc = nn.Linear(2048, num_classes)
+    model.fc = nn.Linear(512, num_classes)
     return model
 
 
