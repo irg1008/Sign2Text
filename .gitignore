@@ -12,3 +12,6 @@ prototypes
 
 # Trained models
 models
+
+# Cache
+.mypy-cache
