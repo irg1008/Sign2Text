@@ -13,6 +13,3 @@ get_transform = lambda image_size, width_multiplier: transforms.Compose(
         transforms.ToTensor(),
     ]
 )
-
-# Create unified tensor for concatenation.
-get_concatenated_transform = lambda images: torch.stack(images, dim=0)

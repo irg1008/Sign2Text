@@ -5,10 +5,9 @@ line-length = 88
 
 # [Type-Checking] - mypy 
 [tool.mypy]
-
-[[tool.mypy.overrides]]
-module = ["cv2", "PIL", "matplotlib", "torchvision.*", "torch.*"]
 ignore_missing_imports = true
+# [[tool.mypy.overrides]]
+# module = ["cv2", "PIL", "matplotlib", "torchvision.*", "torch.*"]
 
 
 # [Linter] - pylint
