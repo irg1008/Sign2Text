@@ -9,7 +9,7 @@ def get_datasets() -> Dict[str, Dict[str, str]]:
         Dict[str, Dict[str, str]]: The list of available datasets.
     """
     datasets = {
-        "WLASL": {"name": "WLASL_frames_100", "path": "WLASL/frames_5"},
+        "WLASL": {"name": "WLASL_frames_100", "path": "WLASL/frames_20"},
         "animals": {"name": "animals_simple", "path": "animals/all"},
         "signs": {"name": "signs", "path": "signs"},
     }

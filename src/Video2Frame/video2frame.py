@@ -1,4 +1,6 @@
+from email.mime import image
 import json
+from shutil import copyfile
 from typing import Dict, Literal, List, Tuple, Union
 from os import makedirs, path, listdir
 from argparse import ArgumentParser, Namespace
@@ -17,10 +19,11 @@ def args_parser() -> Namespace:
     """Parse arguments.
         1. (-i) -> Input path
         2. (-o) -> Output path
-        3. (-n) -> N of labels to get
+        3. (-l) -> N of labels to get
         4. (-c) -> Dataset config
         5. (-f) -> Number of frames to extract
         6. (-m) -> Merge frames into one single image
+        7. (-v) -> Export videos instead of images (Disables frame extraction)
 
     Returns:
         Namespace: parsed arguments.
@@ -29,7 +32,7 @@ def args_parser() -> Namespace:
     parser = ArgumentParser(description="Convert video to frames.")
     parser.add_argument("-i", "--input", help="Input path", required=False, type=str)
     parser.add_argument("-o", "--output", help="Output path", required=False, type=str)
-    parser.add_argument("-n", "--labels", help="Number of images", required=False)
+    parser.add_argument("-l", "--labels", help="Number of images", required=False)
     parser.add_argument(
         "-c", "--config", help="Dataset config file (labels info)", required=False
     )
@@ -37,7 +40,18 @@ def args_parser() -> Namespace:
         "-f", "--frames", help="Number of frames to extract", required=False
     )
     parser.add_argument(
-        "-m", "--merge", help="Merge frames into one single image", required=False
+        "-m",
+        "--merge",
+        help="Merge frames into one single image",
+        required=False,
+        action="store_true",
+    )
+    parser.add_argument(
+        "-v",
+        "--videos",
+        help="Export videos instead of images, creating a folder for each video",
+        required=False,
+        action="store_true",
     )
     args = parser.parse_args()
     return args
@@ -169,7 +183,9 @@ def get_videos(input_path: str) -> List[str]:
     return videos
 
 
-def check_number(number_labels: Union[str, int], max_n_labels: int) -> int:
+def check_number(
+    number_labels: Union[str, int], max_n_labels: int, use_log: bool = True
+) -> int:
     """Check if number of labels is valid.
 
     Args:
@@ -189,14 +205,15 @@ def check_number(number_labels: Union[str, int], max_n_labels: int) -> int:
     elif not is_number(number_labels) and number_labels != MAX_N:
         raise_error(f'Invalid string ({number_labels}). Valid string is "{MAX_N}".')
     elif number_labels == MAX_N or int(number_labels) > max_n_labels:
-        if number_labels == MAX_N:
-            log(
-                f'Detected "{MAX_N}" string for number of labels. Using max value ({max_n_labels}).',
-            )
-        else:
-            log(
-                f"Number of labels ({number_labels}) is larger than number of valid labels ({n_labels}). Using {max_n_labels}."
-            )
+        if use_log:
+            if number_labels == MAX_N:
+                log(
+                    f'Detected "{MAX_N}" string for number of labels. Using max value ({max_n_labels}).',
+                )
+            else:
+                log(
+                    f"Number of labels ({number_labels}) is larger than number of valid labels ({n_labels}). Using {max_n_labels}."
+                )
         n_labels = max_n_labels
     else:
         n_labels = int(number_labels)
@@ -231,12 +248,67 @@ def get_videos_path_and_name(
             if not path.exists(out_dir):
                 makedirs(out_dir)
 
-            output_paths.append(abs_path(path.join(out_dir, f"{vid_id}")))
+            output_paths.append(abs_path(path.join(out_dir)))
 
     return input_paths, output_paths
 
 
+def get_loadbar(perc: float) -> str:
+    """Get loadbar.
+
+    Args:
+        perc (float): percentage.
+
+    Returns:
+        str: loadbar.
+    """
+    bar_len = 20
+    normal_perc = perc * bar_len / 100
+    return f"[{'#' * int(normal_perc):<{bar_len}}]"
+
+
 def extract_frames(
+    in_path: str, out_path: str, number_frames: Union[str, int], merge: bool
+):
+    """Extract frames from video.
+
+    Args:
+        in_path (str): input path.
+        out_path (str): output path.
+        number_frames (int): number of frames.
+        merge (bool): merge
+    """
+
+    def get_frames(frame_count: int) -> List[int]:
+        n_frames = check_number(number_frames, max_n_labels=frame_count, use_log=False)
+        padding = int(frame_count * 0.2)
+        frames = (
+            np.linspace(padding, frame_count - padding, n_frames, dtype=int).tolist()
+            if n_frames > 1
+            else [frame_count // 2]
+        )
+        return frames
+
+    cap = cv2.VideoCapture(in_path)
+    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    images = []
+    for frame in get_frames(frame_count):
+        cap.set(1, frame)
+        _, img = cap.read()
+        images.append(img)
+
+    n_files_out_path = len(listdir(out_path)) + 1
+
+    if merge:
+        merged_img = np.concatenate(images, axis=1)
+        cv2.imwrite(path.join(out_path, f"img_{n_files_out_path:05d}.png"), merged_img)
+    else:
+        for i, img in enumerate(images):
+            cv2.imwrite(path.join(out_path, f"img_{n_files_out_path + i:05d}.png"), img)
+
+
+def extract_video_frames(
     videos_input_path: List[str],
     videos_output_path: List[str],
     number_frames: int,
@@ -248,42 +320,14 @@ def extract_frames(
         videos_input_path (List[str]): videos input path.
         videos_output_path (List[str]): videos output path.
     """
-    bar_len = 20
-
-    def get_frames(frame_count: int) -> List[int]:
-        n_frames = check_number(number_frames, max_n_labels=frame_count)
-        padding = int(frame_count * 0.2)
-        frames = (
-            np.linspace(padding, frame_count - padding, n_frames, dtype=int).tolist()
-            if n_frames > 1
-            else [frame_count // 2]
-        )
-        return frames
 
     for i, (in_path, out_path) in enumerate(zip(videos_input_path, videos_output_path)):
-        cap = cv2.VideoCapture(in_path)
-        frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-
         perc = (i + 1) / len(videos_input_path) * 100
-        normal_perc = perc * bar_len / 100
         log(
-            f"Converting {i+1}/{len(videos_input_path)} videos - ({perc:.2f}%) [{'#' * int(normal_perc):<{bar_len}}]",
+            f"Converting {i+1}/{len(videos_input_path)} videos - ({perc:.2f}%) {get_loadbar(perc)}",
             delete_previous=True,
         )
-
-        frames = get_frames(frame_count)
-        images = []
-        for frame in frames:
-            cap.set(1, frame)
-            _, img = cap.read()
-            images.append(img)
-
-        if merge:
-            merged_img = np.concatenate(images, axis=1)
-            cv2.imwrite(f"{out_path}_merged.png", merged_img)
-        else:
-            for i, img in enumerate(images):
-                cv2.imwrite(f"{out_path}_{frames[i]}.png", img)
+        extract_frames(in_path, out_path, number_frames, merge)
 
     log(
         f"All {len(videos_input_path)} videos converted successfully",
@@ -321,6 +365,29 @@ def load_labels(config_path: str, n_videos: int) -> Labels:
     return labels
 
 
+def copy_videos(in_path: List[str], out_path: List[str]) -> None:
+    """Copy videos from input path to output path.
+
+    Args:
+        in_path (List[str]): videos input path.
+        out_path (List[str]): videos output path.
+    """
+    for i, (in_vid, out_vid) in enumerate(zip(in_path, out_path)):
+        n_files_out_path = len(listdir(out_vid)) + 1
+
+        out_vid = path.join(out_vid, f"{n_files_out_path:04d}")
+        if not path.exists(out_vid):
+            makedirs(out_vid)
+
+        extract_frames(in_vid, out_vid, "all", merge=False)
+
+        perc = (i + 1) / len(in_path) * 100
+        log(
+            f"Copying {i+1}/{len(in_path)} videos - ({perc:.2f}%) {get_loadbar(perc)}",
+            delete_previous=True,
+        )
+
+
 def main(
     input_path: str,
     output_path: str,
@@ -328,6 +395,7 @@ def main(
     config_path: str,
     number_frames: int,
     merge: bool,
+    export_videos: bool,
 ) -> None:
     """Main function.
 
@@ -359,7 +427,12 @@ def main(
         input_path, output_path, labels, number_labels
     )
 
-    extract_frames(videos_input_path, videos_output_path, number_frames, merge)
+    if export_videos:
+        copy_videos(videos_input_path, videos_output_path)
+    else:
+        extract_video_frames(
+            videos_input_path, videos_output_path, number_frames, merge
+        )
 
 
 if __name__ == "__main__":
@@ -373,7 +446,14 @@ if __name__ == "__main__":
     config_path = args.config or config["wlasl_config"]
     number_frames = args.frames or config["number_frames"]
     merge_frames = args.merge or config["merge_frames"]
+    export_videos = args.videos or config["export_videos"]
 
     main(
-        input_path, output_path, number_labels, config_path, number_frames, merge_frames
+        input_path,
+        output_path,
+        number_labels,
+        config_path,
+        number_frames,
+        merge_frames,
+        export_videos,
     )
