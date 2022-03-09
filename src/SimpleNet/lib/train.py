@@ -12,8 +12,8 @@ def optim_model(model, learning_rate: float):
     """
     criterion = nn.CrossEntropyLoss()
     # optimizer = optim.Adam(model.fc.parameters(), lr=learning_rate)
-    # optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-    optimizer = optim.SGD(model.parameters(), lr=learning_rate)
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    # optimizer = optim.SGD(model.parameters(), lr=learning_rate)
 
     return criterion, optimizer
 
