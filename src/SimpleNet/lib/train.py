@@ -11,7 +11,9 @@ def optim_model(model, learning_rate: float):
         _type_: _description_
     """
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.fc.parameters(), lr=learning_rate)
+    # optimizer = optim.Adam(model.fc.parameters(), lr=learning_rate)
+    # optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer = optim.SGD(model.parameters(), lr=learning_rate)
 
     return criterion, optimizer
 
@@ -43,7 +45,7 @@ def train_model(model, train_loader, device, learning_rate, num_epochs):
             data, targets = data.to(device), targets.to(device)
 
             # forward.
-            scores = model(squeeze(data))
+            scores = model(data)
             loss = criterion(scores, targets)
             losses.append(loss.item())
 
