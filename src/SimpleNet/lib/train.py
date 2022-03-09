@@ -11,6 +11,7 @@ def optim_model(model, learning_rate: float):
         _type_: _description_
     """
     criterion = nn.CrossEntropyLoss()
+    # criterion = nn.NLLLoss()
     # optimizer = optim.Adam(model.fc.parameters(), lr=learning_rate)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
     # optimizer = optim.SGD(model.parameters(), lr=learning_rate)
@@ -18,7 +19,9 @@ def optim_model(model, learning_rate: float):
     return criterion, optimizer
 
 
-def train_model(model, train_loader, device, learning_rate, num_epochs):
+def train_model(
+    model, train_loader, validation_loader, device, learning_rate, num_epochs
+):
     """_summary_
 
     Args:
@@ -31,7 +34,6 @@ def train_model(model, train_loader, device, learning_rate, num_epochs):
     criterion, optimizer = optim_model(model, learning_rate)
 
     model.to(device)
-    model.train()
 
     print(f"Training on device: {device}")
 
@@ -39,15 +41,17 @@ def train_model(model, train_loader, device, learning_rate, num_epochs):
     costs = []
 
     for epoch in range(num_epochs):
-        losses = []
+        test_losses = []
+        val_losses = []
 
+        model.train()
         for data, targets in train_loader:
             data, targets = data.to(device), targets.to(device)
 
             # forward.
             scores = model(data)
             loss = criterion(scores, targets)
-            losses.append(loss.item())
+            test_losses.append(loss.item())
 
             # backward.
             optimizer.zero_grad()
@@ -56,8 +60,18 @@ def train_model(model, train_loader, device, learning_rate, num_epochs):
             # gradient descent or adam step.
             optimizer.step()
 
-        cost = sum(losses) / len(losses)
+        model.eval()
+        for data, targets in validation_loader:
+            data, targets = data.to(device), targets.to(device)
+
+            # forward.
+            scores = model(data)
+            loss = criterion(scores, targets)
+            val_losses.append(loss.item())
+
+        cost = sum(test_losses) / len(test_losses)
         costs.append(cost)
-        print(f"Cost at epoch {epoch + 1} is {cost:.5f}")
+        print(f"Train cost at epoch {epoch + 1} is {cost:.5f}")
+        print(f"Validation cost at epoch {epoch + 1} is {cost:.5f}")
 
     return costs
