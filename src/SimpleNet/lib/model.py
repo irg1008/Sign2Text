@@ -1,6 +1,7 @@
 import math
-
+import numpy as np
 import torch.nn as nn
+import torch.nn.functional as F
 from torch.nn.modules.utils import _triple
 
 
@@ -14,7 +15,7 @@ class SimpleNet(nn.Module):
         # in (64, 128 * 3 * 28 * 28) flat
         # in (64, 128, -) lineal (1024)
         # relu
-        # in (64, 128, -) lineal (512)
+        # in (64, 128, -) lineal (512)s
         # relu
         # in (64, 128, -) lineal (num_classes)
         # softmax
