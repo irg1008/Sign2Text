@@ -33,7 +33,7 @@ get_transform = lambda image_size: transforms.Compose(
     ]
 )
 
-reverse_transform = lambda image_size: transforms.Compose(
+reverse_transform = transforms.Compose(
     [
         transforms.Normalize(
             mean=[-0.485 / 0.229, -0.456 / 0.224, -0.406 / 0.225],

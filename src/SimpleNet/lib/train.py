@@ -78,4 +78,4 @@ def train_model(
         print(f"Train cost at epoch {epoch + 1} is {cost:.5f}")
         print(f"Validation cost at epoch {epoch + 1} is {val_cost:.5f}")
 
-    return costs
+    return costs, val_costs
