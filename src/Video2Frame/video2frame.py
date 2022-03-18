@@ -1,6 +1,4 @@
-from email.mime import image
 import json
-from shutil import copyfile
 from typing import Dict, Literal, List, Tuple, Union
 from os import makedirs, path, listdir
 from argparse import ArgumentParser, Namespace

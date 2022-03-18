@@ -10,8 +10,8 @@ def optim_model(model, learning_rate: float):
     Returns:
         _type_: _description_
     """
-    # criterion = nn.CrossEntropyLoss()
-    criterion = nn.NLLLoss()
+    criterion = nn.CrossEntropyLoss()
+    # criterion = nn.NLLLoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
     # optimizer = optim.SGD(model.parameters(), lr=learning_rate)
 
