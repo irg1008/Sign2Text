@@ -29,7 +29,7 @@ def downsample_basic_block(x, planes, stride):
     zero_pads = torch.Tensor(
         out.size(0), planes - out.size(1), out.size(2), out.size(3), out.size(4)
     ).zero_()
-    if isinstance(out.data, torch.cuda.FloatTensor):
+    if isinstance(out.data, torch.cuda.FloatTensor):  # type: ignore
         zero_pads = zero_pads.cuda()
 
     out = Variable(torch.cat([out.data, zero_pads], dim=1))
@@ -210,27 +210,6 @@ class ResNet(nn.Module):
             x = self.fc(x)
 
         return x
-
-
-def get_fine_tuning_parameters(model, ft_begin_index):
-    if ft_begin_index == 0:
-        return model.parameters()
-
-    ft_module_names = []
-    for i in range(ft_begin_index, 5):
-        ft_module_names.append("layer{}".format(ft_begin_index))
-    ft_module_names.append("fc")
-
-    parameters = []
-    for k, v in model.named_parameters():
-        for ft_module in ft_module_names:
-            if ft_module in k:
-                parameters.append({"params": v})
-                break
-        else:
-            parameters.append({"params": v, "lr": 0.0})
-
-    return parameters
 
 
 def resnet10(**kwargs):
