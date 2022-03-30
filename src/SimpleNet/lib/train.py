@@ -12,8 +12,8 @@ def optim_model(model, learning_rate: float):
     """
     criterion = nn.CrossEntropyLoss()
     # criterion = nn.NLLLoss()
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-    # optimizer = optim.SGD(model.parameters(), lr=learning_rate)
+    # optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer = optim.SGD(model.parameters(), lr=learning_rate)
 
     return criterion, optimizer
 
@@ -57,7 +57,7 @@ def train_model(
             optimizer.zero_grad()
             loss.backward()
 
-            # gradient descent or adam step.
+            # gradient descent.
             optimizer.step()
 
         model.eval()

@@ -21,6 +21,7 @@ def plot_costs(train_costs, val_costs, ylim=(0, 10), normalize_data=False):
     plt.legend(["Train", "Validation"])
 
     plt.ylim(*ylim)
+    plt.figure(figsize=(1, 1))
     plt.show()
 
 
