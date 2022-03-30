@@ -1,5 +1,4 @@
 import torch
-from torchvision.utils import make_grid
 
 
 def check_accuracy(loader, model, classes, device):
