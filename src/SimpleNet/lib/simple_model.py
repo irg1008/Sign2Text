@@ -1,3 +1,4 @@
+from re import M
 from typing import Callable, Tuple, Union
 from torch import nn, Tensor
 from torch.nn.common_types import _size_3_t
@@ -19,21 +20,33 @@ class CNNNet(nn.Module):
         self.conv1 = self._conv_layer_set(num_frames, hidden_1)
         self.conv2 = self._conv_layer_set(hidden_1, hidden_2)
 
+        self.batch1 = nn.BatchNorm3d(hidden_1)
+        self.batch2 = nn.BatchNorm3d(hidden_2)
+
         linear_1 = (image_size // 4) ** 2 * hidden_2
-        self.fc1 = nn.Linear(linear_1, image_size)
-        self.fc2 = nn.Linear(image_size, num_classes)
+        self.fc1 = self._linear_layer(linear_1, image_size)
+        self.fc2 = self._linear_layer(image_size, num_classes)
 
         self.relu = nn.LeakyReLU()
-        self.batch = nn.BatchNorm1d(image_size)
+        self.batch_out = nn.BatchNorm1d(image_size)
         self.drop = nn.Dropout(p=0.15)
+
+        self.soft = nn.LogSoftmax(dim=1)
 
     def _conv_layer_set(self, in_c, out_c):
         conv_layer = nn.Sequential(
             nn.Conv3d(in_c, out_c, kernel_size=(3, 3, 3), stride=2, padding=1),
-            nn.LeakyReLU(),
+            self.relu,
             # nn.MaxPool3d((2, 2, 2)),
         )
         return conv_layer
+
+    def _linear_layer(self, in_c, out_c):
+        linear_layer = nn.Sequential(
+            nn.Linear(in_c, out_c),
+            self.relu,
+        )
+        return linear_layer
 
     def _assign(self, x: Tensor, fn: Callable[[Tensor], Tensor], name: str):
         out = fn(x)
@@ -46,17 +59,21 @@ class CNNNet(nn.Module):
             print("In - ", x.shape)
 
         x = self._assign(x, self.conv1, "conv1")
+        x = self._assign(x, self.batch1, "batch1")
         x = self._assign(x, self.conv2, "conv2")
+        x = self._assign(x, self.batch2, "batch2")
 
         x = x.view(x.shape[0], -1)
         if self.DEBUG:
             print("View - ", x.shape)
 
         x = self._assign(x, self.fc1, "fc1")
-        x = self._assign(x, self.relu, "relu")
-        x = self._assign(x, self.batch, "batch")
+        x = self._assign(x, self.batch_out, "batch")
         x = self._assign(x, self.drop, "drop")
         x = self._assign(x, self.fc2, "fc2")
+
+        x = self._assign(x, self.soft, "soft")
+
         return x
 
 

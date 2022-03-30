@@ -1,7 +1,7 @@
 import torch
 
 
-def check_accuracy(loader, model, classes, device):
+def check_accuracy(loader, model, classes, device, n_batchs=10):
     """_summary_
 
     Args:
@@ -31,7 +31,9 @@ def check_accuracy(loader, model, classes, device):
             print([classes[int(i)] for i in targets])
 
             print("---------------------------------\n\n")
-            break
+
+            if i > n_batchs:
+                break
 
         print(
             f"Got {num_correct} / {num_samples} with accuracy {float(num_correct)/float(num_samples)*100:.2f}"
