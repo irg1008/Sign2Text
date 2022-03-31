@@ -1,8 +1,0 @@
-# Paths of input and output folder. Relative to this file or absolute.
-input: ../../data/WLASL/raw_videos
-output: ../../data/WLASL/frames
-wlasl_config: "../../data/WLASL/info.json"
-number_labels: 50 # "all", number
-number_frames: 5 # "all", number
-merge_frames: False # True, False
-export_videos: False # True, False

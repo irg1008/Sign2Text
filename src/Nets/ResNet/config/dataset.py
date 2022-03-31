@@ -29,7 +29,7 @@ def get_dataset_info(dataset: str) -> Tuple[str, str]:
     name, data_path = datasets[dataset].values()
 
     # Base path for project.
-    base_path = path.join(path.dirname(__file__), "../../../")
+    base_path = path.join(path.dirname(__file__), "../../../../")
 
     data_dir = path.abspath(path.join(base_path, "data", data_path))
     model_path = path.abspath(path.join(base_path, "models", f"resnet_{name}.pth"))

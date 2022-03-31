@@ -15,36 +15,51 @@ class CNNNet(nn.Module):
         self.batch_size = batch_size
         self.DEBUG = debug
 
+        # General layers.
+        self.relu = nn.LeakyReLU()
+        self.drop = nn.Dropout(p=0.15)
+        self.soft = nn.LogSoftmax(dim=1)
+
         hidden_1, hidden_2 = 32, 64
 
+        # Convolutional layers.
         self.conv1 = self._conv_layer_set(num_frames, hidden_1)
         self.conv2 = self._conv_layer_set(hidden_1, hidden_2)
-
         self.batch1 = nn.BatchNorm3d(hidden_1)
         self.batch2 = nn.BatchNorm3d(hidden_2)
 
-        linear_1 = (image_size // 4) ** 2 * hidden_2
-        self.fc1 = self._linear_layer(linear_1, image_size)
-        self.fc2 = self._linear_layer(image_size, num_classes)
+        # Linear layers.
+        # -> // 4 for double downsampling
+        # -> // 4 for pooling
+        linear_1 = (image_size // 4 // 4) ** 2 * hidden_2
+        linear_2 = linear_1 // 2
+        self.fc1 = self._linear_layer(linear_1, linear_2)
+        self.fc2 = self._linear_layer(linear_2, image_size)
+        self.fc3 = self._linear_layer(image_size, num_classes)
+        self.batch_out = nn.BatchNorm1d(linear_2)
 
-        self.relu = nn.LeakyReLU()
-        self.batch_out = nn.BatchNorm1d(image_size)
-        self.drop = nn.Dropout(p=0.15)
-
-        self.soft = nn.LogSoftmax(dim=1)
-
-    def _conv_layer_set(self, in_c, out_c):
+    def _conv_layer_set(
+        self,
+        in_c,
+        out_c,
+        kernel_size: _size_3_t = (3, 3, 3),
+        stride=2,
+        padding=1,
+        pool: _size_3_t = (1, 2, 2),
+    ):
         conv_layer = nn.Sequential(
-            nn.Conv3d(in_c, out_c, kernel_size=(3, 3, 3), stride=2, padding=1),
+            nn.Conv3d(
+                in_c, out_c, kernel_size=kernel_size, stride=stride, padding=padding
+            ),
             self.relu,
-            # nn.MaxPool3d((2, 2, 2)),
+            nn.MaxPool3d(pool),
         )
         return conv_layer
 
     def _linear_layer(self, in_c, out_c):
         linear_layer = nn.Sequential(
             nn.Linear(in_c, out_c),
-            self.relu,
+            # self.relu,
         )
         return linear_layer
 
@@ -68,9 +83,10 @@ class CNNNet(nn.Module):
             print("View - ", x.shape)
 
         x = self._assign(x, self.fc1, "fc1")
-        x = self._assign(x, self.batch_out, "batch")
-        x = self._assign(x, self.drop, "drop")
+        # x = self._assign(x, self.batch_out, "batch")
+        # x = self._assign(x, self.drop, "drop")
         x = self._assign(x, self.fc2, "fc2")
+        x = self._assign(x, self.fc3, "fc2")
 
         x = self._assign(x, self.soft, "soft")
 

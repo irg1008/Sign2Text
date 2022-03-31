@@ -11,7 +11,6 @@ def optim_model(model, learning_rate: float):
         _type_: _description_
     """
     criterion = nn.CrossEntropyLoss()
-    # criterion = nn.NLLLoss()
     # optimizer = optim.Adam(model.parameters(), lr=learning_rate)
     optimizer = optim.SGD(model.parameters(), lr=learning_rate)
 
@@ -48,13 +47,14 @@ def train_model(
         for data, targets in train_loader:
             data, targets = data.to(device), targets.to(device)
 
+            optimizer.zero_grad()
+
             # forward.
             scores = model(data)
             loss = criterion(scores, targets)
             test_losses.append(loss.item())
 
             # backward.
-            optimizer.zero_grad()
             loss.backward()
 
             # gradient descent.
