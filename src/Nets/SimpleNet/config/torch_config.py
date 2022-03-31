@@ -29,7 +29,7 @@ get_transform = lambda image_size, random_resize: transforms.Compose(
         ImgsToTensor(),
         transforms.Resize(image_size),
         transforms.RandomCrop(image_size * random_resize),
-        transforms.RandomRotation(5),
+        # transforms.RandomRotation(5),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ]
 )

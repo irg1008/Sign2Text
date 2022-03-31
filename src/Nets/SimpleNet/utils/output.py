@@ -7,7 +7,7 @@ def normalize(data):
     return [x / np.max(data) for x in data]
 
 
-def plot_costs(train_costs, val_costs, ylim=(0, 10), normalize_data=False):
+def plot_costs(train_costs, val_costs, ylim=None, normalize_data=False):
     x = range(len(train_costs))
 
     if normalize_data:
@@ -20,7 +20,9 @@ def plot_costs(train_costs, val_costs, ylim=(0, 10), normalize_data=False):
     plt.xlabel("Epoch")
     plt.legend(["Train", "Validation"])
 
-    plt.ylim(*ylim)
+    if ylim:
+        plt.ylim(*ylim)
+
     plt.figure(figsize=(1, 1))
     plt.show()
 

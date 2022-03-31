@@ -4,7 +4,7 @@ from typing import Tuple, Literal
 
 
 def get_dataset_path(
-    dataset: Literal["WLASL/videos", "signs"] = "WLASL/videos", model_name="WLASL"
+    dataset: Literal["WLASL/videos", "actions/frames"] = "WLASL/videos", model_name="WLASL"
 ) -> Tuple[str, str]:
     base_path = path.join(path.dirname(__file__), "../../../../")
     data_path = path.abspath(path.join(base_path, "data", dataset))

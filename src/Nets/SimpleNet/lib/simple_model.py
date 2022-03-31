@@ -8,16 +8,14 @@ import matplotlib.pyplot as plt
 
 # This model is extracted partly from here: https://towardsdatascience.com/pytorch-step-by-step-implementation-3d-convolution-neural-network-8bf38c70e8b3
 class CNNNet(nn.Module):
-    def __init__(
-        self, num_classes, batch_size, num_frames, image_size, channels=3, debug=False
-    ):
+    def __init__(self, num_classes, batch_size, num_frames, image_size, debug=False):
         super(CNNNet, self).__init__()
         self.batch_size = batch_size
         self.DEBUG = debug
 
         # General layers.
         self.relu = nn.LeakyReLU()
-        self.drop = nn.Dropout(p=0.15)
+        self.drop = nn.Dropout(p=0.1)
         self.soft = nn.LogSoftmax(dim=1)
 
         hidden_1, hidden_2 = 32, 64
@@ -32,11 +30,11 @@ class CNNNet(nn.Module):
         # -> // 4 for double downsampling
         # -> // 4 for pooling
         linear_1 = (image_size // 4 // 4) ** 2 * hidden_2
-        linear_2 = linear_1 // 2
+        linear_2 = linear_1 // 4
         self.fc1 = self._linear_layer(linear_1, linear_2)
+        self.batch_out = nn.BatchNorm1d(linear_2)
         self.fc2 = self._linear_layer(linear_2, image_size)
         self.fc3 = self._linear_layer(image_size, num_classes)
-        self.batch_out = nn.BatchNorm1d(linear_2)
 
     def _conv_layer_set(
         self,
@@ -84,7 +82,7 @@ class CNNNet(nn.Module):
 
         x = self._assign(x, self.fc1, "fc1")
         # x = self._assign(x, self.batch_out, "batch")
-        # x = self._assign(x, self.drop, "drop")
+        x = self._assign(x, self.drop, "drop")
         x = self._assign(x, self.fc2, "fc2")
         x = self._assign(x, self.fc3, "fc2")
 
