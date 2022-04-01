@@ -1,0 +1,1 @@
+2022-04-01 18:40:48,755 - io.py[line:35] - INFO: Saving the model to `../../models/example_ensemble\VotingClassifier_MLP_10_ckpt.pth`

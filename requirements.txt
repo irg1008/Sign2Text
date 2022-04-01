@@ -1,7 +1,7 @@
 pyyaml
 argparse
 typing
-opencv-python # Type checking not working until opencv5, using a type stub for the moment
+opencv-python
 pylint
 black
 black[jupyter]
@@ -12,3 +12,4 @@ types-PyYAML
 pillow
 ipykernel
 matplotlib
+torchensemble

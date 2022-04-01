@@ -1,4 +1,4 @@
-from torch import nn, optim, squeeze
+from torch import nn, optim
 
 
 def optim_model(model, learning_rate: float):
@@ -11,15 +11,28 @@ def optim_model(model, learning_rate: float):
         _type_: _description_
     """
     criterion = nn.CrossEntropyLoss()
-    
-    # optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-    # optimizer = optim.Adagrad(model.parameters(), lr=learning_rate)
-    optimizer = optim.SGD(model.parameters(), lr=learning_rate)
 
-    return criterion, optimizer
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    # optimizer = optim.SGD(model.parameters(), lr=learning_rate)
+
+    # Useful link for scheduler: https://www.kaggle.com/code/isbhargav/guide-to-pytorch-learning-rate-scheduling/notebook
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer, mode="min", min_lr=1e-6, factor=0.7, patience=5
+    )
+
+    return criterion, optimizer, scheduler
 
 
 def get_correct(scores, targets):
+    """_summary_
+
+    Args:
+        scores (_type_): _description_
+        targets (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     _, predictions = scores.max(1)
     acc = (predictions == targets).sum()
     num = predictions.size(0)
@@ -43,7 +56,7 @@ def train_model(
     Returns:
         _type_: _description_
     """
-    criterion, optimizer = optim_model(model, learning_rate)
+    criterion, optimizer, scheduler = optim_model(model, learning_rate)
     model.to(device)
 
     print(f"Training on device: {device}")
@@ -95,13 +108,15 @@ def train_model(
 
         cost = sum(train_losses) / len(train_losses)
         costs.append(cost)
-        acc = 100 * float(train_correct) / float(train_predictions)
+        acc = 100.0 * float(train_correct) / float(train_predictions)
         accs.append(acc)
 
         val_cost = sum(val_losses) / len(val_losses)
         val_costs.append(val_cost)
-        val_acc = 100 * float(val_correct) / float(val_predictions)
+        val_acc = 100.0 * float(val_correct) / float(val_predictions)
         val_accs.append(val_acc)
+
+        scheduler.step(val_cost)
 
         # Print load bar for epoch with cost and acc info.
         print(
@@ -110,6 +125,7 @@ def train_model(
             f"Val Loss: {val_cost:.4f} | "
             f"Train Acc: {acc:.4f}% | "
             f"Val Acc: {val_acc:.4f}% | ",
+            f"LR: {optimizer.param_groups[0]['lr']}",
         )
 
     return costs, val_costs, accs, val_accs
