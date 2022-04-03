@@ -37,7 +37,7 @@ formatter:
   script:
     - black src
 
-type-checking:
+type-checker:
   stage: Static Analysis
   allow_failure: true
   script:
