@@ -53,6 +53,60 @@ def preprocess(image, device, transform):
     return image
 
 
+def video_webcam_inference(model, classes, device, transform):
+    """_summary_
+
+    Args:
+        model (_type_): _description_
+        classes (_type_): _description_
+    """
+    model.to(device)
+    model.eval()
+
+    cap = cv2.VideoCapture(0)  # Set the webcam
+    webcam_720p(cap)
+
+    first_five = []
+    video = []
+    fps = 0
+    while True:
+        _, frame = cap.read()  # Capture each frame
+
+        # Reset every 50 frames.
+        if fps % 50 == 0 and fps != 0:
+            transformed_video = preprocess(video, device, transform)
+            scores = model(transformed_video)
+            first_five = argmax(scores, classes)
+            video = []
+
+        fps += 1
+
+        # Save all frames every 30 frames and feed the net.
+        video.append(frame)
+
+        screen_y = 150
+        for label, score in first_five:
+            screen_y += 50
+            cv2.putText(
+                frame,
+                f"{label} - {score:.2f}",
+                (900, screen_y),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                1,
+                (0, 0, 255),
+                2,
+            )
+
+        # cv2.rectangle(frame, (400, 150), (900, 550), (250, 0, 0), 2)
+        cv2.imshow("ASL SIGN DETECTER", frame)
+
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+
+    cap.release()
+    cv2.destroyWindow("ASL SIGN DETECTER")
+
+
 def webcam_inference(model, classes, device, transform):
     """_summary_
 

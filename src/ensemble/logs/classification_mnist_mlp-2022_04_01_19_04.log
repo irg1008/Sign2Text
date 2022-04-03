@@ -1,2 +1,0 @@
-2022-04-01 19:11:15,108 - io.py[line:35] - INFO: Saving the model to `../../models/example_ensemble\VotingClassifier_MLP_10_ckpt.pth`
-2022-04-01 19:11:19,504 - io.py[line:63] - INFO: Loading the model from `../../models/example_ensemble\VotingClassifier_MLP_10_ckpt.pth`
