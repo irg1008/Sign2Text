@@ -1,14 +1,20 @@
 from argparse import ArgumentParser, Namespace
 from os import listdir, makedirs, path, popen
-from typing import List, Literal, Tuple
+from typing import List, Tuple
 import cv2
+from common.utils.file import abs_path
+from common.utils.log import log
 
 Paths = List[Tuple[str, str]]
 LOG_FILE = "./errors.log"
 
 
 def args_parser() -> Namespace:
-    # Config the argparser and get the args.
+    """Argument parser.
+
+    Returns:
+        Namespace: parsed arguments.
+    """
     parser = ArgumentParser(description="Convert video to frames.")
     parser.add_argument("-i", "--input", help="Input path", required=True, type=str)
     parser.add_argument("-o", "--output", help="Output path", required=True, type=str)
@@ -22,43 +28,25 @@ def args_parser() -> Namespace:
         required=False,
         action="store_true",
     )
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 
 def clean_log():
-    log_file = open(LOG_FILE, "w")
+    """Clean log file."""
+    log_file = open(LOG_FILE, "w", encoding="utf-8")
     log_file.truncate(0)
     log_file.close()
 
 
 def write_to_log(msg: str):
-    log_file = open(LOG_FILE, "w")
-    log_file.write(msg + "\n")
-    log_file.close()
-
-
-def log(
-    msg: str,
-    mode: Literal[
-        "info",
-        "warning",
-    ] = "info",
-    delete_previous: bool = False,
-    double_new_line: bool = False,
-) -> None:
-    """Log msg.
+    """Write msg to log file.
 
     Args:
         msg (str): msg to log.
-        type (Literal[, optional): type of msg. Defaults to "Info".
-        delete_previous (bool, optional): delete previous log. Defaults to False.
     """
-    print(
-        "\n" if double_new_line else "",
-        f"[{mode}] - Video2Frame: {msg}",
-        end="\r" if delete_previous else "",
-    )
+    log_file = open(LOG_FILE, "w", encoding="utf-8")
+    log_file.write(msg + "\n")
+    log_file.close()
 
 
 def get_loadbar(perc: float) -> str:
@@ -75,39 +63,28 @@ def get_loadbar(perc: float) -> str:
     return f"[{'#' * int(normal_perc):<{bar_len}}]"
 
 
-def abs_path(custom_path: str) -> str:
-    """Returns the absolute path of a relative path.
+def create_if_not_exists(path_to_create: str) -> bool:
+    """Create path if not exists.
 
     Args:
-        custom_path (str): path to check.
+        path_to_create (str): path to create.
 
     Returns:
-        str: absolute path.
+        bool: True if created, False otherwise.
     """
-    # Check if already absolute.
-    is_absolute = path.isabs(custom_path)
-    if is_absolute:
-        return custom_path
-
-    # If not absolute, use relative to current directoy.
-    return path.abspath(
-        path.join(
-            path.abspath(path.dirname(__file__)),
-            custom_path,
-        )
-    )
-
-
-def create_if_not_exists(path_to_create: str):
     exists = path.exists(path_to_create)
     if not exists:
         makedirs(path_to_create)
-    return exists
+    return not exists
 
 
 def extract_video_frames(out_path: str, video_path: str):
-    # Read video and extract all frames to out_path.
-    # > With incremental names
+    """Extract frames from video.
+
+    Args:
+        out_path (str): output path.
+        video_path (str): video path.
+    """
     cap = cv2.VideoCapture(video_path)
     frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
@@ -125,6 +102,11 @@ def extract_video_frames(out_path: str, video_path: str):
 
 
 def export_videos(paths: Paths):
+    """Export videos.
+
+    Args:
+        paths (Paths): paths to export.
+    """
     for i, path in enumerate(paths):
         perc = (i + 1) / len(paths) * 100
         log(
@@ -135,6 +117,13 @@ def export_videos(paths: Paths):
 
 
 def convert2mp4(input_path: str, output_path: str, n_labels: int):
+    """Convert videos to mp4.
+
+    Args:
+        input_path (str): input path.
+        output_path (str): output path.
+        n_labels (int): number of labels.
+    """
     create_if_not_exists(output_path)
 
     for i, label in enumerate(listdir(input_path)):
@@ -153,7 +142,17 @@ def convert2mp4(input_path: str, output_path: str, n_labels: int):
             )
 
 
-def get_paths(input_path: str, output_path: str, n_labels: int):
+def get_paths(input_path: str, output_path: str, n_labels: int) -> Paths:
+    """Get paths.
+
+    Args:
+        input_path (str): input path.
+        output_path (str): output path.
+        n_labels (int): number of labels.
+
+    Returns:
+        Paths: paths.
+    """
     create_if_not_exists(output_path)
     paths: Paths = []
 
@@ -174,6 +173,14 @@ def get_paths(input_path: str, output_path: str, n_labels: int):
 
 
 def main(input_path: str, output_path: str, n_labels: int, convert_videos: bool):
+    """Main function.
+
+    Args:
+        input_path (str): input path.
+        output_path (str): output path.
+        n_labels (int): number of labels.
+        convert_videos (bool): convert videos flag.
+    """
     input_path = abs_path(input_path)
     output_path = abs_path(output_path)
 

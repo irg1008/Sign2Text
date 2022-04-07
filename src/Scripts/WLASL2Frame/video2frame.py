@@ -1,10 +1,12 @@
-import json
-from typing import Dict, Literal, List, Tuple, Union
+from typing import Dict, List, Tuple, Union
 from os import makedirs, path, listdir
 from argparse import ArgumentParser, Namespace
+import json
 import yaml
 import cv2
 import numpy as np
+from common.utils.file import abs_path
+from common.utils.log import log
 
 # Constants for config file.
 MAX_N = "all"
@@ -55,29 +57,6 @@ def args_parser() -> Namespace:
     return args
 
 
-def abs_path(custom_path: str) -> str:
-    """Returns the absolute path of a relative path.
-
-    Args:
-        custom_path (str): path to check.
-
-    Returns:
-        str: absolute path.
-    """
-    # Check if already absolute.
-    is_absolute = path.isabs(custom_path)
-    if is_absolute:
-        return custom_path
-
-    # If not absolute, use relative to current directoy.
-    return path.abspath(
-        path.join(
-            path.abspath(path.dirname(__file__)),
-            custom_path,
-        )
-    )
-
-
 def raise_error(error: str) -> None:
     """Raises custom Video2Frame error.
 
@@ -88,29 +67,6 @@ def raise_error(error: str) -> None:
         ValueError: Error of script.
     """
     raise ValueError(f" Video2Frame: {error}")
-
-
-def log(
-    msg: str,
-    mode: Literal[
-        "info",
-        "warning",
-    ] = "info",
-    delete_previous: bool = False,
-    double_new_line: bool = False,
-) -> None:
-    """Log msg.
-
-    Args:
-        msg (str): msg to log.
-        type (Literal[, optional): type of msg. Defaults to "Info".
-        delete_previous (bool, optional): delete previous log. Defaults to False.
-    """
-    print(
-        "\n" if double_new_line else "",
-        f"[{mode}] - Video2Frame: {msg}",
-        end="\r" if delete_previous else "",
-    )
 
 
 def is_number(string: Union[str, int]) -> bool:

@@ -6,8 +6,6 @@ line-length = 88
 # [Type-Checking] - mypy 
 [tool.mypy]
 ignore_missing_imports = true
-# [[tool.mypy.overrides]]
-# module = ["cv2", "PIL", "matplotlib", "torchvision.*", "torch.*"]
 
 
 # [Linter] - pylint
@@ -21,4 +19,5 @@ disable = [
   "import-error",
   "too-many-locals",
   "too-many-arguments",
+  "invalid-name",
 ]

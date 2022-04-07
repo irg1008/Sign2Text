@@ -1,3 +1,4 @@
+from typing import List
 import torch
 import torch.nn.functional as F
 from PIL import Image
@@ -28,12 +29,6 @@ def argmax(scores, classes):
     _, indices = torch.sort(scores, descending=True)
     first_five = [(classes[idx], percentage[idx].item()) for idx in indices[0][:5]]
 
-    # _, prediction = scores.max(1)
-    # result = classes[prediction]
-
-    # score = F.softmax(scores, dim=1)[0] * 100
-    # score = score[prediction]
-
     return first_five
 
 
@@ -53,7 +48,7 @@ def preprocess(image, device, transform):
     return image
 
 
-def video_webcam_inference(model, classes, device, transform):
+def video_webcam_inference(model, classes, device, transform, fps_interval: int):
     """_summary_
 
     Args:
@@ -67,13 +62,13 @@ def video_webcam_inference(model, classes, device, transform):
     webcam_720p(cap)
 
     first_five = []
-    video = []
+    video: List = []
     fps = 0
     while True:
         _, frame = cap.read()  # Capture each frame
 
-        # Reset every 50 frames.
-        if fps % 50 == 0 and fps != 0:
+        # Reset every 'fps_interval' frames.
+        if fps % fps_interval == 0 and fps != 0:
             transformed_video = preprocess(video, device, transform)
             scores = model(transformed_video)
             first_five = argmax(scores, classes)

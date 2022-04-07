@@ -1,0 +1,6 @@
+LEARNING_RATE = 1e-3
+BATCH_SIZE = 128
+IMAGE_SIZE = 224  # Height
+WIDTH_MULTIPLIER = 3  # Number of concatenated images.
+NUM_EPOCHS = 25
+TRAIN_SPLIT = 0.7
