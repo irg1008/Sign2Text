@@ -1,6 +1,5 @@
 from typing import List
 from torch.utils.data import DataLoader
-from torch import device
 from torch.nn import Module
 import torch
 
@@ -9,7 +8,7 @@ def check_accuracy(
     loader: DataLoader,
     model: Module,
     classes: List[str],
-    device: device,
+    device,
     n_batchs=10,
 ):
     """Check the accuracy of the model on the dataset.
