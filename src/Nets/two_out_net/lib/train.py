@@ -10,7 +10,8 @@ def optim_model(model, learning_rate: float):
     Returns:
         _type_: _description_
     """
-    criterion = nn.CrossEntropyLoss()
+    class_criterion = nn.CrossEntropyLoss()
+    pose_criterion = nn.MSELoss()
 
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
     # optimizer = optim.SGD(model.parameters(), lr=learning_rate)
@@ -20,7 +21,7 @@ def optim_model(model, learning_rate: float):
         optimizer, mode="min", min_lr=1e-6, factor=0.7, patience=5
     )
 
-    return criterion, optimizer, scheduler
+    return class_criterion, pose_criterion, optimizer, scheduler
 
 
 def get_correct(scores, targets):
@@ -37,6 +38,29 @@ def get_correct(scores, targets):
     acc = (predictions == targets).sum()
     num = predictions.size(0)
     return acc, num
+
+
+def net_pass(model, data, criterion_1, criterion_2, target_1, target_2):
+    """Get loss for model.
+
+    Args:
+        model (_type_): _description_
+        criterion (_type_): _description_
+        data (_type_): _description_
+        target_1 (_type_): _description_
+        target_2 (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    out_1, out_2 = model(data)
+    loss_1, loss_2 = criterion_1(out_1, target_1), criterion_1(out_2, target_2)
+    loss = loss_1
+    loss += loss_2
+    acc, num = get_correct(
+        out_1, target_1
+    )  # TODO: Change this to add out_2 acc as well
+    return loss, acc, num
 
 
 def train_model(
@@ -56,7 +80,9 @@ def train_model(
     Returns:
         _type_: _description_
     """
-    criterion, optimizer, scheduler = optim_model(model, learning_rate)
+    class_criterion, pose_criterion, optimizer, scheduler = optim_model(
+        model, learning_rate
+    )
     model.to(device)
 
     print(f"Training on device: {device}")
@@ -71,19 +97,28 @@ def train_model(
         train_predictions, val_predictions = 0, 0
 
         model.train()
-        for data, targets in train_loader:
-            data, targets = data.to(device), targets.to(device)
+        for data, (class_targets, pose_targets) in train_loader:
+            data, class_targets, pose_targets = (
+                data.to(device),
+                class_targets.to(device),
+                pose_targets.to(device),
+            )
 
             optimizer.zero_grad()
 
             # forward.
-            scores = model(data)
-            loss = criterion(scores, targets)
+            loss, acc, num = net_pass(
+                model,
+                data,
+                class_criterion,
+                pose_criterion,
+                class_targets,
+                pose_targets,
+            )
             train_losses.append(loss.item())
 
             # Save acc.
-            correct, num = get_correct(scores, targets)
-            train_correct += correct
+            train_correct += acc
             train_predictions += num
 
             # backward.
@@ -93,19 +128,29 @@ def train_model(
             optimizer.step()
 
         model.eval()
-        for data, targets in validation_loader:
-            data, targets = data.to(device), targets.to(device)
+        for data, (class_targets, pose_targets) in validation_loader:
+            data, class_targets, pose_targets = (
+                data.to(device),
+                class_targets.to(device),
+                pose_targets.to(device),
+            )
 
             # forward.
-            scores = model(data)
-            loss = criterion(scores, targets)
+            loss, acc, num = net_pass(
+                model,
+                data,
+                class_criterion,
+                pose_criterion,
+                class_targets,
+                pose_targets,
+            )
             val_losses.append(loss.item())
 
             # Save acc.
-            correct, num = get_correct(scores, targets)
-            val_correct += correct
+            val_correct += acc
             val_predictions += num
 
+        # Summarize acc and loss.
         cost = sum(train_losses) / len(train_losses)
         costs.append(cost)
         acc = 100.0 * float(train_correct) / float(train_predictions)

@@ -1,12 +1,18 @@
 from typing import Dict, List, Tuple, Union
 from os import makedirs, path, listdir
 from argparse import ArgumentParser, Namespace
+import sys
 import json
+import shutil
 import yaml
 import cv2
 import numpy as np
+
+sys.path.append("../")
+
 from common.utils.file import abs_path
 from common.utils.log import log
+
 
 # Constants for config file.
 MAX_N = "all"
@@ -19,11 +25,12 @@ def args_parser() -> Namespace:
     """Parse arguments.
         1. (-i) -> Input path
         2. (-o) -> Output path
-        3. (-l) -> N of labels to get
-        4. (-c) -> Dataset config
-        5. (-f) -> Number of frames to extract
-        6. (-m) -> Merge frames into one single image
-        7. (-v) -> Export videos instead of images (Disables frame extraction)
+        3. (-p) -> Poses path
+        4. (-l) -> N of labels to get
+        5. (-c) -> Dataset config
+        6. (-f) -> Number of frames to extract
+        7. (-m) -> Merge frames into one single image
+        8. (-v) -> Export videos instead of images (Disables frame extraction)
 
     Returns:
         Namespace: parsed arguments.
@@ -32,6 +39,7 @@ def args_parser() -> Namespace:
     parser = ArgumentParser(description="Convert video to frames.")
     parser.add_argument("-i", "--input", help="Input path", required=False, type=str)
     parser.add_argument("-o", "--output", help="Output path", required=False, type=str)
+    parser.add_argument("-p", "--poses", help="Poses path", required=False, type=str)
     parser.add_argument("-l", "--labels", help="Number of images", required=False)
     parser.add_argument(
         "-c", "--config", help="Dataset config file (labels info)", required=False
@@ -93,7 +101,7 @@ def read_config() -> dict:
     """
     # Read config.yaml in case agruments are not recieved.
     config_file_path = "config.yml"
-    yaml_file_path = abs_path(config_file_path)
+    yaml_file_path = abs_path(path.join("./", config_file_path))
 
     config_file = open(yaml_file_path, "r", encoding="utf-8")
     config = yaml.safe_load(config_file)
@@ -112,7 +120,7 @@ def check_path(
         custom_path (str): path to check.
         name (str): name of path.
     """
-    custom_abs_path = abs_path(custom_path)
+    custom_abs_path = abs_path(path.join("./", custom_path))
     if not path.exists(custom_abs_path):
         raise_error(
             f"Invalid {name} path ({custom_path}). Check is correct and exists."
@@ -175,6 +183,25 @@ def check_number(
     return n_labels
 
 
+def get_poses_path(pose_path: str, labels: Labels) -> List[str]:
+    """Get poses from poses path.
+
+    Args:
+        pose_path (str): path to get poses from.
+        poses (List[str]): poses path.
+
+    Returns:
+        List[str]: poses path.
+    """
+    input_paths = []
+
+    for (label, ids) in labels.items():
+        for vid_id in ids:
+            input_paths.append(abs_path(path.join(pose_path, f"{vid_id}")))
+
+    return input_paths
+
+
 def get_videos_path_and_name(
     input_path: str, output_path: str, labels: Labels, n_labels: int
 ) -> Tuple[List[str], List[str]]:
@@ -202,7 +229,7 @@ def get_videos_path_and_name(
             if not path.exists(out_dir):
                 makedirs(out_dir)
 
-            output_paths.append(abs_path(path.join(out_dir)))
+            output_paths.append(abs_path(out_dir))
 
     return input_paths, output_paths
 
@@ -219,6 +246,18 @@ def get_loadbar(perc: float) -> str:
     bar_len = 20
     normal_perc = perc * bar_len / 100
     return f"[{'#' * int(normal_perc):<{bar_len}}]"
+
+
+def extract_pose_frames(in_pos: str, out_pos: str) -> None:
+    """Extract pose frames.
+
+    Args:
+        in_pos (str): input pose path.
+        out_pos (str): output pose path.
+    """
+    for i, pos in enumerate(listdir(in_pos)):
+        new_name = f"img_{i + 1:05d}.json"
+        shutil.copy(path.join(in_pos, pos), path.join(out_pos, new_name))
 
 
 def extract_frames(
@@ -319,14 +358,16 @@ def load_labels(config_path: str, n_videos: int) -> Labels:
     return labels
 
 
-def copy_videos(in_path: List[str], out_path: List[str]) -> None:
+def copy_videos(
+    in_path: List[str], out_path: List[str], poses_paths: List[str]
+) -> None:
     """Copy videos from input path to output path.
 
     Args:
         in_path (List[str]): videos input path.
         out_path (List[str]): videos output path.
     """
-    for i, (in_vid, out_vid) in enumerate(zip(in_path, out_path)):
+    for i, (in_vid, out_vid, in_pos) in enumerate(zip(in_path, out_path, poses_paths)):
         n_files_out_path = len(listdir(out_vid)) + 1
 
         out_vid = path.join(out_vid, f"{n_files_out_path:04d}")
@@ -334,6 +375,7 @@ def copy_videos(in_path: List[str], out_path: List[str]) -> None:
             makedirs(out_vid)
 
         extract_frames(in_vid, out_vid, "all", merge=False)
+        extract_pose_frames(in_pos, out_vid)
 
         perc = (i + 1) / len(in_path) * 100
         log(
@@ -345,6 +387,7 @@ def copy_videos(in_path: List[str], out_path: List[str]) -> None:
 def main(
     input_path: str,
     output_path: str,
+    poses_path: str,
     number_labels: Union[str, int],
     config_path: str,
     number_frames: int,
@@ -359,7 +402,13 @@ def main(
         number_labels (Union[str, int]): number of labels.
         config_path (str): path to config file.
     """
-    if not input_path or not output_path or not number_labels or not config_path:
+    if (
+        not input_path
+        or not output_path
+        or not poses_path
+        or not number_labels
+        or not config_path
+    ):
         raise_error(
             "Invalid values (empty or wrong types). Check config file or provide arguments via terminal (-h for help)."
         )
@@ -382,7 +431,9 @@ def main(
     )
 
     if export_videos:
-        copy_videos(videos_input_path, videos_output_path)
+        poses_path = check_path(poses_path, "poses")
+        poses_paths = get_poses_path(poses_path, labels)
+        copy_videos(videos_input_path, videos_output_path, poses_paths)
     else:
         extract_video_frames(
             videos_input_path, videos_output_path, number_frames, merge
@@ -395,6 +446,7 @@ if __name__ == "__main__":
 
     # If no args are provided, try to get from config.yaml.
     input_path = args.input or config["input"]
+    poses_path = args.poses or config["poses"]
     output_path = args.output or config["output"]
     number_labels = args.labels or config["number_labels"]
     config_path = args.config or config["wlasl_config"]
@@ -405,6 +457,7 @@ if __name__ == "__main__":
     main(
         input_path,
         output_path,
+        poses_path,
         number_labels,
         config_path,
         number_frames,

@@ -1,7 +1,7 @@
 from os import path
 
 
-def abs_path(custom_path: str) -> str:
+def abs_path(custom_path="") -> str:
     """Returns the absolute path of a relative path.
 
     Args:
@@ -16,9 +16,4 @@ def abs_path(custom_path: str) -> str:
         return custom_path
 
     # If not absolute, use relative to current directoy.
-    return path.abspath(
-        path.join(
-            path.abspath(path.dirname(__file__)),
-            custom_path,
-        )
-    )
+    return path.abspath(custom_path)

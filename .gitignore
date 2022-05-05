@@ -15,3 +15,6 @@ models
 
 # Cache
 .mypy-cache
+
+# Editor config
+.vscode

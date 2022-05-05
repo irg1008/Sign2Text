@@ -1,5 +1,6 @@
 # Paths of input and output folder. Relative to this file or absolute.
 input: ../../../data/WLASL/raw_videos
+poses: ../../../data/WLASL/poses/pose_per_individual_videos
 output: ../../../data/WLASL/frames
 wlasl_config: "../../../data/WLASL/info.json"
 number_labels: 50 # "all", number

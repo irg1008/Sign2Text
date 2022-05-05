@@ -2,8 +2,13 @@ from argparse import ArgumentParser, Namespace
 from os import listdir, makedirs, path, popen
 from typing import List, Tuple
 import cv2
+import sys
+
+sys.path.append("../")
+
 from common.utils.file import abs_path
 from common.utils.log import log
+
 
 Paths = List[Tuple[str, str]]
 LOG_FILE = "./errors.log"
@@ -181,8 +186,8 @@ def main(input_path: str, output_path: str, n_labels: int, convert_videos: bool)
         n_labels (int): number of labels.
         convert_videos (bool): convert videos flag.
     """
-    input_path = abs_path(input_path)
-    output_path = abs_path(output_path)
+    input_path = abs_path(path.join("./", input_path))
+    output_path = abs_path(path.join("./", output_path))
 
     if convert_videos:
         convert2mp4(input_path, output_path, n_labels)

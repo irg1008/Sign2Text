@@ -13,3 +13,4 @@ pillow
 ipykernel
 matplotlib
 torchensemble
+torchinfo

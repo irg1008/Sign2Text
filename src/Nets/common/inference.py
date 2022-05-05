@@ -4,7 +4,6 @@ import torch.nn.functional as F
 from PIL import Image
 import cv2
 
-
 def webcam_720p(cap):
     """_summary_
 
@@ -67,17 +66,18 @@ def video_webcam_inference(model, classes, device, transform, fps_interval: int)
     while True:
         _, frame = cap.read()  # Capture each frame
 
-        # Reset every 'fps_interval' frames.
-        if fps % fps_interval == 0 and fps != 0:
-            transformed_video = preprocess(video, device, transform)
-            scores = model(transformed_video)
-            first_five = argmax(scores, classes)
-            video = []
-
         fps += 1
 
         # Save all frames every 30 frames and feed the net.
         video.append(frame)
+        
+        # Reset every 'fps_interval' frames.
+        if fps % fps_interval == 0:
+            transformed_video = preprocess(video, device, transform)
+            scores, _ = model(transformed_video)
+            first_five = argmax(scores, classes)
+            video = []
+
 
         screen_y = 150
         for label, score in first_five:

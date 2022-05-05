@@ -1,5 +1,7 @@
+from typing import Tuple
 from torch import nn, Tensor
 from torch.nn.common_types import _size_3_t
+import numpy as np
 
 
 class CNN(nn.Module):
@@ -7,33 +9,46 @@ class CNN(nn.Module):
     Convolutional neural network.
     """
 
-    def __init__(self, num_classes, num_frames, image_size):
+    def __init__(self, num_classes, num_frames, image_size, num_pose_points):
         super().__init__()
 
         # Convolutional layer.
-        hidden_1, hidden_2 = 32, 64
+        final_channels = 1
+        pooling_downsample = 2**2  # 2 time(s) 2 pool downsample
+        stride_downsample = 2**2  # 2 time(s) 2 stride downsample
 
+        hidden_1, hidden_2 = 16, 32
         self.convs = nn.Sequential(
-            conv_layer_set(num_frames, hidden_1),
+            conv_layer_set(num_frames, hidden_1, kernel_size=(2, 3, 3)),
             conv_layer_set(hidden_1, hidden_2),
         )
 
-        # Dense layer.
-        # -> // 4 for double downsampling
-        # -> // 4 for pooling
-        linear_1 = (image_size // 4 // 4) ** 2 * hidden_2
+        # The downsampling scale on convolutional (i.e.: 2 + 2 with stride and pooling)
+        downsampling = int(
+            np.floor(image_size / (pooling_downsample * stride_downsample))
+        )
+        linear_1 = (downsampling**2) * final_channels * hidden_2
         linear_2 = linear_1 // 4
 
+        # Dense layer.
         self.dense = nn.Sequential(
             linear_layer(linear_1, linear_2),
-            nn.Dropout(p=0.1),
-            nn.BatchNorm1d(linear_2),
-            linear_layer(linear_2, image_size),
-            linear_layer(image_size, num_classes),
-            nn.LogSoftmax(dim=1),
+            nn.Dropout(p=0.5),
+            # nn.BatchNorm1d(linear_2),
         )
 
-    def forward(self, x: Tensor) -> Tensor:
+        # Output layer.
+        self.class_output = nn.Sequential(
+            linear_layer(linear_2, num_classes),
+            nn.Softmax(dim=1),
+        )
+
+        self.pose_output = nn.Sequential(
+            linear_layer(linear_2, num_pose_points),
+            nn.Sigmoid(),
+        )
+
+    def forward(self, x: Tensor) -> Tuple[Tensor, Tensor]:
         """Make a forward pass through the network.
 
         Args:
@@ -45,7 +60,14 @@ class CNN(nn.Module):
         x = self.convs(x)
         x = x.view(x.shape[0], -1)
         x = self.dense(x)
-        return x
+
+        # Class output.
+        x1 = self.class_output(x)
+
+        # Output for poses.
+        x2 = self.pose_output(x)
+
+        return x1, x2
 
 
 def conv_layer_set(
@@ -71,9 +93,11 @@ def conv_layer_set(
     """
     conv_layer = nn.Sequential(
         nn.Conv3d(in_c, out_c, kernel_size=kernel_size, stride=stride, padding=padding),
-        nn.LeakyReLU(),
+        # nn.LeakyReLU(),
         nn.MaxPool3d(pool),
-        nn.BatchNorm3d(out_c),
+        nn.BatchNorm3d(
+            out_c, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
+        ),
     )
     return conv_layer
 
