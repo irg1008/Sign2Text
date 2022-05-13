@@ -1,5 +1,12 @@
 from typing import List
-from torchvision import transforms
+from torchvision.transforms import (
+    Resize,
+    RandomCrop,
+    Normalize,
+    ToTensor,
+    Compose,
+    RandomGrayscale,
+)
 from PIL import Image
 import torch
 
@@ -20,26 +27,27 @@ class ImgsToTensor(torch.nn.Module):
         Returns:
             torch.Tensor: The tensor of the images.
         """
-        return torch.stack([transforms.ToTensor()(img) for img in img_list]).squeeze(
-            dim=1
-        )
+        return torch.stack([ToTensor()(img) for img in img_list]).squeeze(dim=1)
 
+
+normalize = Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 # Transform for multiple images.
-get_transform = lambda image_size: transforms.Compose(
+get_transform = lambda image_size: Compose(
     [
         ImgsToTensor(),
-        transforms.Resize(image_size),
-        transforms.RandomCrop(image_size),
+        Resize(image_size),
+        RandomCrop(image_size),
         # transforms.RandomRotation(5),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        RandomGrayscale(),
+        normalize,
     ]
 )
 
 
-unnormalize = transforms.Compose(
+unnormalize = Compose(
     [
-        transforms.Normalize(
+        Normalize(
             mean=[-0.485 / 0.229, -0.456 / 0.224, -0.406 / 0.225],
             std=[1 / 0.229, 1 / 0.224, 1 / 0.225],
         ),

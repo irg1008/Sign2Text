@@ -28,7 +28,7 @@ class CNN(nn.Module):
             np.floor(image_size / (pooling_downsample * stride_downsample))
         )
         linear_1 = (downsampling**2) * final_channels * hidden_2
-        linear_2 = linear_1 // 4
+        linear_2 = linear_1 // 2
 
         # Dense layer.
         self.dense = nn.Sequential(

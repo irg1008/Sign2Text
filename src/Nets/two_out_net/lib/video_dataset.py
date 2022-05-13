@@ -1,8 +1,8 @@
 from os import listdir, path
-from typing import List, Tuple, TypedDict
+from typing import List, Tuple
 from torch import Tensor
 from torch.utils import data
-from torchvision.transforms import Compose, ToTensor
+from torchvision.transforms import Compose
 from PIL import Image
 from numpy import ndarray
 import numpy as np
@@ -17,17 +17,15 @@ class Pose:
 
     def __init__(
         self,
-        pose_keypoints_2d: List[int],
-        face_keypoints_2d: List[int],
-        hand_left_keypoints_2d: List[int],
-        hand_right_keypoints_2d: List[int],
-        image_size: int,
+        pose_keypoints_2d: List[int] = np.zeros(75).tolist(),
+        face_keypoints_2d: List[int] = np.zeros(0).tolist(),
+        hand_left_keypoints_2d: List[int] = np.zeros(63).tolist(),
+        hand_right_keypoints_2d: List[int] = np.zeros(63).tolist(),
     ):
         self.body_pose = pose_keypoints_2d
         self.face_pos = face_keypoints_2d
         self.left_hand_pos = hand_left_keypoints_2d
         self.right_hand_pos = hand_right_keypoints_2d
-        self.image_size = image_size
 
     def to_tensor(self):
         """Converts the pose to a nd array."""
@@ -38,17 +36,69 @@ class Pose:
         pose += self.left_hand_pos
         pose += self.right_hand_pos
 
-        # Normalize between 0 and image_size.
+        # Normalize between 0 and 1.
         original_width = 256
-        resizing_factor = self.image_size / original_width
-        norm = lambda x: x * resizing_factor
-        get_n = lambda n: np.array([v for i, v in enumerate(pose) if i % 3 == n])
+        norm = lambda x: x / original_width
+        get_every_row = lambda n: np.array(
+            [v for i, v in enumerate(pose) if i % 3 == n]
+        )
 
-        x = torch.FloatTensor(norm(get_n(0)))
-        y = torch.FloatTensor(norm(get_n(1)))
+        x = torch.FloatTensor(norm(get_every_row(0)))
+        y = torch.FloatTensor(norm(get_every_row(1)))
 
         xy = torch.stack([x, y]).transpose(0, 1)
         return xy
+
+
+def load_pose(directory: str, frame: int, posefile_template: str):
+    """Load the pose from a directory and frame.
+
+    Args:
+        directory (str): The directory of the video.
+        frame (int): The frame number.
+
+    Returns:
+        Pose: The pose loaded from directory.
+    """
+    f = open(
+        path.join(directory, posefile_template.format(frame + 1)),
+        encoding="utf-8",
+    )
+    pose_json = json.load(f, parse_int=int)
+
+    people = pose_json["people"]
+    if len(people) == 0:
+        return None
+
+    person = pose_json["people"][0]
+    pose = Pose(
+        pose_keypoints_2d=person["pose_keypoints_2d"],
+        face_keypoints_2d=person["face_keypoints_2d"],
+        hand_left_keypoints_2d=person["hand_left_keypoints_2d"],
+        hand_right_keypoints_2d=person["hand_right_keypoints_2d"],
+    )
+
+    return pose
+
+
+def get_poses_tensor(poses: List[Pose]) -> Tensor:
+    # TODO: Change this for stack and remove flatten if we want to keep x and y points
+    return torch.cat([pose.to_tensor() for pose in poses]).flatten()
+
+
+def load_image(directory: str, frame: int, imagefile_template: str) -> Image.Image:
+    """Load an image from a directory and frame.
+
+    Args:
+        directory (str): The directory of the video.
+        frame (int): The frame number.
+
+    Returns:
+        Image.Image: The image loaded from directory.
+    """
+    return Image.open(
+        path.join(directory, imagefile_template.format(frame + 1))
+    ).convert("RGB")
 
 
 class VideoRecord:
@@ -128,57 +178,6 @@ class VideoFrameDataset(data.Dataset):
                 )
                 self.videos.append(video_record)
 
-    def _load_image(self, directory: str, frame: int) -> Image.Image:
-        """Load an image from a directory and frame.
-
-        Args:
-            directory (str): The directory of the video.
-            frame (int): The frame number.
-
-        Returns:
-            Image.Image: The image loaded from directory.
-        """
-        return Image.open(
-            path.join(directory, self.imagefile_template.format(frame + 1))
-        ).convert("RGB")
-
-    def _get_poses_tensor(self, poses: List[Pose]) -> Tensor:
-        return torch.cat(
-            [pose.to_tensor() for pose in poses]
-        ).flatten()  # TODO: Change this for stack and remove flatten if we want to keep x and y points
-
-    # TODO: Move this functions to external to use in notebook and avoid getting one batch
-    def _load_pose(self, directory: str, frame: int):
-        """Load the pose from a directory and frame.
-
-        Args:
-            directory (str): The directory of the video.
-            frame (int): The frame number.
-
-        Returns:
-            Pose: The pose loaded from directory.
-        """
-        f = open(
-            path.join(directory, self.posefile_template.format(frame + 1)),
-            encoding="utf-8",
-        )
-        pose_json = json.load(f, parse_int=int)
-
-        people = pose_json["people"]
-        if len(people) == 0:
-            return None
-
-        person = pose_json["people"][0]
-        pose = Pose(
-            pose_keypoints_2d=person["pose_keypoints_2d"],
-            face_keypoints_2d=person["face_keypoints_2d"],
-            hand_left_keypoints_2d=person["hand_left_keypoints_2d"],
-            hand_right_keypoints_2d=person["hand_right_keypoints_2d"],
-            image_size=self.image_size,
-        )
-
-        return pose
-
     def _get_start_indices(self, record: VideoRecord) -> ndarray:
         """Get the start indices for the video.
 
@@ -211,15 +210,16 @@ class VideoFrameDataset(data.Dataset):
             for i in range(start_index, start_index + self.frames_per_segment):
                 if i >= record.num_frames:
                     break
-                image = self._load_image(record.path, i)
-                pose = self._load_pose(record.path, i)
+                image = load_image(record.path, i, self.imagefile_template)
+                pose = load_pose(record.path, i, self.posefile_template)
+                print(record.path)
                 if pose is None:
-                    pose = poses[-1]
+                    pose = poses[-1] if len(poses) > 0 else Pose()
                 images.append(image)
                 poses.append(pose)
 
         images_tensor = self.transform(images)
-        poses_tensor = self._get_poses_tensor(poses)
+        poses_tensor = get_poses_tensor(poses)
         return images_tensor, record.label, poses_tensor
 
     def __getitem__(self, idx: int) -> Tuple[Input, Target]:

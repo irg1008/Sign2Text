@@ -13,12 +13,12 @@ def optim_model(model, learning_rate: float):
     class_criterion = nn.CrossEntropyLoss()
     pose_criterion = nn.MSELoss()
 
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-    # optimizer = optim.SGD(model.parameters(), lr=learning_rate)
+    # optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer = optim.SGD(model.parameters(), lr=learning_rate)
 
     # Useful link for scheduler: https://www.kaggle.com/code/isbhargav/guide-to-pytorch-learning-rate-scheduling/notebook
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, mode="min", min_lr=1e-6, factor=0.7, patience=5
+        optimizer, mode="min", min_lr=1e-6, factor=0.7, patience=10
     )
 
     return class_criterion, pose_criterion, optimizer, scheduler
@@ -54,12 +54,10 @@ def net_pass(model, data, criterion_1, criterion_2, target_1, target_2):
         _type_: _description_
     """
     out_1, out_2 = model(data)
-    loss_1, loss_2 = criterion_1(out_1, target_1), criterion_1(out_2, target_2)
+    loss_1, loss_2 = criterion_1(out_1, target_1), criterion_2(out_2, target_2)
     loss = loss_1
     loss += loss_2
-    acc, num = get_correct(
-        out_1, target_1
-    )  # TODO: Change this to add out_2 acc as well
+    acc, num = get_correct(out_1, target_1)
     return loss, acc, num
 
 
