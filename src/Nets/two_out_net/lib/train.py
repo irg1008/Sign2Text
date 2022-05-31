@@ -54,9 +54,14 @@ def net_pass(model, data, criterion_1, criterion_2, target_1, target_2):
         _type_: _description_
     """
     out_1, out_2 = model(data)
+
+    # Flatten points for every frame in batch:
+    # ----> [8, 50, 42, 2] (8 videos, 50 frames, 42 xy points) => [8, 4200] (8 videos with 4200 points).
+    target_2 = target_2.flatten(1)
+
     loss_1, loss_2 = criterion_1(out_1, target_1), criterion_2(out_2, target_2)
-    loss = loss_1
-    loss += loss_2
+    loss = loss_1 + loss_2
+
     acc, num = get_correct(out_1, target_1)
     return loss, acc, num
 
@@ -68,6 +73,7 @@ def train_model(
     device,
     learning_rate,
     num_epochs,
+    writer,
 ):
     """_summary_
 
@@ -95,7 +101,8 @@ def train_model(
         train_predictions, val_predictions = 0, 0
 
         model.train()
-        for data, (class_targets, pose_targets) in train_loader:
+        for i, train in enumerate(train_loader):
+            data, (class_targets, pose_targets) = train
             data, class_targets, pose_targets = (
                 data.to(device),
                 class_targets.to(device),
@@ -125,8 +132,14 @@ def train_model(
             # gradient descent.
             optimizer.step()
 
+            # Add To writer logger
+            loader_epoch = epoch * len(train_loader) + i
+            writer.add_scalar("Loss/train", loss.item(), epoch)
+            writer.add_scalar("Accuracy/train", acc / num, loader_epoch)
+
         model.eval()
-        for data, (class_targets, pose_targets) in validation_loader:
+        for i, val in enumerate(validation_loader):
+            data, (class_targets, pose_targets) = val
             data, class_targets, pose_targets = (
                 data.to(device),
                 class_targets.to(device),
@@ -147,6 +160,11 @@ def train_model(
             # Save acc.
             val_correct += acc
             val_predictions += num
+
+            # Add To writer logger
+            loader_epoch = epoch * len(validation_loader) + i
+            writer.add_scalar("Loss/validation", loss.item(), epoch)
+            writer.add_scalar("Accuracy/validation", acc / num, loader_epoch)
 
         # Summarize acc and loss.
         cost = sum(train_losses) / len(train_losses)

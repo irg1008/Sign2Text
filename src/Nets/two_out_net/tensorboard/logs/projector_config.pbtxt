@@ -1,0 +1,80 @@
+embeddings {
+  tensor_name: "default:00000"
+  metadata_path: "00000/default\\metadata.tsv"
+  tensor_path: "00000/default\\tensors.tsv"
+}
+embeddings {
+  tensor_name: "default:00000"
+  metadata_path: "00000/default\\metadata.tsv"
+  sprite {
+    image_path: "00000/default\\sprite.png"
+    single_image_dim: 112
+    single_image_dim: 112
+  }
+  tensor_path: "00000/default\\tensors.tsv"
+}
+embeddings {
+  tensor_name: "default:00000"
+  metadata_path: "00000/default\\metadata.tsv"
+  sprite {
+    image_path: "00000/default\\sprite.png"
+    single_image_dim: 112
+    single_image_dim: 112
+  }
+  tensor_path: "00000/default\\tensors.tsv"
+}
+embeddings {
+  tensor_name: "default:00000"
+  metadata_path: "00000/default\\metadata.tsv"
+  tensor_path: "00000/default\\tensors.tsv"
+}
+embeddings {
+  tensor_name: "default:00000"
+  metadata_path: "00000/default\\metadata.tsv"
+  tensor_path: "00000/default\\tensors.tsv"
+}
+embeddings {
+  tensor_name: "default:00001"
+  metadata_path: "00001/default\\metadata.tsv"
+  tensor_path: "00001/default\\tensors.tsv"
+}
+embeddings {
+  tensor_name: "default:00001"
+  metadata_path: "00001/default\\metadata.tsv"
+  tensor_path: "00001/default\\tensors.tsv"
+}
+embeddings {
+  tensor_name: "default:00002"
+  metadata_path: "00002/default\\metadata.tsv"
+  tensor_path: "00002/default\\tensors.tsv"
+}
+embeddings {
+  tensor_name: "default:00000"
+  metadata_path: "00000/default\\metadata.tsv"
+  tensor_path: "00000/default\\tensors.tsv"
+}
+embeddings {
+  tensor_name: "default:00000"
+  metadata_path: "00000/default\\metadata.tsv"
+  tensor_path: "00000/default\\tensors.tsv"
+}
+embeddings {
+  tensor_name: "default:00000"
+  metadata_path: "00000/default\\metadata.tsv"
+  sprite {
+    image_path: "00000/default\\sprite.png"
+    single_image_dim: 112
+    single_image_dim: 112
+  }
+  tensor_path: "00000/default\\tensors.tsv"
+}
+embeddings {
+  tensor_name: "default:00000"
+  metadata_path: "00000/default\\metadata.tsv"
+  sprite {
+    image_path: "00000/default\\sprite.png"
+    single_image_dim: 112
+    single_image_dim: 112
+  }
+  tensor_path: "00000/default\\tensors.tsv"
+}

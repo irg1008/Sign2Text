@@ -1,4 +1,5 @@
 import sys
+import torch
 
 sys.path.append("../")
 
@@ -8,8 +9,10 @@ from config.torch_config import get_transform
 from utils.loader import split_dataset
 
 from lib.video_dataset import VideoFrameDataset
+from lib.model import CNN
 
-if __name__ == "__main__":
+
+def test_dataset():
     data_path, model_path = get_dataset_path(
         dataset="WLASL/videos", model_name="WLASL_5"
     )
@@ -34,3 +37,19 @@ if __name__ == "__main__":
     )  # (16, 67, 20). 67 keypoints with xy data (20 = 2 of xy * 10 frames).
     print(inputs.shape)  # (16, 10, 3, 180, 180).
     print(classes.shape)  # (16)
+
+
+def test_model():
+    num_frames = 10 * 5
+    model = CNN(
+        num_classes=5,
+        num_frames=num_frames,
+        image_size=112,
+        num_pose_points=42 * 2 * num_frames,
+    )
+
+    model.forward(torch.randn(8, 50, 3, 112, 112))
+
+
+if __name__ == "__main__":
+    test_model()

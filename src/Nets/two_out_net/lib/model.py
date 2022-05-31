@@ -17,7 +17,7 @@ class CNN(nn.Module):
         pooling_downsample = 2**2  # 2 time(s) 2 pool downsample
         stride_downsample = 2**2  # 2 time(s) 2 stride downsample
 
-        hidden_1, hidden_2 = 16, 32
+        hidden_1, hidden_2 = 64, 128
         self.convs = nn.Sequential(
             conv_layer_set(num_frames, hidden_1, kernel_size=(2, 3, 3)),
             conv_layer_set(hidden_1, hidden_2),
@@ -32,19 +32,19 @@ class CNN(nn.Module):
 
         # Dense layer.
         self.dense = nn.Sequential(
-            linear_layer(linear_1, linear_2),
             nn.Dropout(p=0.5),
             # nn.BatchNorm1d(linear_2),
         )
 
         # Output layer.
         self.class_output = nn.Sequential(
+            linear_layer(linear_1, linear_2),
             linear_layer(linear_2, num_classes),
             nn.Softmax(dim=1),
         )
 
         self.pose_output = nn.Sequential(
-            linear_layer(linear_2, num_pose_points),
+            linear_layer(linear_1, num_pose_points),
             nn.Sigmoid(),
         )
 
