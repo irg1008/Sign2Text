@@ -132,11 +132,6 @@ def train_model(
             # gradient descent.
             optimizer.step()
 
-            # Add To writer logger
-            loader_epoch = epoch * len(train_loader) + i
-            writer.add_scalar("Loss/train", loss.item(), epoch)
-            writer.add_scalar("Accuracy/train", acc / num, loader_epoch)
-
         model.eval()
         for i, val in enumerate(validation_loader):
             data, (class_targets, pose_targets) = val
@@ -161,11 +156,6 @@ def train_model(
             val_correct += acc
             val_predictions += num
 
-            # Add To writer logger
-            loader_epoch = epoch * len(validation_loader) + i
-            writer.add_scalar("Loss/validation", loss.item(), epoch)
-            writer.add_scalar("Accuracy/validation", acc / num, loader_epoch)
-
         # Summarize acc and loss.
         cost = sum(train_losses) / len(train_losses)
         costs.append(cost)
@@ -178,6 +168,12 @@ def train_model(
         val_accs.append(val_acc)
 
         scheduler.step(val_cost)
+
+        # Add To writer logger
+        writer.add_scalar("Loss/train", cost, epoch)
+        writer.add_scalar("Accuracy/train", acc, epoch)
+        writer.add_scalar("Loss/validation", val_cost, epoch)
+        writer.add_scalar("Accuracy/validation", val_acc, epoch)
 
         # Print load bar for epoch with cost and acc info.
         print(
