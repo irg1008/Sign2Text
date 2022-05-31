@@ -4,7 +4,7 @@ sys.path.append("../")
 
 
 from config.dataset import get_dataset_path
-from config.torch_config import get_transform, pose_transform
+from config.torch_config import get_transform
 from utils.loader import split_dataset
 
 from lib.video_dataset import VideoFrameDataset
@@ -13,7 +13,7 @@ if __name__ == "__main__":
     data_path, model_path = get_dataset_path(
         dataset="WLASL/videos", model_name="WLASL_5"
     )
-    multiple_transform = get_transform(200, 0.9)
+    multiple_transform = get_transform(200)
 
     dataset = VideoFrameDataset(
         root_path=data_path,

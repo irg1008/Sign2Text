@@ -74,7 +74,8 @@ def video_webcam_inference(model, classes, device, transform, fps_interval: int)
         # Reset every 'fps_interval' frames.
         if fps % fps_interval == 0:
             transformed_video = preprocess(video, device, transform)
-            scores, _ = model(transformed_video)
+            scores, poses = model(transformed_video)
+            print(poses.shape)
             first_five = argmax(scores, classes)
             video = []
 

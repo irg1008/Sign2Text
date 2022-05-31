@@ -39,7 +39,7 @@ get_transform = lambda image_size: Compose(
         Resize(image_size),
         RandomCrop(image_size),
         # transforms.RandomRotation(5),
-        RandomGrayscale(),
+        # RandomGrayscale(),
         normalize,
     ]
 )

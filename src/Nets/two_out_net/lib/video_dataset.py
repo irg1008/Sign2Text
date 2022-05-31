@@ -32,7 +32,7 @@ class Pose:
 
         pose: List[int] = []
         # pose += self.body_pose
-        # pose += self.face_pos
+        pose += self.face_pos
         pose += self.left_hand_pos
         pose += self.right_hand_pos
 
@@ -50,7 +50,7 @@ class Pose:
         return xy
 
 
-def load_pose(directory: str, frame: int, posefile_template: str):
+def load_pose(directory: str, frame: int, posefile_template: str, img_width: int):
     """Load the pose from a directory and frame.
 
     Args:
@@ -82,8 +82,8 @@ def load_pose(directory: str, frame: int, posefile_template: str):
 
 
 def get_poses_tensor(poses: List[Pose]) -> Tensor:
-    # TODO: Change this for stack and remove flatten if we want to keep x and y points
-    return torch.cat([pose.to_tensor() for pose in poses]).flatten()
+    # return torch.cat([pose.to_tensor() for pose in poses]).flatten()
+    return torch.stack([pose.to_tensor() for pose in poses])
 
 
 def load_image(directory: str, frame: int, imagefile_template: str) -> Image.Image:
@@ -211,8 +211,9 @@ class VideoFrameDataset(data.Dataset):
                 if i >= record.num_frames:
                     break
                 image = load_image(record.path, i, self.imagefile_template)
-                pose = load_pose(record.path, i, self.posefile_template)
-                print(record.path)
+                pose = load_pose(
+                    record.path, i, self.posefile_template, self.image_size
+                )
                 if pose is None:
                     pose = poses[-1] if len(poses) > 0 else Pose()
                 images.append(image)
