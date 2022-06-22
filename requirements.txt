@@ -21,3 +21,6 @@ moviepy
 onnx
 onnxruntime-gpu
 fastapi
+uvicorn[standard]
+pydantic
+python-multipart
