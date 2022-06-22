@@ -6,12 +6,15 @@ Transcripción de lenguaje de signos (a nivel de palabra) mediante Deep Learning
 
 ## Índice de contenido
 
-* [Instalación](#instalación)
-  * [Instalamos el paquete de entorno virtual](#instalamos-el-paquete-de-entorno-virtual)
-  * [Creamos el entorno virtual](#creamos-el-entorno-virtual)
-  * [Activamos el entorno virtual](#activamos-el-entorno-virtual)
-  * [Instalamos los paquetes necesarios](#instalamos-los-paquetes-necesarios)
-  * [Instalamos PyTorch compatible con CUDA](#instalamos-pytorch-compatible-con-cuda)
+- [UBU-Sign2Text](#ubu-sign2text)
+  - [Índice de contenido](#índice-de-contenido)
+  - [Instalación](#instalación)
+    - [Instalamos el paquete de entorno virtual](#instalamos-el-paquete-de-entorno-virtual)
+    - [Creamos un entorno virtual](#creamos-un-entorno-virtual)
+    - [Activamos el entorno virtual](#activamos-el-entorno-virtual)
+    - [Instalamos los paquetes necesarios](#instalamos-los-paquetes-necesarios)
+    - [Instalamos PyTorch compatible con CUDA](#instalamos-pytorch-compatible-con-cuda)
+  - [Próximo dataset a probar.](#próximo-dataset-a-probar)
 
 ## Instalación
 
