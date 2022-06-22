@@ -20,3 +20,4 @@ torch-tb-profiler
 moviepy
 onnx
 onnxruntime-gpu
+fastapi
