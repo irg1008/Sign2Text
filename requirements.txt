@@ -19,4 +19,4 @@ protobuf==3.20.1
 torch-tb-profiler
 moviepy
 onnx
-onnxruntime
+onnxruntime-gpu

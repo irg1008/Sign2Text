@@ -48,7 +48,9 @@ def preprocess(image, device, transform):
     return image
 
 
-def video_webcam_inference(model, classes, device, transform, fps_interval: int):
+def video_webcam_inference(
+    model, classes, device, transform, fps_interval: int, use_onnx=False
+):
     """_summary_
 
     Args:
@@ -61,22 +63,42 @@ def video_webcam_inference(model, classes, device, transform, fps_interval: int)
     cap = cv2.VideoCapture(0)  # Set the webcam
     webcam_720p(cap)
 
+    IMAGE_SIZE = 600
+
+    upper_left = (300, 50)
+    bottom_right = (upper_left[0] + IMAGE_SIZE, upper_left[1] + IMAGE_SIZE)
+
     first_five = []
     video: List = []
     fps = 0
     while True:
         _, frame = cap.read()  # Capture each frame
+        # Cut frame.
+        rect_frame = frame[
+            upper_left[1] : bottom_right[1], upper_left[0] : bottom_right[0]
+        ]
 
         fps += 1
 
         # Save all frames every 30 frames and feed the net.
-        video.append(frame)
+        video.append(rect_frame)
 
         # Reset every 'fps_interval' frames.
         if fps % fps_interval == 0:
             transformed_video = preprocess(video, device, transform)
             scores, poses = model(transformed_video)
-            print(poses.shape)
+
+            # Multiply poses by image width.
+            # POSES_PER_FRAME = 84  # See train notebook.
+            # last_frame_poses = poses.squeeze()[-POSES_PER_FRAME:]
+            # last_frame_poses *= IMAGE_SIZE
+            # last_frame_poses = last_frame_poses.cpu().detach().numpy()
+            # x, y = last_frame_poses[0::2], last_frame_poses[1::2]
+
+            # Plot the poses.
+            # plt.scatter(x, y)
+            # plt.pause(0.001)
+
             first_five = argmax(scores, classes)
             video = []
 
@@ -86,15 +108,17 @@ def video_webcam_inference(model, classes, device, transform, fps_interval: int)
             cv2.putText(
                 frame,
                 f"{label} - {score:.2f}",
-                (900, screen_y),
+                (950, screen_y),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 1,
                 (0, 0, 255),
                 2,
             )
 
-        # cv2.rectangle(frame, (400, 150), (900, 550), (250, 0, 0), 2)
+        cv2.rectangle(frame, upper_left, bottom_right, (250, 0, 0), 2)
         cv2.imshow("ASL SIGN DETECTER", frame)
+
+        # plt.imshow(rect_frame)
 
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
