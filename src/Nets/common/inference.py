@@ -48,9 +48,7 @@ def preprocess(image, device, transform):
     return image
 
 
-def video_webcam_inference(
-    model, classes, device, transform, fps_interval: int, use_onnx=False
-):
+def video_webcam_inference(model, classes, device, transform, fps_interval: int):
     """_summary_
 
     Args:

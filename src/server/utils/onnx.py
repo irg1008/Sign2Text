@@ -1,11 +1,10 @@
-from typing import List
-from onnx import load, ModelProto
 from os import path
+from onnx import load, ModelProto
 from onnxruntime import InferenceSession
-
+from torch import Tensor
 
 CLASSES = ["all", "before", "book", "deaf", "drink", "help", "no", "walk", "yes"]
-MODEL_PATH = path.join(path.dirname(__file__), "../../models/WLASL_9_quantized.onnx")
+MODEL_PATH = path.join(path.dirname(__file__), "../../../models/WLASL_9_quantized.onnx")
 
 ONNX_PROVIDERS = ["CUDAExecutionProvider", "CPUExecutionProvider"]
 
@@ -33,7 +32,7 @@ def get_session() -> InferenceSession:
     return ort_session
 
 
-def oxx_inference(video: List, session: InferenceSession) -> str:
+def oxx_inference(video: Tensor, session: InferenceSession) -> str:
     """Inference the video with the onnx model.
 
     Args:
@@ -45,6 +44,6 @@ def oxx_inference(video: List, session: InferenceSession) -> str:
     """
     outputs = session.run(
         None,
-        {"input": video},
+        {"input": video.numpy()},
     )
     return CLASSES[outputs[0][0].argmax(0)]
