@@ -20,7 +20,7 @@ def quantize_onnx_model(onnx_model_path):
 
 if __name__ == "__main__":
 
-    path_to_model = "../../../models/WLASL_9.onnx"
+    path_to_model = "../../../models/WLASL_8.onnx"
     path = abspath(join(dirname(__file__), path_to_model))
 
     print(f"Quantizing model on path {path}")

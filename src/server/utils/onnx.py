@@ -3,8 +3,8 @@ from onnx import load, ModelProto
 from onnxruntime import InferenceSession
 from torch import Tensor
 
-CLASSES = ["all", "before", "book", "deaf", "drink", "help", "no", "walk", "yes"]
-MODEL_PATH = path.join(path.dirname(__file__), "../../../models/WLASL_9_quantized.onnx")
+CLASSES = ["all", "before", "book", "drink", "help", "no", "walk", "yes"]
+MODEL_PATH = path.join(path.dirname(__file__), "../../../models/WLASL_8_quantized.onnx")
 
 ONNX_PROVIDERS = ["CUDAExecutionProvider", "CPUExecutionProvider"]
 
