@@ -1,21 +1,22 @@
 import shutil
 from pathlib import Path
 from tempfile import NamedTemporaryFile
-from typing import Tuple
 from fastapi import UploadFile
 from torchvision import io
 from torch import Tensor
 from torchvision import transforms
+import numpy as np
 
 transform = transforms.Compose(
     [
-        transforms.Resize((224, 224)),
+        transforms.Resize(224),
+        transforms.CenterCrop(224),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ]
 )
 
 
-def get_frames(path: str) -> Tuple[Tensor, int]:
+def get_frames(path: str) -> Tensor:
     """Get frames from video.
 
     Args:
@@ -25,7 +26,7 @@ def get_frames(path: str) -> Tuple[Tensor, int]:
         Tensor: Frames from video.
     """
     frames = io.read_video(path)[0]
-    return frames.float(), len(frames)
+    return frames.float()
 
 
 async def create_tmp_path(file: UploadFile) -> str:
@@ -64,8 +65,15 @@ async def process_video(frames: Tensor) -> Tensor:
     # 2. Resize frames. From WxH to 224x224.
     frames = transform(frames)
 
-    # 3. Trim on 50 first frames of video. TODO: Change this to take from the middle or similar.
-    frames = frames[:50]
+    # 3. Get n frames.
+    n_frames = 50
+    if len(frames > 50):
+        # a. Equally separated.
+        idx = np.round(np.linspace(0, len(frames) - 1, n_frames)).astype(int)
+        frames = frames[idx]
+    else:
+        # b. Duplicate until 50 frames.
+        frames = frames.repeat(np.ceil(n_frames / len(frames)), 1, 1, 1)[:n_frames]
 
     # 4. Add batch dimension.
     frames = frames.unsqueeze(0)

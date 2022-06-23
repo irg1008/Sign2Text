@@ -35,13 +35,7 @@ async def inference(video: UploadFile = File()) -> TargetModel:
 
     # Get video frames.
     file_tmp_path = await create_tmp_path(video)
-    frames, num_frames = get_frames(file_tmp_path)
-
-    if num_frames < 50:
-        raise HTTPException(
-            status_code=400,
-            detail="Video must have at least 50 frames. This is for ONNX inference. Shorter videos will work with PyTorch inference.",
-        )
+    frames = get_frames(file_tmp_path)
 
     # Process video for inference.
     frames = await process_video(frames)

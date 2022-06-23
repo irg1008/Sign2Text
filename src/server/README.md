@@ -16,7 +16,4 @@ No swagger or openapi standars are applied in this porject given we only have on
 
 [Insomnia](https://insomnia.rest/download)
 
-TODO: Realtime inference. It's quick enough.
-Do after frontend
-296 ms, y lo haría cada 50 frames a 30fps
-Problema: Sale siempre "deaf". Igual deberíamso quitar deaf de las clases. Aunque creo que es lo de pillar los 50 primeros frames en vez de 50 intercalados por el video.
+## Donde está hosteado el backend
