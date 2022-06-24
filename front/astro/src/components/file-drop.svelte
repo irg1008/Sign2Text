@@ -2,8 +2,12 @@
 	import { fade, fly, scale } from "svelte/transition";
 	import { backIn, backOut, cubicOut } from "svelte/easing";
 
+	const videoType = "video/mp4";
+
 	let dragCounter = 0;
 	let isDragging = false;
+	let video: File;
+	let error: string = "";
 
 	const setDropEffect = (e: DragEvent) => {
 		if (!e.dataTransfer) return;
@@ -30,8 +34,15 @@
 	const onDrop = (e: DragEvent) => {
 		onDragOut(e);
 		const file = e.dataTransfer?.files?.[0];
-		if (file?.type !== "video/mp4") return;
-		console.log("is mp4");
+		if (file?.type !== videoType) {
+			error = "Only MP4 files are supported";
+			return;
+		}
+		error = "";
+		video = file;
+
+		const url = URL.createObjectURL(file);
+		console.log(url);
 	};
 </script>
 
@@ -42,6 +53,15 @@
 	on:dragleave|preventDefault={onDragOut}
 	on:drop|preventDefault={onDrop}
 />
+
+{#if error}
+	{error}
+{/if}
+
+{#if video}
+	<h2 class="text-lg font-semibold">Playing {video.name}</h2>
+	<video autoplay controls src={URL.createObjectURL(video)} type={videoType} />
+{/if}
 
 {#if isDragging}
 	<div
