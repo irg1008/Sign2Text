@@ -1,9 +1,0 @@
-fastapi
-uvicorn[standard]
-pydantic
-python-multipart
-av
-onnx
-onnxruntime-gpu
-torchvision
-torch
