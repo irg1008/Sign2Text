@@ -1,4 +1,4 @@
-const ENDPOINT = "http://localhost:8000";
+const endpoint = import.meta.env.PUBLIC_SIGN_URI;
 
 interface Sign {
 	target: string;
@@ -10,7 +10,7 @@ export const getSignForVideo = async (video: File): Promise<Sign> => {
 	const formData = new FormData();
 	formData.append("video", video);
 
-	const res = await fetch(`${ENDPOINT}/sign`, {
+	const res = await fetch(`${endpoint}/sign`, {
 		method: "POST",
 		body: formData,
 	});

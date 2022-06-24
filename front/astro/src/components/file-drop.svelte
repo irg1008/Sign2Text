@@ -95,7 +95,7 @@
 			{#if sign}
 				<h2
 					in:fade={{ duration: 200, delay: 220 }}
-					class="text-2xl font-bold text-neutral-800"
+					class="text-2xl font-bold text-center text-neutral-800"
 				>
 					Sign is: <strong>{sign}</strong>
 				</h2>
