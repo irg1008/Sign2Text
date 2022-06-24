@@ -1,6 +1,6 @@
 # UBU-Sign2Text
 
-<p align="center">
+<div align="center">
   <img align="center" src="./docs/assets/logo/logo.svg" alt="logo" width="400" />
   <br />
   <br />
