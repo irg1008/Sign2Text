@@ -1,15 +1,14 @@
 # UBU-Sign2Text
 
-<table align="center"><tr><td align="center" width="9999">
-
-<img align="center" src="./docs/assets/logo/logo.svg" alt="logo" width="400" />
-
-<br />
-
-![Pipeline Status](https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/badges/main/pipeline.svg)
-
-Transcripción de lenguaje de signos (a nivel de palabra) mediante Deep Learning
-</td></tr></table>
+<p align="center">
+  <img align="center" src="./docs/assets/logo/logo.svg" alt="logo" width="400" />
+  <br />
+  <br />
+  Transcripción de lenguaje de signos (a nivel de palabra) mediante Deep Learning
+  <br />
+  <br />
+  <img align="center" src="https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/badges/main/pipeline.svg" width="30px">
+</p>
 
 ---
 
