@@ -7,7 +7,7 @@
   Transcripción de lenguaje de signos (a nivel de palabra) mediante Deep Learning
   <br />
   <br />
-  <img align="center" src="https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/badges/main/pipeline.svg" width="150px">
+  <img align="center" src="https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/badges/main/pipeline.svg" width="120px">
 </p>
 
 ---
