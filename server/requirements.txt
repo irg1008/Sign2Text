@@ -5,3 +5,5 @@ python-multipart
 av
 onnx
 onnxruntime-gpu
+torchvision
+torch
