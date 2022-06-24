@@ -1,16 +1,16 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from utils.video import process_video, get_frames, create_tmp_path
 from utils.onnx import get_session, oxx_inference
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
 
 app = FastAPI()
 
 onnx_session = get_session()
 
-
-origins = ["http://localhost:3000", "http://sign2text.com"]
-tokens = ["example"]
+# Origins for development and production clients.
+origins = ["http://localhost:3000", "https://sign2text.com"]
 
 
 app.add_middleware(
@@ -24,6 +24,10 @@ app.add_middleware(
 
 
 class TargetModel(BaseModel):
+    """
+    OpenAPI Model for target response.
+    """
+
     target: str
 
 

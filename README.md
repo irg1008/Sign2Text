@@ -1,11 +1,5 @@
 # UBU-Sign2Text
 
-<style>
-td, th {
-   border: none!important;
-}
-</style>
-
 <table align="center"><tr><td align="center" width="9999">
 
 <img align="center" src="./docs/assets/logo/logo.svg" alt="logo" width="400" />
