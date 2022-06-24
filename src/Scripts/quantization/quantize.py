@@ -15,7 +15,7 @@ def quantize_onnx_model(onnx_model_path):
         onnx_model_path, quantized_model_path, weight_type=QuantType.QUInt8
     )
 
-    print(f"quantized model saved to:{quantized_model_path}")
+    print(f"quantized model saved to: {quantized_model_path}")
 
 
 if __name__ == "__main__":

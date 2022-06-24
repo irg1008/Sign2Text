@@ -1,13 +1,18 @@
 <script lang="ts">
-	import { fade, fly, scale } from "svelte/transition";
 	import { backIn, backOut, cubicOut } from "svelte/easing";
+	import { fade, fly, scale } from "svelte/transition";
+	import { getSignForVideo } from "services/sign.service";
+	import Danger from "./danger-icon.svelte";
 
-	const videoType = "video/mp4";
+	let video: File;
 
-	let videoUrl: string;
 	let dragCounter = 0;
 	let isDragging = false;
 	let error: string = "";
+	let sign: string = "";
+	let loadingSign = false;
+
+	const cleanError = () => (error = "");
 
 	const setDropEffect = (e: DragEvent) => {
 		if (!e.dataTransfer) return;
@@ -35,13 +40,22 @@
 		onDragOut(e);
 		const file = e.dataTransfer?.files?.[0];
 
-		if (file?.type !== videoType) {
+		if (file?.type !== "video/mp4") {
 			error = "Only MP4 files are supported";
 			return;
 		}
 
-		error = "";
-		videoUrl = URL.createObjectURL(file);
+		cleanError();
+		sign = "";
+		video = file;
+	};
+
+	const getSign = async () => {
+		loadingSign = true;
+		if (sign) return;
+		const res = await getSignForVideo(video);
+		sign = res.target;
+		loadingSign = false;
 	};
 </script>
 
@@ -53,32 +67,61 @@
 	on:drop|preventDefault={onDrop}
 />
 
-<h1 class="capitalize text-4xl text-neutral-400 text-center leading-relaxed">
-	Drag and drop your video here
-</h1>
-
 {#if error}
-	<span>{error}</span>
+	<span
+		transition:fly={{ duration: 200, x: 100, easing: backOut }}
+		on:click={cleanError}
+		class="fixed bottom-0 right-0 flex items-center gap-4 p-6 m-8 font-bold uppercase bg-red-500 rounded-lg shadow-lg cursor-pointer text-neutral-50 shadow-red-800/10"
+	>
+		<Danger class="text-lg" />
+		{error}
+	</span>
 {/if}
 
-{#if videoUrl}
-	{#key videoUrl}
-		<video autoplay controls>
-			<source src={videoUrl} type={videoType} />
-			<track kind="captions" />
-		</video>
+{#if video}
+	{#key video.name}
+		<article class="flex flex-col items-center gap-4 p-6 font-bold capitalize">
+			<video
+				autoplay
+				loop
+				muted
+				width={600}
+				class="rounded-lg shadow-xl shadow-neutral-600/20"
+			>
+				<source src={URL.createObjectURL(video)} type={video.type} />
+				<track kind="captions" />
+			</video>
+
+			{#if sign}
+				<h2
+					in:fade={{ duration: 200, delay: 220 }}
+					class="text-2xl font-bold text-neutral-800"
+				>
+					Sign is: <strong>{sign}</strong>
+				</h2>
+			{:else}
+				<button
+					out:fade={{ duration: 200 }}
+					on:click={() => getSign()}
+					disabled={loadingSign}
+					class="px-4 py-2 text-xl font-bold uppercase transition-all duration-200 ease-in-out rounded-lg shadow-lg shadow-sky-300/60 active:shadow-md bg-sky-500 hover:bg-sky-600 active:bg-sky-800 text-neutral-50 disabled:pointer-events-none disabled:bg-opacity-60"
+				>
+					{loadingSign ? "Getting sign" : "Get sign"}
+				</button>
+			{/if}
+		</article>
 	{/key}
 {/if}
 
 {#if isDragging}
 	<div
 		transition:fade={{ duration: 300, easing: cubicOut }}
-		class="fixed h-full w-full top-0 left-0 bg-neutral-200/50 grid place-content-center backdrop-blur-md"
+		class="fixed top-0 left-0 grid w-full h-full bg-neutral-200/50 place-content-center backdrop-blur-md"
 	>
 		<h1
 			in:fly={{ duration: 200, easing: backOut, y: -100 }}
 			out:scale={{ duration: 200, easing: backIn }}
-			class="uppercase font-bold text-center text-8xl text-neutral-600"
+			class="font-bold text-center uppercase text-8xl text-neutral-600"
 		>
 			Now drop it!
 		</h1>

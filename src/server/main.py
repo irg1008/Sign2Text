@@ -2,10 +2,25 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from utils.video import process_video, get_frames, create_tmp_path
 from utils.onnx import get_session, oxx_inference
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
 onnx_session = get_session()
+
+
+origins = ["http://localhost:3000"]
+tokens = ["example"]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+    max_age=3600,
+)
 
 
 class TargetModel(BaseModel):
@@ -13,7 +28,7 @@ class TargetModel(BaseModel):
 
 
 @app.post(
-    "/",
+    "/sign",
     tags=["video"],
     description="Video classification",
     response_model=TargetModel,
