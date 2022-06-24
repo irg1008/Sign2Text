@@ -9,7 +9,7 @@ app = FastAPI()
 onnx_session = get_session()
 
 
-origins = ["http://localhost:3000"]
+origins = ["http://localhost:3000", "http://sign2text.com"]
 tokens = ["example"]
 
 
