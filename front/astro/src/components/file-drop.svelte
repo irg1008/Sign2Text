@@ -40,9 +40,8 @@
 		}
 		error = "";
 		video = file;
-
-		const url = URL.createObjectURL(file);
-		console.log(url);
+		// video is noot being added if too short or for some other error.
+		// some mp4 files work other don't
 	};
 </script>
 
