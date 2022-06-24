@@ -1,17 +1,12 @@
 ---
-
+import Layout from "../layout/main.astro"
+import FileDrop from "../components/file-drop.svelte"
 ---
 
-<html lang="en">
-
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width" />
-	<title>Sign2Text - ASL Translator</title>
-</head>
-
-<body>
-	<h1>Astro</h1>
-</body>
-
-</html>
+<Layout>
+	<img src="logo.avif" alt="Logo" class="drop-shadow-xl" />
+	<h1 class="capitalize text-4xl text-neutral-400 text-center leading-relaxed">
+		Drag and drop your video here
+	</h1>
+	<FileDrop client:load />
+</Layout>
