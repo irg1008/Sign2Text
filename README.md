@@ -6,10 +6,18 @@
 
 <br />
 
-![Pipeline Status](https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/badges/main/pipeline.svg)
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=sign2text-irgazquez&style=flat)](https://sign2text.com)
+[![Api working](https://img.shields.io/badge/api-working-brightgreen?logo=fastapi)](https://api.sign2text.com/docs)
+![Deployed on](https://img.shields.io/badge/model_deployed-aws-brightgreen?logo=amazon-aws)
 
-[![License](https://img.shields.io/badge/license-MIT%20License-brightgreen)](https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/-/blob/main/LICENSE)
+![Pipeline Status](https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/badges/main/pipeline.svg)
+[![License](https://img.shields.io/github/license/irg1008/sign2text)](https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/-/blob/main/LICENSE)
+![Languages](https://img.shields.io/github/languages/count/irg1008/sign2text?logo=python)
+![Top language](https://img.shields.io/github/languages/top/irg1008/sign2text?logo=jupyter)
+![Lines of code](https://img.shields.io/badge/lines_of_code-3.7k-blueviolet)
+
+![Front with astro](https://img.shields.io/badge/front_end-astro-orange?logo=astro)
+![runtime onnx](https://img.shields.io/badge/runtime-onnx-lightgray?logo=onnx)
 
 Transcripción de lenguaje de signos (a nivel de palabra) mediante Deep Learning
 </td></tr></table>
