@@ -9,6 +9,8 @@
 ![Pipeline Status](https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/badges/main/pipeline.svg)
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=sign2text-irgazquez&style=flat)](https://sign2text.com)
 
+[![License](https://img.shields.io/badge/license-MIT%20License-brightgreen)](https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/-/blob/main/LICENSE)
+
 Transcripción de lenguaje de signos (a nivel de palabra) mediante Deep Learning
 </td></tr></table>
 
