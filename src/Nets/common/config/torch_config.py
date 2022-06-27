@@ -13,7 +13,7 @@ import torch
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-class ImgsToTensor(torch.nn.Module):
+class ImgsToTensor(torch.nn.Module):  # pylint disable=too-few-public-methods
     """Merges images to tensors."""
 
     @staticmethod
@@ -31,15 +31,24 @@ class ImgsToTensor(torch.nn.Module):
 
 normalize = Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
-# Transform for multiple images.
-get_transform = lambda image_size: Compose(
-    [
-        ImgsToTensor(),
-        Resize(image_size),
-        RandomCrop(image_size),
-        normalize,
-    ]
-)
+
+def get_transform(image_size: int) -> Compose:
+    """Get the transform for the dataset.
+
+    Args:
+        image_size (int): The image size.
+
+    Returns:
+        transforms.Compose: The transform.
+    """
+    return Compose(
+        [
+            ImgsToTensor(),
+            Resize(image_size),
+            RandomCrop(image_size),
+            normalize,
+        ]
+    )
 
 
 unnormalize = Compose(

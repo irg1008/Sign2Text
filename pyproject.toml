@@ -13,7 +13,7 @@ ignore_missing_imports = true
 disable = [
   "line-too-long",
   "redefined-outer-name",
-  "C0114",                 # missing-module-docstring
+  "C0114",                         # missing-module-docstring
   "no-member",
   "consider-using-with",
   "import-error",
@@ -22,6 +22,7 @@ disable = [
   "invalid-name",
   "wrong-import-position",
   "no-name-in-module",
+  "unnecessary-lambda-assignment",
 ]
 [tool.pylint."SIMILARITIES"]
 min-similarity-lines = 30

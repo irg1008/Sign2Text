@@ -40,9 +40,21 @@ def split_dataset(
     test_sampler = SubsetRandomSampler(test_indices)
     validation_sampler = SubsetRandomSampler(validation_indices)
 
-    get_loader = lambda sampler: DataLoader(
-        dataset, batch_size=batch_size, sampler=sampler, num_workers=num_workers
-    )
+    def get_loader(sampler: SubsetRandomSampler) -> DataLoader:
+        """Get the data loader.
+
+        Args:
+            sampler (SubsetRandomSampler): The sampler to use.
+
+        Returns:
+            DataLoader: The data loader.
+        """
+        return DataLoader(
+            dataset,
+            batch_size=batch_size,
+            sampler=sampler,
+            num_workers=num_workers,
+        )
 
     train_loader = get_loader(train_sampler)
     validation_loader = get_loader(validation_sampler)

@@ -4,7 +4,7 @@ from torch.nn.common_types import _size_3_t
 import numpy as np
 
 
-class CNN(nn.Module):
+class CNN(nn.Module):  # pylint disable=too-few-public-methods
     """
     Convolutional neural network.
     """
