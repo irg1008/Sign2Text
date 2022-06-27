@@ -17,10 +17,10 @@ class Pose:  # pylint: disable=too-few-public-methods
 
     def __init__(
         self,
-        pose_keypoints_2d=np.zeros(75),
-        face_keypoints_2d=np.zeros(0),
-        hand_left_keypoints_2d=np.zeros(63),
-        hand_right_keypoints_2d=np.zeros(63),
+        pose_keypoints_2d=np.zeros(75).tolist(),
+        face_keypoints_2d=np.zeros(0).tolist(),
+        hand_left_keypoints_2d=np.zeros(63).tolist(),
+        hand_right_keypoints_2d=np.zeros(63).tolist(),
     ):
         self.body_pose = pose_keypoints_2d
         self.face_pos = face_keypoints_2d
@@ -109,7 +109,7 @@ def load_image(directory: str, frame: int, imagefile_template: str) -> Image.Ima
 
 
 class VideoRecord:
-    """Vdieo record to store video data."""
+    """Video record to store video data."""
 
     def __init__(self, path: str, label: int):
         self._path = path

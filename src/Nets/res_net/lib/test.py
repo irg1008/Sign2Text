@@ -2,13 +2,16 @@ from utils.output import imshow
 
 
 def predict_class(loader, model, classes, debug_class, device):
-    """_summary_
+    """Predict class of an image.
 
     Args:
-        loader (_type_): _description_
-        model (_type_): _description_
-        classes (_type_): _description_
-        debug_class (_type_): _description_
+        loader (DataLoader): A DataLoader object.
+        model (ResNet): A ResNet model.
+        classes (list): A list of classes.
+        debug_class (str): A class to debug.
+
+    Returns:
+        prediction (str): The model predicted label.
     """
     model.to(device)
     model.eval()
@@ -33,4 +36,4 @@ def predict_class(loader, model, classes, debug_class, device):
 
             print(f"Prediction: {prediction}. Ground truth: {label}")
 
-            return
+            return prediction

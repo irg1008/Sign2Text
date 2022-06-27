@@ -50,7 +50,9 @@ def preprocess(image, device, transform):
     return image
 
 
-def video_webcam_inference(model, classes, device, transform, fps_interval: int):
+def video_webcam_inference(
+    model, classes, device, transform, fps_interval: int, has_pose=False
+):
     """Infere a video from webcam.
 
     Args:
@@ -86,7 +88,9 @@ def video_webcam_inference(model, classes, device, transform, fps_interval: int)
         # Reset every 'fps_interval' frames.
         if fps % fps_interval == 0:
             transformed_video = preprocess(video, device, transform)
-            scores, _ = model(transformed_video)
+            scores = (
+                model(transformed_video)[0] if has_pose else model(transformed_video)
+            )
 
             first_five = argmax(scores, classes)
             video = []

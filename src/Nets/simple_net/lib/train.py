@@ -2,13 +2,15 @@ from torch import nn, optim
 
 
 def optim_model(model, learning_rate: float):
-    """_summary_
+    """Get critetric and optimizer for model. Additionally, get scheduler.
 
     Args:
-        model (_type_): _description_
+        model (Model): A model for optimizer = [Example = torch.optim.Adadelta(net.parameters(), lr=1e-2)].
 
     Returns:
-        _type_: _description_
+        criterion (nn.CrossEntropyLoss): A criterion for loss.
+        optimizer (torch.optim.Optimizer): An optimizer for model.
+        scheduler (torch.optim.lr_scheduler.ReduceLROnPlateau): A scheduler for learning rate.
     """
     criterion = nn.CrossEntropyLoss()
 
@@ -24,14 +26,16 @@ def optim_model(model, learning_rate: float):
 
 
 def get_correct(scores, targets):
-    """_summary_
+    """
+    Get correct predictions and total predictions.
 
     Args:
-        scores (_type_): _description_
-        targets (_type_): _description_
+        scores (torch.Tensor): A tensor of scores.
+        targets (torch.Tensor): A tensor of targets.
 
     Returns:
-        _type_: _description_
+        correct (int): Number of correct predictions.
+        num (int): Number of total predictions.
     """
     _, predictions = scores.max(1)
     acc = (predictions == targets).sum()
@@ -47,14 +51,19 @@ def train_model(
     learning_rate,
     num_epochs,
 ):
-    """_summary_
+    """
+    Train a model.
 
     Args:
-        model (_type_): _description_
-        train_loader (_type_): _description_
+        model (Model): A model to train.
+        train_loader (DataLoader): A DataLoader object.
+        validation_loader (DataLoader): A DataLoader object.
+        device (str): A device to train on.
+        learning_rate (float): A learning rate.
+        num_epochs (int): Number of epochs to train.
 
     Returns:
-        _type_: _description_
+        model (Model): A trained model.
     """
     criterion, optimizer, scheduler = optim_model(model, learning_rate)
     model.to(device)

@@ -27,13 +27,15 @@
 \newcommand{\ruta}[1]{{\sffamily #1}}
 
 % Párrafos
-\nonzeroparskip
+\setlength{\parskip}{1em}
+\setlength{\parindent}{4em}
 
 % Huérfanas y viudas
 \widowpenalty100000
 \clubpenalty100000
 
 % Imagenes
+\usepackage{subcaption}
 \usepackage{graphicx}
 \newcommand{\imagen}[2]{
 	\begin{figure}[!h]
@@ -308,11 +310,11 @@
 \newcommand{\course}[1]{\def\@course{#1}}
 \definecolor{cpardoBox}{HTML}{E6E6FF}
 \def\maketitle{
-  \null
   \thispagestyle{empty}
   % Cabecera ----------------
-\noindent\includegraphics[width=\textwidth]{cabecera}\vspace{1cm}%
-  \vfill
+  \noindent\includegraphics[width=\textwidth]{cabecera}\vspace{1cm}%
+
+
   % Título proyecto y escudo informática ----------------
   \colorbox{cpardoBox}{%
     \begin{minipage}{.8\textwidth}
@@ -328,14 +330,19 @@
   \hfill\begin{minipage}{.20\textwidth}
     \includegraphics[width=\textwidth]{escudoInfor}
   \end{minipage}
-  \vfill
+
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.4\textwidth]{../assets/logo/logo}
+  \end{figure}
+  
   % Datos de alumno, curso y tutores ------------------
   \begin{center}%
   {%
     \noindent\LARGE
     Presentado por \@author{}\\ 
     en Universidad de Burgos --- \@date{}\\
-    Tutor: \@tutor{}\\
+    Tutores: \@tutor{}\\
   }%
   \end{center}%
   \null
@@ -343,21 +350,21 @@
   }
 \makeatother
 
-\newcommand{\nombre}{Nombre del alumno} %%% cambio de comando
+\newcommand{\tutores}{Dr. Daniel Urda Muñoz y Dr. Bruno Baruque Zanon}
+\newcommand{\nombre}{Iván Ruiz Gázquez}
+\newcommand{\titulo}{Sign2Text - Transcripción de lenguaje de signos (a nivel de palabra) mediante DL}
 
 % Datos de portada
-\title{Sign2Text - Traducción de ASL a texto y la pinga de la nora}
+\title{\titulo}
 \author{\nombre}
-\tutor{Iván Ruiz Gázquez}
+\tutor{\tutores}
 \date{\today}
 
 \begin{document}
 
 \maketitle
 
-
-\newpage\null\thispagestyle{empty}\newpage
-
+\cleardoublepage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \thispagestyle{empty}
@@ -369,29 +376,29 @@
 
 \noindent Expone:
 
-\noindent Que el alumno D. \nombre, con DNI dni, ha realizado el Trabajo final de Grado en Ingeniería Informática titulado título de TFG. 
+\noindent Que el alumno D. \nombre, con DNI dni, ha realizado el Trabajo final de Grado en Ingeniería Informática titulado título de TFG.
 
 \noindent Y que dicho trabajo ha sido realizado por el alumno bajo la dirección del que suscribe, en virtud de lo cual se autoriza su presentación y defensa.
 
 \begin{center} %\large
-En Burgos, {\large \today}
+  En Burgos, {\large \today}
 \end{center}
 
 \vfill\vfill\vfill
 
 % Author and supervisor
 \begin{minipage}{0.45\textwidth}
-\begin{flushleft} %\large
-Vº. Bº. del Tutor:\\[2cm]
-D. nombre tutor
-\end{flushleft}
+  \begin{flushleft} %\large
+    Vº. Bº. del Tutor:\\[2cm]
+    D. nombre tutor
+  \end{flushleft}
 \end{minipage}
 \hfill
 \begin{minipage}{0.45\textwidth}
-\begin{flushleft} %\large
-Vº. Bº. del co-tutor:\\[2cm]
-D. nombre co-tutor
-\end{flushleft}
+  \begin{flushleft} %\large
+    Vº. Bº. del co-tutor:\\[2cm]
+    D. nombre co-tutor
+  \end{flushleft}
 \end{minipage}
 \hfill
 
@@ -413,12 +420,12 @@ D. nombre co-tutor
 % Abstract en castellano
 \renewcommand*\abstractname{Resumen}
 \begin{abstract}
-En este primer apartado se hace una \textbf{breve} presentación del tema que se aborda en el proyecto.
+  En este primer apartado se hace una \textbf{breve} presentación del tema que se aborda en el proyecto.
 \end{abstract}
 
 \renewcommand*\abstractname{Descriptores}
 \begin{abstract}
-Palabras separadas por comas que identifiquen el contenido del proyecto Ej: servidor web, buscador de vuelos, android \ldots
+  Palabras separadas por comas que identifiquen el contenido del proyecto Ej: servidor web, buscador de vuelos, android \ldots
 \end{abstract}
 
 \clearpage
@@ -426,12 +433,12 @@ Palabras separadas por comas que identifiquen el contenido del proyecto Ej: serv
 % Abstract en inglés
 \renewcommand*\abstractname{Abstract}
 \begin{abstract}
-A \textbf{brief} presentation of the topic addressed in the project.
+  A \textbf{brief} presentation of the topic addressed in the project.
 \end{abstract}
 
 \renewcommand*\abstractname{Keywords}
 \begin{abstract}
-keywords separated by commas.
+  keywords separated by commas.
 \end{abstract}
 
 \clearpage

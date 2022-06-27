@@ -9,8 +9,8 @@ def get_datasets() -> Dict[str, Dict[str, str]]:
         Dict[str, Dict[str, str]]: The list of available datasets.
     """
     datasets = {
-        "WLASL": {"name": "WLASL_frames_100", "path": "WLASL/frames_20"},
-        "animals": {"name": "animals_simple", "path": "animals/all"},
+        "WLASL": {"name": "WLASL", "path": "WLASL/frames"},
+        "animals": {"name": "animals", "path": "animals/all"},
         "signs": {"name": "signs", "path": "signs"},
     }
     return datasets
@@ -32,6 +32,6 @@ def get_dataset_info(dataset: str) -> Tuple[str, str]:
     base_path = path.join(path.dirname(__file__), "../../../../")
 
     data_dir = path.abspath(path.join(base_path, "data", data_path))
-    model_path = path.abspath(path.join(base_path, "models", f"resnet_{name}.pth"))
+    model_path = path.abspath(path.join(base_path, "models", f"{name}_resnet.pth"))
 
     return data_dir, model_path

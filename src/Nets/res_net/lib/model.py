@@ -3,10 +3,10 @@ from torch import nn, save, load
 
 
 def create_model(num_classes: int) -> ResNet:
-    """_summary_
+    """Create a ResNet model.
 
     Returns:
-        ResNet: _description_
+        ResNet: A ResNet model.
     """
     # Load custom model. Hacer
 
@@ -19,11 +19,11 @@ def create_model(num_classes: int) -> ResNet:
 
 # Change last layer.
 def update_last_layer(model: ResNet, num_classes: int) -> ResNet:
-    """_summary_
+    """Update last layer of a ResNet model.
 
     Args:
-        model (ResNet): _description_
-        num_classes (int): _description_
+        model (ResNet): A ResNet model.
+        num_classes (int): Number of classes.
     """
     for param in model.parameters():
         param.requires_grad = False
@@ -41,23 +41,23 @@ def update_last_layer(model: ResNet, num_classes: int) -> ResNet:
 
 
 def export_model(model, path: str):
-    """_summary_
+    """Export a model to a file.
 
     Args:
-        model (_type_): _description_
-        path (str): _description_
+        model (ResNet): A ResNet model to export.
+        path (str): Path to save the model to.
     """
     save(model, path)
 
 
 def load_model(model_path: str):
-    """_summary_
+    """Load a model from a given path.
 
     Args:
-        model_path (str): _description_
+        model_path (str): Path to load the model from.
 
     Returns:
-        _type_: _description_
+        ResNet: A ResNet model.
     """
     model = load(model_path)
     return model

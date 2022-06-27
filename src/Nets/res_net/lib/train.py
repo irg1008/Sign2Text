@@ -2,13 +2,14 @@ from torch import nn, optim
 
 
 def optim_model(model, learning_rate: float):
-    """_summary_
+    """Get creterion and optimizer for training phase.
 
     Args:
-        model (_type_): _description_
+        model (Model): A model to train.
 
     Returns:
-        _type_: _description_
+        criterion (nn.CrossEntropyLoss): A criterion for loss.
+        optimizer (Optimizer): An optimizer for training.
     """
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.fc.parameters(), lr=learning_rate)
@@ -17,14 +18,14 @@ def optim_model(model, learning_rate: float):
 
 
 def train_model(model, train_loader, device, learning_rate, num_epochs):
-    """_summary_
+    """Train a model.
 
     Args:
-        model (_type_): _description_
-        train_loader (_type_): _description_
+        model (Model): A model to train.
+        train_loader (DataLoader): A DataLoader object.
 
     Returns:
-        _type_: _description_
+        model (Model): A trained model.
     """
     criterion, optimizer = optim_model(model, learning_rate)
 

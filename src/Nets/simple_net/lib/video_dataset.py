@@ -9,13 +9,28 @@ import numpy as np
 # Based on: https://github.com/RaivoKoot/Video-Dataset-Loading-Pytorch/blob/main/video_dataset.py
 
 
+def load_image(directory: str, frame: int, imagefile_template: str) -> Image.Image:
+    """Load an image from a directory and frame.
+
+    Args:
+        directory (str): The directory of the video.
+        frame (int): The frame number.
+
+    Returns:
+        Image.Image: The image loaded from directory.
+    """
+    return Image.open(
+        path.join(directory, imagefile_template.format(frame + 1))
+    ).convert("RGB")
+
+
 class VideoRecord:
-    """Vdieo record to store video data."""
+    """Video record to store video data."""
 
     def __init__(self, path: str, label: int):
         self._path = path
         self._label = label
-        self._num_frames = len(listdir(path))
+        self._num_frames = len([f for f in listdir(path) if f.endswith(".png")])
 
     @property
     def path(self) -> str:
@@ -78,20 +93,6 @@ class VideoFrameDataset(data.Dataset):
                 )
                 self.videos.append(video_record)
 
-    def _load_image(self, directory: str, frame: int) -> Image.Image:
-        """Load an image from a directory and frame.
-
-        Args:
-            directory (str): The directory of the video.
-            frame (int): The frame number.
-
-        Returns:
-            Image.Image: The image loaded from directory.
-        """
-        return Image.open(
-            path.join(directory, self.imagefile_template.format(frame + 1))
-        ).convert("RGB")
-
     def _get_start_indices(self, record: VideoRecord) -> ndarray:
         """Get the start indices for the video.
 
@@ -121,7 +122,9 @@ class VideoFrameDataset(data.Dataset):
             for i in range(self.frames_per_segment):
                 if start_index + i >= record.num_frames:
                     break
-                image = self._load_image(record.path, start_index + i)
+                image = load_image(
+                    record.path, start_index + i, self.imagefile_template
+                )
                 images.append(image)
 
         images_tensor = self.transform(images)

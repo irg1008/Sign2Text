@@ -10,6 +10,7 @@ def check_accuracy(
     classes: List[str],
     device,
     n_batchs=10,
+    has_pose=False,
 ):
     """Check the accuracy of the model on the dataset.
 
@@ -19,6 +20,7 @@ def check_accuracy(
         classes (List[str]): The list of classes.
         device (Literal[cuda, cpu]): The device to use.
         n_batchs (int, optional): Number of batches to check. Defaults to 10.
+        has_pose (bool, optional): Whether the model has pose information. Defaults to False.
     """
     model.to(device)
     model.eval()
@@ -27,10 +29,11 @@ def check_accuracy(
     num_samples = 0
 
     with torch.no_grad():
-        for i, (videos, (targets, _)) in enumerate(loader):
+        for i, (videos, loader_targets) in enumerate(loader):
+            targets = loader_targets[0] if has_pose else loader_targets
             videos, targets = videos.to(device), targets.to(device)
 
-            scores_1, _ = model(videos)
+            scores_1 = model(videos)[0] if has_pose else model(videos)
             _, predictions = scores_1.max(1)
             num_correct += (predictions == targets).sum()
             num_samples += predictions.size(0)

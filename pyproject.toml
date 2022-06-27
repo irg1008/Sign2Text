@@ -23,6 +23,7 @@ disable = [
   "wrong-import-position",
   "no-name-in-module",
   "unnecessary-lambda-assignment",
+  "dangerous-default-value",
 ]
 [tool.pylint."SIMILARITIES"]
 min-similarity-lines = 30

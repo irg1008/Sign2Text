@@ -12,7 +12,6 @@ class CNN(nn.Module):  # pylint disable=too-few-public-methods
         super().__init__()
 
         # Convolutional layer.
-
         final_channels = 2
         pooling_downsample = 3**2  # 2 times 3 pool downsample
         stride_downsample = 2**1  # 1 time 2 stride downsample
@@ -32,7 +31,7 @@ class CNN(nn.Module):  # pylint disable=too-few-public-methods
 
         # The downsampling scale on convolutional (i.e.: 2 + 2 with stride and pooling)
         downsampling = int(
-            np.ceil(image_size / (pooling_downsample * stride_downsample))
+            np.floor(image_size / (pooling_downsample * stride_downsample))
         )
         linear_1 = (downsampling**2) * final_channels * hidden_3
         linear_2 = linear_1 // 4
