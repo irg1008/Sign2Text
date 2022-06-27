@@ -5,6 +5,7 @@
 <img align="center" src="./docs/assets/logo/logo.svg" alt="logo" width="400" />
 
 <br />
+<br />
 
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=sign2text-irgazquez&style=flat)](https://sign2text.com)
 [![Api working](https://img.shields.io/badge/api-working-brightgreen?logo=fastapi)](https://api.sign2text.com/docs)
