@@ -29,7 +29,7 @@ stages:
 
 linter:
   stage: Static Analysis
-  allow_failure: true
+  allow_failure: false
   script:
     - pylint src
 
@@ -40,6 +40,6 @@ formatter:
 
 type-checker:
   stage: Static Analysis
-  allow_failure: true
+  allow_failure: false
   script:
     - mypy src
