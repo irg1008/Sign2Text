@@ -2,6 +2,8 @@
 
 <table align="center"><tr><td align="center" width="9999">
 
+<br />
+
 <img align="center" src="./docs/assets/logo/logo.svg" alt="logo" width="400" />
 
 <br />
