@@ -22,6 +22,7 @@ before_script:
   - virtualenv venv
   - source venv/bin/activate
   - pip install pylint black mypy
+  - mypy --install-types
 
 stages:
   - Static Analysis
