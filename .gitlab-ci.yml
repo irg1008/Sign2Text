@@ -21,8 +21,7 @@ before_script:
   - pip install virtualenv
   - virtualenv venv
   - source venv/bin/activate
-  - pip install pylint black mypy
-  - mypy --install-types
+  - pip install pylint black mypy types-PyYAML
 
 stages:
   - Static Analysis
