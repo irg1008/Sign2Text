@@ -23,6 +23,8 @@
 ![runtime onnx](https://img.shields.io/badge/runtime-onnx-lightgray?logo=onnx)
 
 Transcripción de lenguaje de signos (a nivel de palabra) mediante Deep Learning
+
+Check the [front-end](https://github.com/irg1008/Sign2Text-Astro) and [back-end](https://github.com/irg1008/Sign2Text-API) repos
 </td></tr></table>
 
 ---
