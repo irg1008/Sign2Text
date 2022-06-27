@@ -195,7 +195,7 @@ def get_poses_path(pose_path: str, labels: Labels) -> List[str]:
     """
     input_paths = []
 
-    for (label, ids) in labels.items():
+    for (_, ids) in labels.items():
         for vid_id in ids:
             input_paths.append(abs_path(path.join(pose_path, f"{vid_id}")))
 

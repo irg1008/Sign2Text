@@ -6,24 +6,24 @@ import cv2
 
 
 def webcam_720p(cap):
-    """_summary_
+    """Set the webcam to 720p.
 
     Args:
-        cap (_type_): _description_
+        cap (VideoCapture): VideoCapture object.
     """
     cap.set(3, 1280)
     cap.set(4, 720)
 
 
 def argmax(scores, classes):
-    """_summary_
+    """Get the labels with the highest score.
 
     Args:
-        scores (_type_): _description_
-        classes (_type_): _description_
+        scores (Tensor): Scores of the model.
+        classes (List[str]): List of target classes.
 
     Returns:
-        _type_: _description_
+        List[str]: First five labels of the image.
     """
     percentage = F.softmax(scores, dim=1)[0] * 100
     _, indices = torch.sort(scores, descending=True)
@@ -33,13 +33,15 @@ def argmax(scores, classes):
 
 
 def preprocess(image, device, transform):
-    """_summary_
+    """Preprocess a video or image given the pytorch transform function.
 
     Args:
-        image (_type_): _description_
+        image (Tensor): Image or video to transform.
+        device ("cpu" | "gpu"): Device to transform the tensor in.
+        transform (Transform): Pytorch transform function.
 
     Returns:
-        _type_: _description_
+        Tensor: transformed input tensor.
     """
     image = transform(image)
     image = image.float()
@@ -49,11 +51,11 @@ def preprocess(image, device, transform):
 
 
 def video_webcam_inference(model, classes, device, transform, fps_interval: int):
-    """_summary_
+    """Infere a video from webcam.
 
     Args:
-        model (_type_): _description_
-        classes (_type_): _description_
+        model (Model): Video model to infere with
+        classes (List[str]): List of target classes.
     """
     model.to(device)
     model.eval()
@@ -84,18 +86,7 @@ def video_webcam_inference(model, classes, device, transform, fps_interval: int)
         # Reset every 'fps_interval' frames.
         if fps % fps_interval == 0:
             transformed_video = preprocess(video, device, transform)
-            scores, poses = model(transformed_video)
-
-            # Multiply poses by image width.
-            # POSES_PER_FRAME = 84  # See train notebook.
-            # last_frame_poses = poses.squeeze()[-POSES_PER_FRAME:]
-            # last_frame_poses *= IMAGE_SIZE
-            # last_frame_poses = last_frame_poses.cpu().detach().numpy()
-            # x, y = last_frame_poses[0::2], last_frame_poses[1::2]
-
-            # Plot the poses.
-            # plt.scatter(x, y)
-            # plt.pause(0.001)
+            scores, _ = model(transformed_video)
 
             first_five = argmax(scores, classes)
             video = []
@@ -116,8 +107,6 @@ def video_webcam_inference(model, classes, device, transform, fps_interval: int)
         cv2.rectangle(frame, upper_left, bottom_right, (250, 0, 0), 2)
         cv2.imshow("ASL SIGN DETECTER", frame)
 
-        # plt.imshow(rect_frame)
-
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
@@ -126,11 +115,11 @@ def video_webcam_inference(model, classes, device, transform, fps_interval: int)
 
 
 def webcam_inference(model, classes, device, transform):
-    """_summary_
+    """Infere an image from webcam.
 
     Args:
-        model (_type_): _description_
-        classes (_type_): _description_
+        model (Model): Image model to infere with
+        classes (List[str]): List of target classes.
     """
     model.to(device)
     model.eval()
@@ -179,15 +168,15 @@ def webcam_inference(model, classes, device, transform):
 
 
 def path_inference(model, classes, device, transform, img_path: str):
-    """_summary_
+    """Inference an image given the image path.
 
     Args:
-        model (_type_): _description_
-        classes (_type_): _description_
-        img_path (str): _description_
+        model (Model): Image model to infere with
+        classes (List[str]): List of target classes.
+        img_path (str): Path of image.
 
     Returns:
-        _type_: _description_
+        str: Label of the image.
     """
     image = Image.open(img_path).convert("RGB")
     image = preprocess(image, device, transform)

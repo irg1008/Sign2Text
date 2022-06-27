@@ -1,8 +1,10 @@
+import sys
+
+
 from argparse import ArgumentParser, Namespace
 from os import listdir, makedirs, path, popen
 from typing import List, Tuple
 import cv2
-import sys
 
 sys.path.append("../")
 

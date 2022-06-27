@@ -1,26 +1,26 @@
 from os import listdir, path
 from typing import List, Tuple
+import json
+import torch
 from torch import Tensor
 from torch.utils import data
 from torchvision.transforms import Compose
 from PIL import Image
 from numpy import ndarray
 import numpy as np
-import json
-import torch
 
 # Based on: https://github.com/RaivoKoot/Video-Dataset-Loading-Pytorch/blob/main/video_dataset.py
 
 
-class Pose:
+class Pose:  # pylint: disable=too-few-public-methods
     """Pose class."""
 
     def __init__(
         self,
-        pose_keypoints_2d: List[int] = np.zeros(75).tolist(),
-        face_keypoints_2d: List[int] = np.zeros(0).tolist(),
-        hand_left_keypoints_2d: List[int] = np.zeros(63).tolist(),
-        hand_right_keypoints_2d: List[int] = np.zeros(63).tolist(),
+        pose_keypoints_2d=np.zeros(75),
+        face_keypoints_2d=np.zeros(0),
+        hand_left_keypoints_2d=np.zeros(63),
+        hand_right_keypoints_2d=np.zeros(63),
     ):
         self.body_pose = pose_keypoints_2d
         self.face_pos = face_keypoints_2d
@@ -50,7 +50,7 @@ class Pose:
         return xy
 
 
-def load_pose(directory: str, frame: int, posefile_template: str, img_width: int):
+def load_pose(directory: str, frame: int, posefile_template: str):
     """Load the pose from a directory and frame.
 
     Args:
@@ -82,7 +82,14 @@ def load_pose(directory: str, frame: int, posefile_template: str, img_width: int
 
 
 def get_poses_tensor(poses: List[Pose]) -> Tensor:
-    # return torch.cat([pose.to_tensor() for pose in poses]).flatten()
+    """Converts a list of poses to a tensor.
+
+    Args:
+        poses (List[Pose]): The list of poses to convert.
+
+    Returns:
+        Tensor: The tensor of the poses.
+    """
     return torch.stack([pose.to_tensor() for pose in poses])
 
 
@@ -141,7 +148,7 @@ Input = Tensor
 Target = Tuple[int, Tensor]
 
 
-class VideoFrameDataset(data.Dataset):
+class VideoFrameDataset(data.Dataset):  # pylint: disable=too-many-instance-attributes
     """Dataset that loads videos from a directory of images"""
 
     def __init__(
@@ -152,7 +159,6 @@ class VideoFrameDataset(data.Dataset):
         num_segments: int,
         frames_per_segment: int,
         imagefile_template: str = "img_{:05d}.png",
-        posefile_template: str = "img_{:05d}.json",
     ):
         super().__init__()
         self.transform = transform
@@ -160,7 +166,7 @@ class VideoFrameDataset(data.Dataset):
         self.num_segments = num_segments
         self.frames_per_segment = frames_per_segment
         self.imagefile_template = imagefile_template
-        self.posefile_template = posefile_template
+        self.posefile_template = imagefile_template.replace("png", "json")
         self._load_data(root_path)
 
     def _load_data(self, root_path: str):
@@ -191,9 +197,7 @@ class VideoFrameDataset(data.Dataset):
         stop = np.max([0, record.num_frames - self.frames_per_segment])
         return np.linspace(0, stop, self.num_segments, dtype=int)
 
-    def _get(
-        self, record: VideoRecord, frame_start_indices: np.ndarray
-    ) -> Tuple[Tensor, int, Tensor]:
+    def _get(self, record: VideoRecord, frame_start_indices: np.ndarray):
         """Get the next item on dataset.
 
         Args:
@@ -201,7 +205,7 @@ class VideoFrameDataset(data.Dataset):
             frame_start_indices (np.ndarray): The start indices for the video.
 
         Returns:
-            Tuple[Tensor, int]: The next item on dataset.
+            Tuple[Tensor, int, Tensor]: The next item on dataset.
         """
         images = []
         poses: List[Pose] = []
@@ -211,9 +215,7 @@ class VideoFrameDataset(data.Dataset):
                 if i >= record.num_frames:
                     break
                 image = load_image(record.path, i, self.imagefile_template)
-                pose = load_pose(
-                    record.path, i, self.posefile_template, self.image_size
-                )
+                pose = load_pose(record.path, i, self.posefile_template)
                 if pose is None:
                     pose = poses[-1] if len(poses) > 0 else Pose()
                 images.append(image)
@@ -223,7 +225,7 @@ class VideoFrameDataset(data.Dataset):
         poses_tensor = get_poses_tensor(poses)
         return images_tensor, record.label, poses_tensor
 
-    def __getitem__(self, idx: int) -> Tuple[Input, Target]:
+    def __getitem__(self, idx: int):
         """Get the next item on dataset.
 
         Args:

@@ -2,13 +2,14 @@ from torch import nn, optim
 
 
 def optim_model(model, learning_rate: float):
-    """_summary_
+    """Get oprimizer, criterion and scheduler for model.
 
     Args:
-        model (_type_): _description_
+        model (Model): Model.
+        learning_rate (float): Initial learning rate.
 
     Returns:
-        _type_: _description_
+        Class Criterion, Pose Criterion, Optimizer, Learning Rate Scheduler.
     """
     class_criterion = nn.CrossEntropyLoss()
     pose_criterion = nn.MSELoss()
@@ -25,14 +26,14 @@ def optim_model(model, learning_rate: float):
 
 
 def get_correct(scores, targets):
-    """_summary_
+    """Get accuracy and number of correct predictions.
 
     Args:
-        scores (_type_): _description_
-        targets (_type_): _description_
+        scores (Tensor): The scores of the model.
+        targets (Tensor): The targets of the model.
 
     Returns:
-        _type_: _description_
+        Tensor, int: The accuracy of the model and prediction size.
     """
     _, predictions = scores.max(1)
     acc = (predictions == targets).sum()
@@ -44,14 +45,15 @@ def net_pass(model, data, criterion_1, criterion_2, target_1, target_2):
     """Get loss for model.
 
     Args:
-        model (_type_): _description_
-        criterion (_type_): _description_
-        data (_type_): _description_
-        target_1 (_type_): _description_
-        target_2 (_type_): _description_
+        model (Model): Model.
+        data (Tuple[Tensor, Tensor]): The data of the model.
+        criterion_1 (nn.CrossEntropyLoss): The class criterion.
+        criterion_2 (nn.MSELoss): The pose criterion.
+        target_1 (Tensor): The target of the class criterion.
+        target_2 (Tensor): The target of the pose criterion.
 
     Returns:
-        _type_: _description_
+        Tensor, Tensor: The loss of the model and the accuracy data.
     """
     out_1, out_2 = model(data)
 
@@ -75,14 +77,19 @@ def train_model(
     num_epochs,
     writer,
 ):
-    """_summary_
+    """Train the model.
 
     Args:
-        model (_type_): _description_
-        train_loader (_type_): _description_
+        model (Model): Model.
+        train_loader (DataLoader): The train loader.
+        validation_loader (DataLoader): The validation loader.
+        device (str): The device to use.
+        learning_rate (float): Initial learning rate.
+        num_epochs (int): Number of epochs to train for.
+        writer (SummaryWriter): The tensorboard writer.
 
     Returns:
-        _type_: _description_
+        Model: The trained model.
     """
     class_criterion, pose_criterion, optimizer, scheduler = optim_model(
         model, learning_rate
@@ -101,8 +108,8 @@ def train_model(
         train_predictions, val_predictions = 0, 0
 
         model.train()
-        for i, train in enumerate(train_loader):
-            data, (class_targets, pose_targets) = train
+        for train_data in train_loader:
+            data, (class_targets, pose_targets) = train_data
             data, class_targets, pose_targets = (
                 data.to(device),
                 class_targets.to(device),
@@ -133,8 +140,8 @@ def train_model(
             optimizer.step()
 
         model.eval()
-        for i, val in enumerate(validation_loader):
-            data, (class_targets, pose_targets) = val
+        for val_data in validation_loader:
+            data, (class_targets, pose_targets) = val_data
             data, class_targets, pose_targets = (
                 data.to(device),
                 class_targets.to(device),

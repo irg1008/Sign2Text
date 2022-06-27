@@ -5,7 +5,7 @@ sys.path.append("../")
 
 
 from config.dataset import get_dataset_path
-from config.torch_config import get_transform
+from common.config.torch_config import get_transform
 from utils.loader import split_dataset
 
 from lib.video_dataset import VideoFrameDataset
@@ -13,9 +13,8 @@ from lib.model import CNN
 
 
 def test_dataset():
-    data_path, model_path = get_dataset_path(
-        dataset="WLASL/videos", model_name="WLASL_5"
-    )
+    """Test the dataset."""
+    data_path, _ = get_dataset_path(dataset="WLASL/videos", model_name="WLASL_5")
     multiple_transform = get_transform(200)
 
     dataset = VideoFrameDataset(
@@ -27,7 +26,7 @@ def test_dataset():
     )
     classes = dataset.classes
 
-    train_loader, test_loader, validation_loader = split_dataset(
+    train_loader, _, _ = split_dataset(
         dataset, train_split=0.70, validation_split=0.1, batch_size=16
     )
 
@@ -40,6 +39,7 @@ def test_dataset():
 
 
 def test_model():
+    """Test the model."""
     num_frames = 10 * 5
     model = CNN(
         num_classes=5,

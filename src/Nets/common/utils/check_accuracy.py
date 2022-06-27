@@ -30,7 +30,7 @@ def check_accuracy(
         for i, (videos, (targets, _)) in enumerate(loader):
             videos, targets = videos.to(device), targets.to(device)
 
-            scores_1, scores_2 = model(videos)
+            scores_1, _ = model(videos)
             _, predictions = scores_1.max(1)
             num_correct += (predictions == targets).sum()
             num_samples += predictions.size(0)

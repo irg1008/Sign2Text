@@ -1,6 +1,5 @@
 from os import listdir, path
-from typing import List, Tuple
-from torch import Tensor
+from typing import List
 from torch.utils import data
 from torchvision.transforms import Compose
 from PIL import Image
@@ -106,9 +105,7 @@ class VideoFrameDataset(data.Dataset):
             0, record.num_frames - self.frames_per_segment, self.num_segments, dtype=int
         )
 
-    def _get(
-        self, record: VideoRecord, frame_start_indices: np.ndarray
-    ) -> Tuple[Tensor, int]:
+    def _get(self, record: VideoRecord, frame_start_indices: np.ndarray):
         """Get the next item on dataset.
 
         Args:
@@ -130,7 +127,7 @@ class VideoFrameDataset(data.Dataset):
         images_tensor = self.transform(images)
         return images_tensor, record.label
 
-    def __getitem__(self, idx: int) -> Tuple[Tensor, int]:
+    def __getitem__(self, idx: int):
         """Get the next item on dataset.
 
         Args:

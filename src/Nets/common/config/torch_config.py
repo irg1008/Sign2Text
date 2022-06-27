@@ -5,7 +5,6 @@ from torchvision.transforms import (
     Normalize,
     ToTensor,
     Compose,
-    RandomGrayscale,
 )
 from PIL import Image
 import torch
@@ -38,8 +37,6 @@ get_transform = lambda image_size: Compose(
         ImgsToTensor(),
         Resize(image_size),
         RandomCrop(image_size),
-        # transforms.RandomRotation(5),
-        # RandomGrayscale(),
         normalize,
     ]
 )
