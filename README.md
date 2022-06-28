@@ -12,6 +12,7 @@
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=sign2text-irgazquez&style=flat)](https://sign2text.com)
 [![Api working](https://img.shields.io/badge/api-working-brightgreen?logo=fastapi)](https://api.sign2text.com/docs)
 ![Deployed on](https://img.shields.io/badge/model-google_cloud-brightgreen?logo=google-cloud)
+[![Dockerized](https://img.shields.io/badge/docker-container-2496ED?logo=docker)](https://hub.docker.com/repository/docker/gazquez/sign2text)
 
 ![Pipeline Status](https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/badges/main/pipeline.svg)
 [![License](https://img.shields.io/github/license/irg1008/sign2text)](https://gitlab.com/HP-SCDS/Observatorio/2021-2022/sign2text/ubu-sign2text/-/blob/main/LICENSE)
