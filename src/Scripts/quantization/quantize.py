@@ -3,7 +3,7 @@ from onnxruntime.quantization import quantize_dynamic, QuantType
 
 # import onnx
 
-# Snippet extraido de mi compañero Jorge Ruiz Gómez en:
+# Snippet adaptado de mi compañero Jorge Ruiz Gómez en:
 # https://github.com/JorgeRuizDev/SpotMyFM/blob/main/Ludwig/mir-backend/models/quantize.py
 
 

@@ -30,6 +30,15 @@
 \setlength{\parskip}{1em}
 \setlength{\parindent}{4em}
 
+% Abreviaturas
+\newcommand{\pe}{i.e.}
+
+% Siglas
+\newcommand{\sigla}[1]{{\textsc{#1}}}
+
+% Otro idioma
+\newcommand{\loc}[1]{{\textit{#1}}}
+
 % Huérfanas y viudas
 \widowpenalty100000
 \clubpenalty100000
@@ -242,6 +251,8 @@
   \end{center}
 }
 
+% Comando para términos de programación, como lenguajes, herramientas.
+\newcommand{\prog}[1]{\texttt{#1}}
 
 
 \definecolor{cgoLight}{HTML}{EEEEEE}
@@ -301,6 +312,10 @@
 	\chapter{#1}
 }
 
+% Sublistas
+\usepackage{enumitem}
+\setlist[enumerate]{label*=\arabic*.}
+
 \renewcommand*\cftappendixname{\appendixname\ }
 
 % Formato de portada
@@ -350,9 +365,11 @@
   }
 \makeatother
 
+\newcommand{\project}[1][Sign2Text]{{\textsf{#1}}}
+\newcommand{\titulo}{Sign2Text - Transcripción de lenguaje de signos (a nivel de palabra) mediante DL}
 \newcommand{\tutores}{Dr. Daniel Urda Muñoz y Dr. Bruno Baruque Zanon}
 \newcommand{\nombre}{Iván Ruiz Gázquez}
-\newcommand{\titulo}{Sign2Text - Transcripción de lenguaje de signos (a nivel de palabra) mediante DL}
+
 
 % Datos de portada
 \title{\titulo}

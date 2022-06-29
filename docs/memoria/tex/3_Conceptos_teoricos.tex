@@ -1,84 +1,143 @@
 \capitulo{3}{Conceptos teóricos}
 
-En aquellos proyectos que necesiten para su comprensión y desarrollo de unos conceptos teóricos de una determinada materia o de un determinado dominio de conocimiento, debe existir un apartado que sintetice dichos conceptos.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Algunos conceptos teóricos de \LaTeX \footnote{Créditos a los proyectos de Álvaro López Cantero: Configurador de Presupuestos y Roberto Izquierdo Amo: PLQuiz}.
+Este proyecto es un proyecto de \loc{machine learning}. Dentro del \loc{machine learning}, es de aprendizaje supervisado. Más concretamente intenta resolver un problema de clasificación mediante deep learning. Las redes neuronales aplicadas para la clasificación serán \loc{ResNets} y \sigla{CNN} (\loc{Convolutional Neural Networks}). Veamos en detalle todos estos terminos en los siguientes apartados.
 
-\section{Secciones}
+\section{Machine Learning}
 
-Las secciones se incluyen con el comando section.
+Según Tom Mitchell \ref{mitchell1997machine}, un problema de aprendizaje se define como \quote{un pro}
 
-\subsection{Subsecciones}
+\subsection{Unsupervised Learning}
 
-Además de secciones tenemos subsecciones.
+\subsection{Semi-supervised Learning}
 
-\subsubsection{Subsubsecciones}
+\subsection{Supervised Learning}
 
-Y subsecciones. 
+\subsubsection{Regression}
 
-
-\section{Referencias}
-
-Las referencias se incluyen en el texto usando cite \cite{wiki:latex}. Para citar webs, artículos o libros \cite{koza92}.
-
-
-\section{Imágenes}
-
-Se pueden incluir imágenes con los comandos standard de \LaTeX, pero esta plantilla dispone de comandos propios como por ejemplo el siguiente:
-
-\imagen{escudoInfor}{Autómata para una expresión vacía}
-
-
-
-\section{Listas de items}
-
-Existen tres posibilidades:
-
-\begin{itemize}
-	\item primer item.
-	\item segundo item.
-\end{itemize}
+\subsubsection{Classification}
 
 \begin{enumerate}
-	\item primer item.
-	\item segundo item.
+  \item Redes Neuronales
+
+        \begin{itemize}
+          \item \loc{Perceptron}
+          \item \loc{Feedforward neural network}
+          \item \loc{Backpropagation}
+          \item \loc{Recurrent neural network}
+          \item \loc{Convolutional neural network}
+          \item \loc{Autoencoder}
+        \end{itemize}
+
 \end{enumerate}
 
-\begin{description}
-	\item[Primer item] más información sobre el primer item.
-	\item[Segundo item] más información sobre el segundo item.
-\end{description}
-	
-\begin{itemize}
-\item 
-\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Tablas}
+\section{Carga de datos}
 
-Igualmente se pueden usar los comandos específicos de \LaTeX o bien usar alguno de los comandos de la plantilla.
+\subsection{Extracción de frames de videos}
 
-\tablaSmall{Herramientas y tecnologías utilizadas en cada parte del proyecto}{l c c l c}{herramientasportipodeuso}
-{ \multicolumn{1}{l}{Herramientas} & App AngularJS & API REST & BD & Memoria \\}{ 
-HTML5 & X & & &\\
-CSS3 & X & & &\\
-BOOTSTRAP & X & & &\\
-JavaScript & X & & &\\
-AngularJS & X & & &\\
-Bower & X & & &\\
-PHP & & X & &\\
-Karma + Jasmine & X & & &\\
-Slim framework & & X & &\\
-Idiorm & & X & &\\
-Composer & & X & &\\
-JSON & X & X & &\\
-PhpStorm & X & X & &\\
-MySQL & & & X &\\
-PhpMyAdmin & & & X &\\
-Git + BitBucket & X & X & X & X\\
-Mik\TeX{} & & & & X\\
-\TeX{}Maker & & & & X\\
-Astah & & & & X\\
-Balsamiq Mockups & X & & &\\
-VersionOne & X & X & X & X\\
-} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\section{Tratamiento de los datos}
+
+\subsection{Normalización}
+
+\subsection{\loc{Data Augmentation}}
+
+\subsection{Transformación de datos a tensores}
+
+\subsection{\loc{Batching}}
+
+\subsection{\loc{Subsampling}}
+
+\subsection{Eliminación de datos innecesarios}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Red Neuronal ResNet}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Estructura de la red convolucional}
+
+\subsection{Capas convolucionales}
+
+\subsubsection{\loc{Downsampling}}
+\subsubsection{\loc{MaxPooling}}
+\subsubsection{\loc{BatchNormalization}}
+
+\subsection{\loc{Flatten layer}}
+
+\subsection{\loc{Dense layers}}
+
+\subsubsection{\loc{Dropout}}
+
+\subsection{\loc{Lineal layers}}
+
+\subsubsection{\loc{Leaky ReLU}}
+\subsubsection{\loc{ReLU}}
+
+\subsection{\loc{Capas de salida}}
+
+\subsubsection{Sigmoide}
+\subsubsection{Softmax}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Entrenamiento e hiperparametrización}
+
+\subsection{\loc{Pipeline} del proceo}
+
+\subsection{\loc{Optimizer}}
+
+\subsection{\loc{Scheduler}}
+
+\subsection{\loc{Criterion}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Salida de la red}
+
+\subsection{Dos salidas en la misma red}
+
+\subsubsection{Las salidas se controlan entre ellas}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Comprobación de resultados}
+
+¿Cómo podemos saber si el resultado incorrecto se debe a la estructura de la red o a los datos introducidos?
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Exportación del modelo}
+
+\subsection{Formatos estándares}
+
+\subsubsection{\sigla{ONNX}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Copresión del modelo}
+
+\subsection{Consecuencias}
+
+\subsubsection{Velocidad}
+
+\subsubsection{\loc{Accuracy}}
+
+\subsection{Métodos de compresión}
+
+\subsubsection{\loc{Quantization}}
+
+\subsubsection{\loc{Prunning}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Estudio de escalabilidad del modelo}
+
+Vamos a comprobar hasta que punto la red neuronal es capaz de mantener la precisión de clasificación con el aumento de las etiquetas. Para todo lo anterior el número de etiquetas a clasificar han sido 8. Vamos a aumentar esto hasta 100 etiquetas.
+
+En la siguiente tabla blabla
