@@ -1,7 +1,7 @@
 \documentclass[a4paper,12pt,twoside]{memoir}
 
 % Castellano
-\usepackage[spanish,es-tabla]{babel}
+\usepackage[spanish, es-tabla]{babel}
 \selectlanguage{spanish}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -22,6 +22,7 @@
 
 % Ecuaciones
 \usepackage{amsmath}
+\DeclareMathOperator{\argmax}{argmax}
 
 % Rutas de fichero / paquete
 \newcommand{\ruta}[1]{{\sffamily #1}}
@@ -46,11 +47,11 @@
 % Imagenes
 \usepackage{subcaption}
 \usepackage{graphicx}
-\newcommand{\imagen}[2]{
+\newcommand{\imagen}[3]{
 	\begin{figure}[!h]
 		\centering
 		\includegraphics[width=0.9\textwidth]{#1}
-		\caption{#2}\label{fig:#1}
+		\caption{#2}\label{fig:#3}
 	\end{figure}
 	\FloatBarrier
 }
@@ -315,6 +316,13 @@
 % Sublistas
 \usepackage{enumitem}
 \setlist[enumerate]{label*=\arabic*.}
+
+% Algoritmos (docs: https://en.wikibooks.org/wiki/LaTeX/Algorithms)
+\usepackage[spanish, spanishkw, ruled, longend, linesnumbered]{algorithm2e}
+
+% Bibliografía.
+\newcommand{\bib}[1]{\cite{#1}}
+\newcommand{\et}{\textit{et al.}}
 
 \renewcommand*\cftappendixname{\appendixname\ }
 

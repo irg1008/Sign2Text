@@ -93,7 +93,7 @@ def conv_layer_set(
     """
     conv_layer = nn.Sequential(
         nn.Conv3d(in_c, out_c, kernel_size=kernel_size, stride=stride, padding=padding),
-        nn.LeakyReLU(),
+        # nn.LeakyReLU(),
         nn.MaxPool3d(pool),
         nn.BatchNorm3d(
             out_c, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True

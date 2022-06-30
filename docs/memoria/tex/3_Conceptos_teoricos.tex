@@ -6,11 +6,11 @@ Este proyecto es un proyecto de \loc{machine learning}. Dentro del \loc{machine 
 
 \section{Machine Learning}
 
-Según Tom Mitchell \cite{mitchell1997machine}, un programa de ordenador aprende de una experiencia \textit{E} con respecto a alguna tarea \textit{T} si su medida de desempeño \textit{P} (del inglés \loc{performance}) mejora con E.
+Según Tom Mitchell \bib{mitchell1997machine}, un programa de ordenador aprende de una experiencia \textit{E} con respecto a alguna tarea \textit{T} si su medida de desempeño \textit{P} (del inglés \loc{performance}) mejora con E.
 
-El uso del machine learning se origina en la búsqueda de soluciones a problemas que no podemos resolver programáticamente. Determinar las soluciones se centra en la recogida y análisis de datos con la finalidad de buscar relaciones entre ellos.
+El uso del machine learning se origina en la búsqueda de soluciones a problemas que no podemos resolver programáticamente. Determinar las soluciones se centra en la recogida y análisis de datos\footnote{A lo largo del documento nos referiremos a los datos indistintamente como <<datos>> o <<instancias>>} con la finalidad de buscar relaciones entre ellos.
 
-Para aclarar este concepto, veamos un ejemplo:
+Para aclarar este concepto, veamos un ejemplo \bib{alpaydin2021machine}\label{example:car_price}:
 Imaginemos que debemos estimar el precio de un coche usado pero no tenemos la fórmula exacta para valorar su estado. Lo que si sabemos es que el precio del coche aumenta y disminuye dependiendo de sus propiedades, como la marca, el kilometraje, o el desgaste. No sabemos tampoco cuales de las propiedades tiene más importancia. Sabemos seguro que cuantos más kilómetros tenga el coche, menor será su precio, pero no sabemos a que escala ocurre esto.
 
 Para determinar la solución necesitamos estudiar el precio de coches en el mercado y anotar sus características. Estos datos son los que daremos a nuestro programa para que busque las relaciones entre propiedades e indique el precio óptimo de los coches.
@@ -19,21 +19,129 @@ Saliendo del ejemplo, el machine learning se divide en distintos tipos según la
 
 \subsection{Unsupervised Learning}
 
-El \loc{unsupervised learning} o  aprendizaje no supervisado, tiene su principal característica, en que no necesita una muestra de datos para aprender.
+El \loc{unsupervised learning} o  aprendizaje no supervisado, tiene su principal característica en que es capaz de detectar las relaciones entre los datos sin ayuda de etiquetas o respuestas externas. Si volvemos al ejemplo de los coches, seríamos capaces de determinar el precio de venta sin necesidad de recibir datos de coches reales.
 
-https://scholar.google.com/scholar?start=10&q=unsupervised+learning&hl=es&as_sdt=0,5
+La técnica principal en el aprendizaje no supervisado es el agrupamiento de los datos (o \loc{clustering}) según la similaridad de sus características. Pero hay más técnicas.
 
-https://profs.info.uaic.ro/~ciortuz/SLIDES/2017s/ml0.pdf
+\subsubsection{\loc{Clustering}}
 
-https://dl.matlabyar.com/mousa/Machine%20Learning%20matlabyar/e-book/McGrawHill%20-%20Machine%20Learning%20-Tom%20Mitchell%20(better).pdf
+El clustering consiste en el agrupamiento de datos no etiquetados basándonos en sus similaridades o diferencias. Los algoritmos de \loc{clustering} son usados para procesar datos crudos sin alteraciones en grupos representados por patrones o estructuras de información. Estos algoritmos pueden clasificar en:
 
-https://books.google.es/books?hl=es&lr=&id=2nQJEAAAQBAJ&oi=fnd&pg=PR7&dq=machine+learning&ots=fH28U2_zkt&sig=TqzBD2XTP8PaFW4EJ7SxJZUpZo8&redir_esc=y#v=onepage&q=machine%20learning&f=false
+\begin{itemize}
+  \item \textbf{Mutualmente excluyentes}: En estos algoritmos se estipula que una instancia de datos solo puede existir en un y solo un \loc{cluster} (o grupo). Este tipo de \loc{clustering} también se denomina \loc{<<hard>> clustering}. Un ejemplo de algoritmo mutualmente excluyente es el algoritmo de \loc{K-means}. En \loc{K-means}, la <<K>> indica el número de \loc{clusters}  basándonos en su centroide\footnote{O centro geométrico, es la posición media aritmética entre todos los puntos de una figura}. Los puntos, representando a un dato, caeran en el grupo con el centroide más cercano. Un valor de \loc{K-means} mayor indicará mayor número de agrupamientos. \imagen{./img/memoria/conceptos/Unsupervised_K-Means_Clustering_Algorithm}{Ejemplo de datos antes y después del \loc{clustering} para un algoritmo mutualmente exclutente \loc{K-means} \bib{sinaga2020unsupervised}.}{BeforeAfterClustering}
 
-https://beta.openai.com/playground
+  \item \textbf{Superpuestos}: En el caso de los algoritmos superpuestos, la diferencia es que un dato puede pertenecer a más de un \loc{cluster} de forma simultánea con distinto grado de pertenencia. Un ejemplo de algoritmo superpuesto es el \loc{<<soft>> K-means}.
+
+  \item \textbf{Jerárquicos}: También conocido como \sigla{HCA} (\loc{hierarchical cluster analysis}), es un algoritmo no supervisado que se puede categorizar de dos modos, en aglomerativo o divisivo. El primero funciona con acercamiento \loc{<<bottom-up>>}. Los datos comienzan de forma separada y se van uniendo de forma iterativa según similitud hasta conseguir un único cluster. La similaridad se puede medir de las siguientes formas:
+        \begin{enumerate}
+          \item Método de \loc{Ward}: La distancia entre dos clusters se define por el aumento de la distancia cuadrática después de que los clusters sean fusionados.
+          \item Promedio de distancias: Este método usa la distancia media entre dos puntos en cada \loc{cluster}.
+          \item Distancia máxima: La distancia usada es la distancia mayor entre dos puntos en distintos clusters.
+          \item Distancia mínima: Se define por la distancia mínima entre dos puntos de dos clusters diferentes.
+        \end{enumerate}
+        La medida más comun a la hora de calcular estas distancias es la distancia euclídea, aunque otra muy común en la literatura es la distancia \loc{Manhattan}.
+        Por otro lado, el acercamiento divisivo, o \loc{<<top-down>>} funciona dividinendo un único \loc{cluster} basándose en las diferencias entre instancias (puntos del cluster). Visualmente se parece a un dendrograma\footnote{Representación gráfica de datos en forma de árbol para organizar datos en categorias y subcategorias hasta alcanzar el nivel de detalle deseado}.
+
+  \item \textbf{Probabilísticos}: En un algoritmo probabilístico, los puntos se agrupan basándose en la probabilidad de que pertenezcan a una distribución paramétrica \footnote{La estadística paramétrica es una rama de la estadística con la que se deciden valores basándose en distribuciones desconocidas. Estas se determinan según un número finito de parámetros.}. El \sigla{GMM} (\loc{Gaussian Mixture Model}) es el método más usado en \loc{clustereing} probabilístico.
+        \begin{itemize}
+          \item \loc{Gaussian Mixture Model}: Este algoritmo se clasifica como mixto debido a que se compone de un número no especificado de funciones de densidad probabilísitca. Normalmente se encargará de comprobar si un instancia es parte de una distribución Gaussiana o normal. El algoritmo más usado para determinar la distribución es el \sigla{E-M} (Expectation-Maximizarion) \bib{do2008expectation}.
+        \end{itemize}
+\end{itemize}
+
+\subsubsection{Reglas de asociación}
+
+Las reglas de asociación es un método que busca buscar las relaciones entre variables de un \loc{dataset}. Suelen ser usados en \loc{marketing}, sistemas de recomendación, relación entre productos, estudio de hábitos de consumición \bib{panjaitan2019implementation}, entre otros. El algoritmo más usado en reglas de asociación es el algoritmo Apriori.
+
+\begin{itemize}
+  \item \textbf{Algoritmo Apriori}: Este algoritmo ppermite encontrar de forma frecuente <<conjuntos de elementos frecuentes>>. Estos conjuntos sirven para generar reglas de asociación que permiten extender los sets a sets de mayor tamaño.
+
+        \begin{algorithm}[H]
+          \caption{Algoritmo Apriori}
+
+          \BlankLine
+          \KwIn{Para un dataset $T$, un umbral de soporte $\varepsilon$ y un conjunto de datos $C_{k}$ para el nivel $k$}
+          \BlankLine
+
+          $L_1 \leftarrow findFrequentOneItemsets(T)$\\
+          $k$  = 2\\
+
+          \BlankLine
+          \While{$L_{k-1}$ not empty}{
+            \tcc{Generación de Apriori}
+            $C_k \leftarrow \text{empty list}$\\
+            \ForAll{$p \subseteq L\text{, } q \subseteq L $}{
+              $c \leftarrow p \cup q_{k-1}$\\
+
+              \ForAll{$u \in L$}{
+                \If{$u \subseteq c$}{
+                  $C_k \leftarrow C_k \cup \lbrace{c}\rbrace$\\
+                }
+              }
+            }
+
+            \BlankLine
+            \tcc{Cálculo de candidatos}
+            \For{$t \in T$}{
+              $D_t \leftarrow \lbrace c \in C_k : c \subseteq t\rbrace$\\
+              \For{$c \in D_t$}{
+                $count[c] \leftarrow count[c] + 1$\\
+              }
+            }
+
+            $k \leftarrow k+1$\\
+            $L_k \leftarrow \lbrace c \in C_k : count[c] \geq \varepsilon \rbrace $\\
+          }
+
+          \BlankLine
+          \Return{$Union\left(L_k\right)$}
+
+        \end{algorithm}
+
+\end{itemize}
+
+\subsubsection{Reducción de la dimensionalidad}
+
+Normalmente cuando disponemos de una mayor cantidad de datos, tendemos a obtener mejores soluciones, aunque esto tiene impacto en el rendimiento de nuestros algritmos y puede dificultarnos comprender de forma completa nuestro \loc{dataset}.
+La reducción de la dimensionalidad se usa cuando el número de características o dimensiones de un \loc{dataset} es muy grande. Reduce el número de instancias a un tamaño manejable manteniendo la integridad de los datos lo máximo posible. Algunos métodos de reducción de la simensionalidad son \bib{sorzano2014survey}\bib{ghodsi2006dimensionality}: \sigla{PCA} (del inglés \loc{Principal Component Analysis}), \sigla{SVD} (\loc{Singular Value Decomposition}) y \loc{Autoencoders}.
 
 \subsection{Semi-supervised Learning}
 
+El aprendizaje semi-supervisado se caracteriza por tener la capacidad de aprender de conjuntos de datos cuyas instancias no están completamente etiquetadas. En nuestro ejemplo \ref{example:car_price}<<cálculo de precio de un coche según sus propiedades>>, tendríamos precios reales solo para algunos de los coches, mientras que otros no tendrían una etiqueta establecida.
+
+La característica principal que diferencia el aprendizaje semi-supervisado del aprendizaje no supervisado y del aprendizaje supervisado (que veremos a continuación) es que la capacidad de aprender del algoritmo se nutre del hecho de que algunos datos no estén etiquetados. A la hora de intentar averiguar las etiquetas faltantes en base a las presentes, podemos observar comportamientos de aprendizaje que no se verían en los otros dos tipos de \loc{machine learning}.
+
+De este modo, no es útil solo como algoritmo de aprendizaje si no como algoritmo de generación de nuevos datos en aprendizaje supervisado \bib{zhu2009introduction}. Si la obtención de datos y etiquetas nos supone un proceso costoso y/o el acceso a los datos es limitado \footnote{\pe: La recopilación de datos médicos es algo compleja, ya que se debe tener permiso del paciente, así como hay enfermedades cuyos datos son muy escasos y difíciles de conseguir.}, podemos crear un algoritmo de aprendizaje semi-supervisado para completar la falta de datos.
+
+Algunos de los métodos usados en aprendizaje semi-supervisado son los siguientes:
+
+\begin{itemize}
+  \item Modelos generativos: Con este modelo se busca estimar $p(x \mid y)$, la distribución de los puntos pertenecientes a cada clase. La probabilidad $p(x \mid y)$ de que un punto $x$ pertenezca a una etiqueta $y$ es proporcional a $p(x \mid y) \cdot p(y)$ por la Regla de Bayes.
+
+        Extrayéndolo de \bib{zhu2009introduction}, los modelos generativos asumen que las distribuciones tienen la forma $p(x \mid y, \theta)$ para metrizada por el vector $\theta$. Si esta suposición es incorrecta, los datos no etiquetados pueden incluso disminuir la capacidad de acierto de la solución. Pero, en el caso contrario, si la suposición es correcta, los datos etiquetados mejoraran el rendimiento del modelo.
+
+        Los datos no etiquetados se suelen distribuir mediante una distribución Gaussiana mixta. La distribución de probabilidad conjunta se puede escribir como $p(x,y \mid \theta) = p(y \mid \theta) \cdot p(x \mid \theta)$ mediante el teorema de probabilidad compuesta. Cada vector $\theta$ se asocia con una función de decisión: \[f_{\theta}(x) = \underset{x}{\argmax} p(y \mid x, \theta)\]
+
+        El parámetro se elige entonces basándonos en la adaptación a los datos etiquetados y no etiquetados, usamos un peso de balanceo $\lambda$:
+
+        \begin{equation*}
+          \underset{\theta}{\argmax} \left( \log p\left(\left\{x_i, y_i\right\}_{i=1}^{l} \mid \theta\right)+\lambda \log p\left(\left\{x_i\right\}_{i=l+1}^{l+u} \mid \theta \right) \right)
+        \end{equation*}
+
+  \item \loc{Support Vector Machines} (\sigla{SVM}): Según Van Engelen \et \bib{van2020survey} un \sigla{SVM} es un clasificador que intenta buscar la frontera de decisión que maximice el margen, que a su vez se define como la distancia entre la fontera de decisión y los puntos cercanos a ella\footnote{A veces el margen también se refiere a la zona delimitada por la fontera de decisión en la que caen los puntos}. En el escenario del aprendizaje semi-supervisado, un objeto adicional gana importancia: también queremos minimizar el número de datos <<no etiquetados>> que viola el margen. Como no podemos saber la etiqueta de los datos <<no etiquetados>>, aquellos puntos que violan el margen son penalizados basándonos en su distancia a la frontera de decisión.
+
+  \item Modelos basados en gráfos: Este modelo asume un grafo $G = {V,E}$ tal que los vértices $V$ son las instancias de datos (etiquetados y no etiquetados) y $E$ las aristas no dirigidas que conectan las instancias $i,j$ con un peso $w_ij$. La construcción de un grafo se cumple en los siguientes pasos \bib{song2022graph}\bib{van2020survey} \ref{fig:SSLTaxonomy}:
+        \begin{enumerate}
+          \item \textbf{Construcción del grafo}: Se suele asumir una instanciación inicial del grafo aleatoria
+          \item \textbf{\loc{Weighting}}: Cálculo de pesos de los datos etiquetados para la fase de inferencia.
+          \item \textbf{Inferencia de etiquetas}: La tarea a cumplir aquí es propagar información de las instancias etiquetadas a las <<no etiquetadas>> incorporando la estructura de grafo creada en el paso anterior.
+        \end{enumerate}
+\end{itemize}
+
+\imagen{./img/memoria/conceptos/Taxonomy_Semi-Supervised_Methods}{Visualización de la taxonomia de los métodos de aprendizaje semi-supervisado. En la rama correspondiente a los métodos basados en grafo podemos observar las distintas fases de clasificación}{SSLTaxonomy}
+
 \subsection{Supervised Learning}
+
+
 
 \subsubsection{Regression}
 
