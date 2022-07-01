@@ -24,6 +24,7 @@ disable = [
   "no-name-in-module",
   "unnecessary-lambda-assignment",
   "dangerous-default-value",
+  "too-few-public-methods",
 ]
 [tool.pylint."SIMILARITIES"]
 min-similarity-lines = 30

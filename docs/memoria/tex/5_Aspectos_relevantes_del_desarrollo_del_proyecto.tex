@@ -1,7 +1,97 @@
 \capitulo{5}{Aspectos relevantes del desarrollo del proyecto}
 
-Este apartado pretende recoger los aspectos más interesantes del desarrollo del proyecto, comentados por los autores del mismo.
-Debe incluir desde la exposición del ciclo de vida utilizado, hasta los detalles de mayor relevancia de las fases de análisis, diseño e implementación.
-Se busca que no sea una mera operación de copiar y pegar diagramas y extractos del código fuente, sino que realmente se justifiquen los caminos de solución que se han tomado, especialmente aquellos que no sean triviales.
-Puede ser el lugar más adecuado para documentar los aspectos más interesantes del diseño y de la implementación, con un mayor hincapié en aspectos tales como el tipo de arquitectura elegido, los índices de las tablas de la base de datos, normalización y desnormalización, distribución en ficheros3, reglas de negocio dentro de las bases de datos (EDVHV GH GDWRV DFWLYDV), aspectos de desarrollo relacionados con el WWW...
-Este apartado, debe convertirse en el resumen de la experiencia práctica del proyecto, y por sí mismo justifica que la memoria se convierta en un documento útil, fuente de referencia para los autores, los tutores y futuros alumnos.
+
+\section{Carga de datos}
+
+\subsection{Extracción de frames de videos}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Tratamiento de los datos}
+
+\subsection{Normalización}
+
+\subsection{\loc{Data Augmentation}}
+
+\subsection{Transformación de datos a tensores}
+
+\subsection{\loc{Batching}}
+
+\subsection{\loc{Subsampling}}
+
+\subsection{Eliminación de datos innecesarios}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Red Neuronal ResNet}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Estructura de la red convolucional}
+
+\subsubsection{\loc{BatchNormalization}}
+
+\subsection{\loc{Dense layers}}
+
+\subsection{\loc{Capas de salida}}
+
+\subsubsection{Sigmoide}
+\subsubsection{Softmax}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Entrenamiento e hiperparametrización}
+
+\subsection{\loc{Pipeline} del proceo}
+
+\subsection{\loc{Optimizer}}
+
+\subsection{\loc{Scheduler}}
+
+\subsection{\loc{Criterion}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Salida de la red}
+
+\subsection{Dos salidas en la misma red}
+
+\subsubsection{Las salidas se controlan entre ellas}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Comprobación de resultados}
+
+¿Cómo podemos saber si el resultado incorrecto se debe a la estructura de la red o a los datos introducidos?
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Exportación del modelo}
+
+\subsection{Formatos estándares}
+
+\subsubsection{\sigla{ONNX}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Copresión del modelo}
+
+\subsection{Consecuencias}
+
+\subsubsection{Velocidad}
+
+\subsubsection{\loc{Accuracy}}
+
+\subsection{Métodos de compresión}
+
+\subsubsection{\loc{Quantization}}
+
+\subsubsection{\loc{Prunning}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Estudio de escalabilidad del modelo}
+
+Vamos a comprobar hasta que punto la red neuronal es capaz de mantener la precisión de clasificación con el aumento de las etiquetas. Para todo lo anterior el número de etiquetas a clasificar han sido 8. Vamos a aumentar esto hasta 100 etiquetas.
+
+En la siguiente tabla blabla

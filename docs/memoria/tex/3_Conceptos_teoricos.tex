@@ -2,7 +2,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Este proyecto es un proyecto de \loc{machine learning}. Dentro del \loc{machine learning}, es de aprendizaje supervisado. Más concretamente intenta resolver un problema de clasificación mediante deep learning. Las redes neuronales aplicadas para la clasificación serán \loc{ResNets} y \sigla{CNN} (\loc{Convolutional Neural Networks}). Veamos en detalle todos estos terminos en los siguientes apartados.
+Este proyecto es un proyecto de \loc{machine learning}. Dentro del \loc{machine learning}, es de aprendizaje supervisado. Más concretamente intenta resolver un problema de clasificación mediante \loc{deep learning}. Las redes neuronales aplicadas para la clasificación serán \sigla{CNN} (\loc{Convolutional Neural Networks}), y más concretamente \loc{ResNets}, una arquitectura sobre las \sigla{CNN}. Veamos en detalle todos estos terminos en los siguientes apartados.
 
 \section{Machine Learning}
 
@@ -15,7 +15,10 @@ Imaginemos que debemos estimar el precio de un coche usado pero no tenemos la f�
 
 Para determinar la solución necesitamos estudiar el precio de coches en el mercado y anotar sus características. Estos datos son los que daremos a nuestro programa para que busque las relaciones entre propiedades e indique el precio óptimo de los coches.
 
-Saliendo del ejemplo, el machine learning se divide en distintos tipos según la cantidad de datos (o supervisión) que otorgamos a nuestro programa.
+Saliendo del ejemplo, el machine learning se divide en distintos tipos según la cantidad de datos (o supervisión). Hay más formas de dividir el machine learning, como puedes ver en \ref{fig:MachineLearningTypes} (nombraremos alguna de ella a lo largo de los siguientes apartados), pero nos vamos a centrar en \loc{supervised, unsupervised} y \loc{semi-supervised learning}.
+
+\imagen{./img/memoria/conceptos/MachineLearningTypes}{Tipos de \loc{machine learning} según datos, inferencia estadística y técnicas de aprendizaje}{MachineLearningTypes}
+
 
 \subsection{Unsupervised Learning}
 
@@ -62,19 +65,19 @@ Las reglas de asociación es un método que busca buscar las relaciones entre va
           \KwIn{Para un dataset $T$, un umbral de soporte $\varepsilon$ y un conjunto de datos $C_{k}$ para el nivel $k$}
           \BlankLine
 
-          $L_1 \leftarrow findFrequentOneItemsets(T)$\\
-          $k$  = 2\\
+          $L_1 \gets findFrequentOneItemsets(T)$\\
+          $k \gets $2\\
 
           \BlankLine
           \While{$L_{k-1}$ not empty}{
             \tcc{Generación de Apriori}
-            $C_k \leftarrow \text{empty list}$\\
+            $C_k \gets \text{empty list}$\\
             \ForAll{$p \subseteq L\text{, } q \subseteq L $}{
-              $c \leftarrow p \cup q_{k-1}$\\
+              $c \gets p \cup q_{k-1}$\\
 
               \ForAll{$u \in L$}{
                 \If{$u \subseteq c$}{
-                  $C_k \leftarrow C_k \cup \lbrace{c}\rbrace$\\
+                  $C_k \gets C_k \cup \lbrace{c}\rbrace$\\
                 }
               }
             }
@@ -82,14 +85,14 @@ Las reglas de asociación es un método que busca buscar las relaciones entre va
             \BlankLine
             \tcc{Cálculo de candidatos}
             \For{$t \in T$}{
-              $D_t \leftarrow \lbrace c \in C_k : c \subseteq t\rbrace$\\
+              $D_t \gets \lbrace c \in C_k : c \subseteq t\rbrace$\\
               \For{$c \in D_t$}{
-                $count[c] \leftarrow count[c] + 1$\\
+                $count[c] \gets count[c] + 1$\\
               }
             }
 
-            $k \leftarrow k+1$\\
-            $L_k \leftarrow \lbrace c \in C_k : count[c] \geq \varepsilon \rbrace $\\
+            $k \gets k+1$\\
+            $L_k \gets \lbrace c \in C_k : count[c] \geq \varepsilon \rbrace $\\
           }
 
           \BlankLine
@@ -127,7 +130,7 @@ Algunos de los métodos usados en aprendizaje semi-supervisado son los siguiente
           \underset{\theta}{\argmax} \left( \log p\left(\left\{x_i, y_i\right\}_{i=1}^{l} \mid \theta\right)+\lambda \log p\left(\left\{x_i\right\}_{i=l+1}^{l+u} \mid \theta \right) \right)
         \end{equation*}
 
-  \item \loc{Support Vector Machines} (\sigla{SVM}): Según Van Engelen \et \bib{van2020survey} un \sigla{SVM} es un clasificador que intenta buscar la frontera de decisión que maximice el margen, que a su vez se define como la distancia entre la fontera de decisión y los puntos cercanos a ella\footnote{A veces el margen también se refiere a la zona delimitada por la fontera de decisión en la que caen los puntos}. En el escenario del aprendizaje semi-supervisado, un objeto adicional gana importancia: también queremos minimizar el número de datos <<no etiquetados>> que viola el margen. Como no podemos saber la etiqueta de los datos <<no etiquetados>>, aquellos puntos que violan el margen son penalizados basándonos en su distancia a la frontera de decisión.
+  \item \loc{Support Vector Machines} (\sigla{SVM}) \label{SSL-SVM}: Según Van Engelen \et \bib{van2020survey} un \sigla{SVM} es un clasificador que intenta buscar la frontera de decisión que maximice el margen, que a su vez se define como la distancia entre la fontera de decisión y los puntos cercanos a ella\footnote{A veces el margen también se refiere a la zona delimitada por la fontera de decisión en la que caen los puntos}. En el escenario del aprendizaje semi-supervisado, un objeto adicional gana importancia: también queremos minimizar el número de datos <<no etiquetados>> que viola el margen. Como no podemos saber la etiqueta de los datos <<no etiquetados>>, aquellos puntos que violan el margen son penalizados basándonos en su distancia a la frontera de decisión.
 
   \item Modelos basados en gráfos: Este modelo asume un grafo $G = {V,E}$ tal que los vértices $V$ son las instancias de datos (etiquetados y no etiquetados) y $E$ las aristas no dirigidas que conectan las instancias $i,j$ con un peso $w_ij$. La construcción de un grafo se cumple en los siguientes pasos \bib{song2022graph}\bib{van2020survey} \ref{fig:SSLTaxonomy}:
         \begin{enumerate}
@@ -137,136 +140,241 @@ Algunos de los métodos usados en aprendizaje semi-supervisado son los siguiente
         \end{enumerate}
 \end{itemize}
 
-\imagen{./img/memoria/conceptos/Taxonomy_Semi-Supervised_Methods}{Visualización de la taxonomia de los métodos de aprendizaje semi-supervisado. En la rama correspondiente a los métodos basados en grafo podemos observar las distintas fases de clasificación}{SSLTaxonomy}
+\imagen{./img/memoria/conceptos/Taxonomy_Semi-Supervised_Methods}{Visualización de la taxonomia de los métodos de aprendizaje semi-supervisado. En la rama correspondiente a los métodos basados en grafo podemos observar las distintas fases de clasificación \bib{van2020survey}}{SSLTaxonomy}
 
 \subsection{Supervised Learning}
 
+Poco hace falta una definición de aprendizaje supervisado después de haber revisado aprendizaje no supervisado y aprendizaje semi-supervisado, pero por mantener el aislamiento de los apartados, diremos que: tambien llamado \loc{classification}\footnote{A pesar que no solo trate problemas de clasificación} o \loc{inductive learning} (recordemos fig. \ref{fig:MachineLearningTypes}), el aprendizaje supervisado es aquel aprendizaje cuyas instancias de datos (usadas para que nuestro programa aprenda) están todas etiquetadas.
 
+Según Christopher M. Bishop \et \bib{bishop2006pattern}, el objetivo último del aprensizaje supervisado es ser capaces de observar una variable $t$ (\loc{target}) junto con una variable de entrada $x$ y predecir el valor de $t$ para cualquier nuevo valor de $x$.
+
+Para conseguir la predicción de nuevos datos debemos crear un modelo que va a ser <<entrenado>>, <<testeado>> y <<validado>>. Para conseguir datos para las tres fases dividiremos nuestro \loc{dataset} en tres grupos respectivamente.
+
+Para que el modelo tenga un alto acierto en sus predicciones debe estar bien entrenado, por lo que la mayor fracción de los datos se destinará a esta fase\footnote{Normalmente un 70\% de los datos se asigna a la fase de entrenamiento, aunque depende mucho del problema específico al el que nos enfrentemos}. Pero hay que tener cuidado, porque si asignamos un pocentaje demasiado alto de los datos a la fase de entrenamiento podemos generar un \loc{overfitting} en el modelo.
+
+El overfitting ocurre cuando un modelo se ha sobreentrenado con unos datos, por que lo que a la entrada de nuevos datos (desconocidos) $x$, generará una predicción $t$ sesgada a los datos de entrenamiento.
+
+Para evitar esto, usamos otra fracción de los datos de entrada como fracción <<de control>>. De este modo iremos comprobando la deriva de las predicciones entre los datos de entrenamiento y los datos (has adivinado) de validación.
+
+Ahora podremos controlar la fase de entrenamiento y parar dicho entrenamiento, valga la redundancia, cuando detectemos este sobreajuste. Podemos ver esto en la figura \ref{fig:Overfitting}.
+Gracias al \loc{set} de validación, detectamos el momento en el que la red comienza a sobreajustarse. Esto no solo nos evita cometer errores en la fase de test, sino que mediante la eliminación de iteraciones inútiles sobre el modelo, disminuimos en gran cantidad el tiempo de entrenamiento.
+
+\imagen{./img/memoria/conceptos/Overfitting}{Visualización de overfitting en un entrenamiento de una \sigla{CNN} (red neuronal convolucional). Podemos observar en rojo el punto exacto en el que la red comienza a sobre-ajustarse. Este es el momento en el que debemos parar el entranamiento.}{Overfitting}
+
+En la imagen vemos que el valor del eje de ordenadas tenemos el valor de los costes sobre las iteraciones (\loc{epochs} en inglés). Veremos más sobre esto en el apartado de \loc{fine-tunning} e hiperparametrización de una red neuronal. Veamos ahora los distintos tipos de aprendizaje supervisado.
 
 \subsubsection{Regression}
 
+En la regresión, el objetivo es predecir un valor numérico y contínuo. Uno de los usos principales de modelos de regresión es el relleno de espacios en los datos o la estimación de valores futuros. Por otro lado, la regresión tambiñen se puede utilizar para determinar realciones casuales entre variables dependientes e independientes \bib{maulud2020review}.
+
+En los modelos de regresión, las variables independientes predicen a las variables dependientes. El análisis de regresión estima la variable dependiente $y$ en base al rango de variables independientes $x$. En cuanto a los tipos de regresión, puede ser simple o múltiple.
+
+\begin{itemize}
+  \item \textbf{Regresión simple}: En las regresiones simples solo tenemos una variable independiente $y$. Se define la dependencia de la variable como $y = \beta_0 + \beta_1 x + \epsilon$. De forma gráfica, la regresión simple se muestra como una línea entre los puntos cuyo objetivo es minimizar el error cuadrático de las distancias entre dicha línea y los puntos. Es común que en estos modelos tengamos puntos atípicos que se situen lejos de la mayoría. Estos puntos se denominan \loc{Outliers} y al distanciarse del resto, provocan desviaciones importantes en la regresión \bib{seldon_2021}.
+  \item \textbf{Regresión múltiple}: El objetivo de los modelos múltiples es la predicción del conjunto de variables independientes $y$ según el conjunto de variables dependiente $x$. El modelo básico es $y = \beta_0 + \beta_1 x_1 + \cdots + \beta_m x_m + \epsilon$. La fórmula para determinar la matriz es:
+
+        \begin{align*}
+          \hat{\beta} & =\left(X^{T} X\right)^{-1} X^{T} y \quad \text { donde }                          \\
+          \\
+          \quad \beta & =\left[\begin{array}{c}
+                                   \beta_{0} \\
+                                   \beta_{1} \\
+                                   \vdots    \\
+                                   \beta_{m}
+                                 \end{array}\right], X=\left[\begin{array}{ccccc}
+                                                               1      & x_{11}  & x_{12}  & \cdots & x_{1 m} \\
+                                                               1      & x_{21}  & x_{22}  & \cdots & x_{2 m} \\
+                                                               \vdots & \vdots  & \vdots  & \vdots & \vdots  \\
+                                                               1      & x_{n 1} & x_{n 2} & \cdots & x_{m}
+                                                             \end{array}\right], Y=\left[\begin{array}{c}
+                                                                                           Y_{1}  \\
+                                                                                           Y_{2}  \\
+                                                                                           \vdots \\
+                                                                                           Y_{n}
+                                                                                         \end{array}\right]
+        \end{align*}
+
+\end{itemize}
+
 \subsubsection{Classification}
 
-\begin{enumerate}
-  \item Redes Neuronales
+El segundo y último tipo de tipo de aprendizaje supervisado es también el más familiar. La clasificación consiste en etiquetar una variable discreta $y$ dada una variable de entrada $x$. Según el número de etiquetas disponibles para la clasificación hablamos de clasificación binaria o multi-clase.
 
+Aunque no listamos todos los métodos, a continuación se pueden observar los más ampliamente usados\bib{ranganathan2018encyclopedia}:
+
+\begin{enumerate}
+  \item \textbf{Árboles de decisión}: Los árboles de decisión son una forma de representar reglas sobre los datos de forma jerárquica con una estructura secuancial recursiva que particiona los datos. Los árboles de decisión se usan para aproximar funciones discretas. Un nodo hoja indica el valor de la etiqueta $y$, mientras que un nodo de decisión especifica una operación a realizar. La evaluación comienza avaluando el nodo raíz (un nodo de decisión) y moviendonos hasta encontrarnos con un nodo hoja, con la etiqueta buscada. El algoritmo más común en la construcción de árboles de decisión es una extensión del algoritmo propuesto por J. Quinlan en 1993 \et \bib{quinlan1993building}: \sigla{ID3} (\loc{Iterative Dichotomiser} 3). El árbol se construye \loc{top-down} de forma recursiva con la técnica de <<divide y venceras>>. Puedes ver el psudocódigo a continuación.
+
+        \begin{algorithm}[H]
+          \caption{Algoritmo ID3 - TreeBuilding(X, Y)}
+
+          \BlankLine
+          \KwIn{Para un set de entradas de entrenamiento $X$ y una lista de etiquetas correspondientes $Y$}
+
+          \BlankLine
+
+          $N \gets \text{Nodo raíz}$\\
+          \If{$\forall \text{ muestra} = \text{clase } C$}{
+            $\text{etiqueta N} = C$\\
+            $\Return$\\
+          }
+
+          \BlankLine
+          \If{$Y = \text{vacío}$}{
+            $\text{etiqueta N} = \text{clase más común C en } X \text{(voto mayoritario)}$\\
+            $\Return$\\
+          }
+
+          \BlankLine
+          $y \gets \text{El atributo que mejor clasifica ejemplos donde } y \in Y$\\
+          $\text{etiqueta N} \gets y$\\
+
+          \ForAll{$v \in y$}{
+            $\text{Haz crecer una rama desde N con condición } y = v$\\
+            $X_v \gets \text{\loc{subset} de instancias en Y con } y = v$\\
+            \If{$X_v = \text{vacío}$}{
+              $\text{añade un nodo hoja etiquetado con la clase más común en X}$\\
+            }
+            \Else{
+              $\text{añade el nodo generado por } TreeBuilding(X_v, Y - v)$\\
+            }
+          }
+
+        \end{algorithm}
+
+  \item \textbf{\loc{Bagging} y \loc{boosting}}: Es una técnica de ensamblado que combina varios métodos de \loc{machine learning} en un único modelo predictivo en orden de disminuir la varianza (\loc{bagging}) o el \loc{bias(boosting)}.
+
+        El \loc{bagging (Bootstrap Aggregating)} comienza creando muestras aleatorias del \loc{set} de entrenamiento. Tras esto, construye un clasificador para cada muestra. Finalmente, se combinan los resultados de los clasificadores y comienza una votación de mayoría. Al construir estos modelos al mismo tiempo, consideramos a Bagging un método de ensamblado paralelo. Al aumentar el tamaño del \loc{set} de entrenamiento, se disminuye la varianza del modelo final \bib{bauer1999empirical}.
+
+        El \loc{boosting} por otro lado se compone de dos pasos. En el primero usa \loc{subsets} del \loc{set} de entrenamiento para producir modelos con rendimiento medio. Tras esto estimula el rendimiento combinándolos usando el voto mayoritario. En el \loc{boosting}, la creación de \loc{subsets} no es aleatoria y depende del rendimiento de los modelos anteriores.
+
+        La principal diferencia entonces entre los dos, es que \loc{bagging} aprende el \loc{dataset} completo de forma paralela mientars que \loc{boosting} aprende usando los resuultados de los modelos anteriores. \loc{Boosting} muestra una mejor \loc{accuracy} que \loc{bagging} \bib{quinlan1996bagging}, pero tambiñen tiene a producir \loc{overfitting} en los modelos.
+
+  \item \textbf{\loc{Random Forest}}: El \loc{random forest} también se puede usar en tareas de regresión. El principio que se sigue es que un conjunto de clasificadores <<débiles>> se puede unir para crear un clasificador <<fuerte>>. En este caso tenemos un \loc{ensemble} de árboles de decisión que funciona mejor que \loc{bagging} y \loc{boosting} tanto en \loc{accuracy} como en \loc{overfitting}. Cada árbol del \loc{ensemble} tiene un \loc{set} de entrenamiento distinto. Debemos tener en cuenta que si necesitamos una descipción de las relaciones existentes entre los datos, los \loc{random forest} no son la mejor opción, ya que al tener un conjunto de árboles, se hace difícil la compresión de la estructura general.
+
+  \item \textbf{\sigla{SVM} (\loc{Support Vector Machines})}: Los \sigla{SVM} también están presentes en la regresión. En el caso de la clasificación, tenemos un conjunto de puntos en un espacio de dimension $N$. Cada set perteneciendo a una de las posibles clases, el \sigla{SVM} busca los planos separados que maximicen los margenes entre los \loc{sets} de datos. Ya hemos visto en \ref{SSL-SVM} un caso de \sigla{SVM} en aprensizaje semi-supervisado, solo que en este caso funciona distino. A la hora de clasificar un dato, separamos dos planos y calculamos el error cuadrático de los puntos a dichos planos. En algunas ocasiones, los planos pueden no ser linealmente separables; en estos casos, debemos aumentar el número de dimensiones hasta que lo sean. Para esto se usa lo que se demonina función \loc{kernel} \bib{busuttil2003support} \[K(x,y)=\langle f(x), f(y) \rangle \] donde $x$ e $y$ son las entradas de dimensión $n$, y $f$ es un mapa de paso de dimensión-$n$ a dimensión-$m$. Normalmente nos encontraremos con que $m$ es un número mucho mayor a $n$.
+
+  \item \textbf{\loc{Naive Bayes}}: Este clasificador probabilístico se basa en el teorema de Bayes y asume que todas las características están independientemente condicionadas por la etiqueta de la clase \bib{murphy2006naive}. Aunque esto no suele ocurrir, el modelo resultante funciona sorprendentemente bien, a veces competiendo con técnicas mucho más sofisticadas \bib{rish2001empirical}. Este modelo ha probado ser muy útil en tareas de clasificación de texto y diagnóstico médico, entre otros. En \bib{domingos1997optimality} se prueba que \loc{naive Bayes} funciona de forma óptima en problemas con un alto grado de dependencia entre características.
+
+  \item \textbf{Redes Neuronales}: Por último, tenemos las redes neuronales. Las redes neuronales ocupan la mayoria de la literatura sobre inteligencia artificial y \loc{machine learning} en la actualidad. Una red neuronal es un conjunto de neuronas artificiales colocadas en capas. Cada capa tiene la tarea de extraer características de los datos de entrada, actualizar sus pesos y <<pasar>> información a las siguientes capas.
+
+        Una neurona es una función $f_j$ con una entrada $x = (x_1, \ldots , x_d)$ y un vector de pesos $w_j = (w_{j,1}, \ldots , w_{j,d})$, junto con un \loc{bias} $b_j$ y asociado a una función de activación $\phi$ \bib{bishop1994neural}. La fórmula completa de está función es \[y_j = f_j(x) = \phi (\langle w_j, x \rangle + b_j )\]
+
+        Existen numerosas funciones de activación en una red neuronal, algunas son:
         \begin{itemize}
-          \item \loc{Perceptron}
-          \item \loc{Feedforward neural network}
-          \item \loc{Backpropagation}
-          \item \loc{Recurrent neural network}
-          \item \loc{Convolutional neural network}
-          \item \loc{Autoencoder}
+          \item Función identidad o lineal \[\phi(x) = x\]
+          \item \loc{Binary Step} \[\phi(x) = \lbrace\begin{array}{ll}0 & \text{ para } x<0 \\ 1 & \text{ para } x \geq 0\end{array}\]
+          \item Función sigmoide \[\phi(x) = \frac{1}{1 + \exp(-x)}\]
+          \item Tangente hiperbólica \[\phi(x) = \frac{\exp(2x) -1 }{\exp(2x) + 1}\]
+          \item \sigla{ReLU} (\loc{Rectified Linear Unit}) \[\phi(x) = \max(0, x)\]
+          \item \loc{Leaky} \sigla{ReLU} \[\phi(x) = max(0.1 \cdot x,x)\]
+          \item \sigla{ELU} (\loc{Exponential Linear Unit}) \[\phi(x) = \lbrace\begin{array}{ll}x & \text{ para } x \geq 0 \\ \alpha(\exp(x) - 1) & \text{ para } x < 0\end{array}\]
+          \item Función softmax: descrita como una combinación de múltiples sigmoides, calculamos su salida con \[\phi(x_i) = \frac{exp(x_i)}{\sum_j exp(x_j)}\] siendo $x$ el conjunto de las salidas de una neurona en un problema multiclase.
         \end{itemize}
 
+        Tanto la función de \loc{binary step} como la función de identidad (ambas funciones lineales) no permiten \loc{backpropagation} ya que la derivada de la función es una constante y no tiene relación alguna con la variable de entrada x (no aporta datos adicionales) \bib{hinton2006unsupervised}.
+
+        Por otro lado, en regresión se usan funciones de activación lineales, mientras que en clasificación, usaríamos sigmoides en clasificación binaria, o softmax en clasificación multietiqueta.
+
+        Una vez tenemos nuestra función de activación elegida, podemos calcular la salida de la red dada una variable de entarda $x$. Y una vez caculada la salida de la red, podemos comparar el resultado $y$ con la etiqueta de \loc{ground truth} correspondiente con dicha entrada. Según sea igual o no, modificaremos el vector de pesos de nuestra neurona.
+
+        Repetiremos este proceso hatsa que la \loc{accuracy} de la neurona (o la red de neuronas) sea superior al \loc{threshold} buscado \bib{ranganathan2018encyclopedia}.
+
+        Podemos medir el \loc{accuracy} de una neurona dividiendo el número de predicciones correctas entre el número total de predicciones \bib{flach2019performance}. Pero el \loc{accuracy} no es el único método de medida de acierto en las redes neuronales. También tenemos la precisión, el \loc{recall}, el \loc{F-measure}, la especificidad, el \loc{fallout} o la Coeficiente de Correlación de \loc{Mathew} (\sigla{MCC}) \bib{chicco2020advantages}.
+
+        Con
+        \begin{align*}
+          tp = \loc{true positives}  \\
+          tn = \loc{true negatives}  \\
+          fp = \loc{false positives} \\
+          fn = \loc{false negatives}
+        \end{align*}
+
+        \begin{itemize}
+          \item Accuracy: $Acc = \frac{tp + tn}{tp + tn + fp + fn}$
+          \item Precisión: $P = \frac{tp}{tp + fp}$
+          \item \loc{Recall}: $R = \frac{tp}{tp+ fn}$
+          \item \loc{F-measure}: $F = \frac{2P \cdot R}{P + R}$
+          \item Especificidad: $S_p = \frac{tn}{tn + fp}$
+          \item \loc{Fallout}: $\frac{fp}{tn + fp}$
+          \item Coeficiente de Correlación de \loc{Mathew}: $\sigla{MCC} = \frac{tp \cdot tn - fp \cdot fn}{\sqrt{(tp + fp)(tn + fn)(tp + fn)(tn + fp)}}$
+        \end{itemize}
 \end{enumerate}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Deep Learning}
 
-\section{Carga de datos}
+Hemos visto en el último apartado las características de una red neuronal de forma individual: como se compone, que tipos de funciones de activación tenemos y como podemos evaluar y medir la salida de una neurona.
 
-\subsection{Extracción de frames de videos}
+Las redes neuronales más básicas: \sigla{FFNN} (\loc{Feed Forward Neural Netowrks}) y Perceptrones, se componen únicamente de una capa de entrada y salida, con ocasionalmente una o más capas ocultas entre ambas. El método para entrenar estas redes suele ser el \loc{backpropagation}.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+El término \loc{backpropagation} viene tras ser empleado por \loc{Rosenblatt} (1962) \bib{block1962analysis} a la hora de intentar generalizar el entrenamiento de un perceptrón a múltiples capas ocultas. No fué muy exitoso hasta que \loc{Rumelhart} y \loc{Williams} (1986) \bib{rumelhart_hinton_williams_1986} extendieron la idea y la hicieron popular entre investigadores \bib{rumelhart1995backpropagation}. La idea del \loc{backpropagation} es minimizar el error entre la salida correcta e incorrecta mediante el \loc{gradient descent}. Para esto necesitamos calcular las derivadas parciales de nuestras funciones de activación \footnote{Recordemos que solo las funciones de activación no lineales pueden ser usadas para el \loc{backpropagation}, ya que la derivada de una función lineal es una constante}. Calculamos la salida de la derivada en el \loc{forward pass}, y con el resultado obtenido, realizamos un \loc{backward pass}, con el que propagamos y actualizamos los pesos de la red.
 
-\section{Tratamiento de los datos}
+Esto que ahora nos parece básico, pero fué una <<revolución>> en su momento y es la base principal del \loc{deep learning}. Pero, el \loc{deep learning} no solo trata el aprendizaje supervisado, (también tenemos \loc{deep reinforcement learning}, \loc{unsupervised learning}\footnote{Una de las redes neuronales en \loc{unsupervised learning} más habladas en la literatura son las redes \sigla{GAN} (\loc{Generative Adversarial Neural Networks}). Estas redes usan la estructura de discriminador-generador \bib{GenerativeAdversarial} para extraer información de los datos de entrada} y \loc{semi-supervised learning}). Por simplificar vamos a tratar solo redes neuronales de aprendizaje supervisado o \sigla{DNN} (\loc{Deep Neural Networks}). Una lista extensa de redes neuronales se puede ver en \bib{typesann}.
 
-\subsection{Normalización}
+Las \loc{deep neural networks} (\sigla{DNN}) se clasifican en dos tipos principales: Redes Neuronales Recurrentes (\sigla{RNN}) y Redes Neuronales Convolucionales (\sigla{CNN}). Se diferencia de las redes neuronales artificiales <<clásicas>> (\sigla{ANR}) \footnote{Como \sigla{FNNN} o perceptrón} en que en vez de tener una capa de entrada seguida de una o más capas escondidas, con una capa de salida a continuación; las \sigla{DNN} tienen más de una capa entre la salida y la entrada, de ahí que se denominen profundas \bib{typesann}.
 
-\subsection{\loc{Data Augmentation}}
+\imagen{./img/memoria/conceptos/RNN_CNN}{Estructura de una red \sigla{RNN} y \sigla{CNN}}{RNN_CNN}
 
-\subsection{Transformación de datos a tensores}
+En la figura \ref{fig:RNN_CNN}, se puede observar la estrutura de los dos tipos mencionados. La red recurrente debe su nombre a las neuronas que están conectadas consigo mismas (neuronas en azul).
 
-\subsection{\loc{Batching}}
+Las redes neuronales convolucionales son más complejas y su particularidad, como veremos más en profundidad en el siguiente apartado, es la extracción de características y reducción de la dimensionalidad. Vemos que la capa de entrada (en amarillo) tiene 5 neuronas, y que en las siguientes capas, el número de neuronas se va reduciendo hasta llegar a dos en la capa justo anterior a la oculta (en verde). Esto se produce mediante la convolución o el \loc{pooling}. Vamos a estudiar estas dos redes y sus términos con un poco de profundidad a continuación.
 
-\subsection{\loc{Subsampling}}
+\begin{itemize}
+  \item \textbf{\sigla{RNN}}: Las Redes Recurrentes son redes que tuvieron su auge en investigación en los años 90. \loc{Fausett} (1994) \bib{fausett1994fundamentals} las define como redes neuronales con conexiones \loc{feedback} (retroalimentación). Ejemplos de estas redes son las redes \sigla{BAM} (\loc{Bidirectional associative memory}), redes \loc{Hopfield} y máquinas de \loc{Boltzmann} \bib{medsker1999recurrent}.
 
-\subsection{Eliminación de datos innecesarios}
+        La característica principal de las redes recurrentes es que tienen un estado que mantienen entre distintas iteraciones de la red. Las neuronas no solo reciben información de la capa anterior si no que también reciben información de si mismas y de la iteración anterior \bib{elman1990finding}. Por esta razón, el orden con el que <<alimentamos>> datos a la red es importante y puede cambiar la salida generada de forma radical. Esta característica las hace muy útiles con formatos de datos como video o audio \footnote{Aunque también podemos tratar texto o imagen como concatenación de letras o píxeles en el tiempo}. Su principal aplicación es el avance y completado de información, como por ejemplo el autocompletado de texto.  En \bib{rodriguez1999recurrent} podemos ver un ejemplo de una \sigla{RNN} aplicada para enseñar a la red a contar.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \item \textbf{\sigla{CNN}}: Y llegamos a las redes convolucionales. Introducidas por \loc{Le Cun} (1998) \bib{le1989handwritten}, estas redes son uno de los tópicos más hablados en la literatura actual en el mundo del \loc{machine learning} y la inteligencia artificial. Estas redes se usan en muchísimas aplicaciones y dominios, sobre todo en procesamiento de video e imagen.
 
-\section{Red Neuronal ResNet}
+        Las redes convolucionales tienen una estructura muy diferente a cualquier otra red neuronal (figura \ref{fig:CNN_Arquitecture}). Se componen de capas de convolución, capas de \loc{subsampling} y capas <<\loc{fully-connected}>>.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        \imagen{./img/memoria/conceptos/CNN_Arquitecture}{Estructura de una \sigla{CNN}. Figura de \loc{Le Cun} \et \bib{lecun1998gradient}}{CNN_Arquitecture}
 
-\section{Estructura de la red convolucional}
+        A continuación vamos a hablar de filtros o \loc{kernels}, \loc{pooling}, \loc{padding}, \loc{stride}, \loc{ResNet}, entre otros términos.
 
-\subsection{Capas convolucionales}
+        \begin{enumerate}
+          \item \textbf{Extracción de características o convolución}: En esta fase se busca reducir la dimensionalidad de la entrada manteniendo las características espaciales de los datos. De esta forma no perdemos información y es más fácil procesarla en las siguiente capas. En redes neuronales tradicionales, transformaríamos una entrada (imagen o video) en un vector de dimensión uno. Al hacer esto perderíamos información de formas en la imágen, o de movimientos de objetos o personas en los videos. Por esa razón, la extracción de características de una imagen se hacía antes de forma manual en la fase de preparación de los datos.
 
-\subsubsection{\loc{Downsampling}}
-\subsubsection{\loc{MaxPooling}}
-\subsubsection{\loc{BatchNormalization}}
+                Para eliminar esta fase manual, las \sigla{CNN} actuan directamente en matrices de datos multidimensionales (o tensores \footnote{Un tensor es un objeto algebraico que representa un espacio vectorial. Puede mapear vectores y matrices multidimensionales \bib{wiki:tensor}}), en vez de actuar sobre vectores. Pero, ¿cómo extraemos información de un tensor?.
 
-\subsection{\loc{Flatten layer}}
+                Para extraer información de un tensor mantendiendo sus características espaciales vamos a usar \loc{kernels} o filtros. Un filtro es un tensor con las mismas dimensiones que la entrada, pero con tamaños mucho menores. \pe: si tenemos como entrada una imagen de $(200x200)$ pixeles, tendremos un filtro de dos dimensiones, por ejemplo, de $(3x3)$ pixeles. Si en vez de una imagen, estamos clasificando un video con 10 frames $(10x200x200)$ tendremos un filtro que por ejemplo puede tener el tamaño $(2x3x3)$, siendo 2 el número de frames.
 
-\subsection{\loc{Dense layers}}
+                Una vez tenemos nuestro tensor de entrada y nuestro \loc{kernel}, podemos iniciar el proceso de convolución. Para hacer esto, vamos a <<mover>> nuestro \loc{kernel} por nuestro tensor de entrada, generando un <<mapa de caracterísitcas>>. Veamos un ejemplo:
 
-\subsubsection{\loc{Dropout}}
+                \imagen{./img/memoria/conceptos/Kernel}{Ejemplo de convolución con \loc{kernel} $3x3$ sin \loc{strading} ni \loc{padding}}{Kernel}
 
-\subsection{\loc{Lineal layers}}
+                Vemos en la figura \ref{fig:Kernel} que tenemos un tensor bidimensional (\pe una imagen) de tamaño $(5x5)$ con un \loc{kernel} de tamaño $(3x3)$. El mapa de caracterísitcas resultante tiene un tamaño de $(3x3)$\footnote{Da la casualidad de que el tamaño de la salida es igual al tamaño del kernel, pero no es la norma. Si tuviéramos una entrada de $(5x7)$ obtendríamos una salida de $(3x5)$}.
 
-\subsubsection{\loc{Leaky ReLU}}
-\subsubsection{\loc{ReLU}}
+                En este caso no hemos tenido ningún problema y hemos podido <<encajar>> nuestro \loc{kernel} en la matriz perfectamente. Esto no siempre es así, ya que si queremos adaptarnos a cualquier tipo de entrada, es posible que tengamos tamaños cuyo \loc{kernel} no <<encaje>> de forma perfecta. Si nuestra matriz fuera de $(4x4)$ en vez de $(5x5)$, tendríamos que para el tercer cálculo, nuestro \loc{kernel} se situa fuera de la matriz en el lado derecho. Para solucionar este problema usamos \loc{padding} o \loc{stride}.
 
-\subsection{\loc{Capas de salida}}
+                \begin{itemize}
+                  \item El \loc{padding} se usa para añadir información a los bordes de nuestro tensor y así mantener el tamaño de salida deseado. Podemos elegir añadirlo en todos los bordes o solo en algunos. El valor óptimo del \loc{padding} es $0$. Esto es porque toda información que añadamos a los bordes, <<contamina>> la información importante ubicada en el tensor de entrada \bib{o2015introduction}.
 
-\subsubsection{Sigmoide}
-\subsubsection{Softmax}
+                  \item El \loc{stride} por otro lado indica la cantidad de unidades que movemos nuestro \loc{kernel} sobre nuestra entrada en cada iteración de la convolución. Valores comunes de stride son $2$ o $3$ \bib{gu2018recent}. Tenemos que tener cuidado aquí, porque con un \loc{stride} demasiado alto, podemos saltarnos extracciones de características importantes de nuestro tensor.
+                \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                Podemos calcular el tamaño de salida con la siguiente fórmula \bib{o2015introduction}: \[\delta = \frac{D + 2p - K}{s} + 1\] donde $D$ es cada una de las dimensiones un vector de tamaño $d$ con las dimensiones de nuestro tensor de entrada, $K$ es un vector de tamaño $d$ con las dimensiones del \loc{kernel}, y $p$ y $s$ son los valores de \loc{padding} y \loc{stride} respectivamente. La salida será un número $\delta$. Si el número es un entero, entonces la convolución será correcta.
 
-\section{Entrenamiento e hiperparametrización}
+                Así en nuestro caso $\delta = [\frac{5 + 2 \cdot 0 - 3}{1} + 1, \frac{5 + 2 \cdot 0 - 3}{1} + 1] = [3, 3]$. Como vemos, en el proceso de convolución, <<alteramos>> las dimensiones del tensor de entrada con la finalidad de extraer las carcaterísitcas espaciales del mismo.
 
-\subsection{\loc{Pipeline} del proceo}
+          \item \textbf{\loc{Pooling}}: Muy similar a la fase de convolución, el pooling reduce el tamaño del mapa de caracterísitcas. El objetivo es disminuir la capacidad computacional necesaria para procesar gran cantidades de datos \bib{cui2017kernel}. Hay dos tipos de \loc{pooling} principales: \loc{Max Pooling} y \loc{Average Pooling}. El primero devuelve el valor máximo de la <<porción>> del tensor cubierta por el \loc{kernel} mientras que el segundo devuelve la media de todos los valores en dicha <<porción>>. \loc{Max pooling} funciona normalmente mejor que \loc{average pooling} porque no solo lleva a cabo la labor de reducción de la dimensionalidad, sino que también actua como mecanismo de eliminación de ruido. \footnote{Denotar que lo importante del \loc{kernel} en el \loc{pooling} son sus dimensiones ya que no vamos a realizar operaciones con él}.
 
-\subsection{\loc{Optimizer}}
+          \item \textbf{Capa \loc{fully connected}}: Una vez hemos extraido las características necesarias de nuestro tensor de datos, hemos terminado con un tensor con dimensiones reducidas. Esta fase se ve muy bien gráficamente en la figura \ref{fig:RNN_CNN}. Las capas de color rosa son las capas en las que realizamos la convolución y el \loc{pooling}. El tensor resultante debe ahora sí, ser convertido en un vector (tensor de dimensión uno), ya que este es la entrada ahora de una capa \loc{fully connected}. Este proceso se denomina \loc{flatten}.
 
-\subsection{\loc{Scheduler}}
+                Las capas \loc{fully connected} se asemejan mucho a estructuras tradicionales de una red neuronal, con la diferencia de que las neuronas que forman esta capa aplican una transformación lineal del vector de entrada primero, seguido de una transformación <<no lineal>>.
 
-\subsection{\loc{Criterion}}
+                La salida de esta capa se calcula como \[
+                  y_{j k}(x)=f\left(\sum_{i=1}^{n} w_{j k} x_{i}+w_{j 0}\right)
+                \] donde $w_0$ es el \loc{bias}, $w$ nuestra matriz de pesos y $x$ el vector de entrada.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                El nombre de esta capa \footnote{También se suele llamar capa densa} se debe a que las neuronas están totalmente conectadas entre si entre las distintas capas (no entre neuronas de la misma capa ni consigo mismas) \bib{huang2017densely}.
 
-\section{Salida de la red}
+                La salida de la capa \loc{fully conneted} será la salida que produce la función de activación no lineal que se aplica tras las funciones lineales. Esta función puede ser una función \loc{softmax} para clasificación multiclase o puede ser una sigmoide para otro tipo de salida. Por ejemplo, en este proyecto, se ha usado una \loc{fully connected} con \loc{softmax} para clasificar los signos y una \loc{fully connected} con sigmoide para extraer un vector de poses de gestos en un video. Puedes avanzar a la sección <<Aspectos relevantes>> para más información.
+        \end{enumerate}
 
-\subsection{Dos salidas en la misma red}
+        Existen numerosas arquitecturas de redes neuronales convolucionales que han demostrado ser muy útiles en la resolución de distintos problemas. Algunas son: \sigla{AlexNet} \bib{krizhevsky_sutskever_hinton_2012}, \sigla{LeNet}\bib{lenet}, \sigla{VGGNet} \bib{VGGNet}, \sigla{GoogLeNet} \bib{GoogLeNet}, \sigla{ZFNet} \bib{ZFNet} o \sigla{ResNet} \bib{ResNet}.
+\end{itemize}
 
-\subsubsection{Las salidas se controlan entre ellas}
+Todas estas no son ni mucho menos todas las redes neuronales del campo del \loc{deep learning}. Cada pocos meses se publica un \loc{paper} que muestra estructuras nuevas con oportunidades futuras impresionantes. En la actualidad, otro de los modelos de \loc{deep learning} que más atención (nunca mejor dicho) genera, son los modelos \loc{transformers} expuestos por primera vez en el famoso \loc{paper} <<\loc{Attention is all you need}>>, parte de un libro de (2017) \bib{attention}. Estos modelos usan el llamado <<mecanismo de atención>> que da pesos distintos a las distintas partes de nuestro dato de entrada. Los principales campos en los que se usan los \loc{transformers} son el campo del \loc{natural planguage processing} (\sigla{NLP}) y el campo de \loc{computer vision} (\sigla{CV}).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Comprobación de resultados}
-
-¿Cómo podemos saber si el resultado incorrecto se debe a la estructura de la red o a los datos introducidos?
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Exportación del modelo}
-
-\subsection{Formatos estándares}
-
-\subsubsection{\sigla{ONNX}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Copresión del modelo}
-
-\subsection{Consecuencias}
-
-\subsubsection{Velocidad}
-
-\subsubsection{\loc{Accuracy}}
-
-\subsection{Métodos de compresión}
-
-\subsubsection{\loc{Quantization}}
-
-\subsubsection{\loc{Prunning}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Estudio de escalabilidad del modelo}
-
-Vamos a comprobar hasta que punto la red neuronal es capaz de mantener la precisión de clasificación con el aumento de las etiquetas. Para todo lo anterior el número de etiquetas a clasificar han sido 8. Vamos a aumentar esto hasta 100 etiquetas.
-
-En la siguiente tabla blabla
+\textbf{Nota del autor}: Los \loc{transformrs} se alejan un poco del tema principal de este proyecto, pero invito a leer el fantástico paper y descubrir sobre los modelos que usan esta red y que están revolucionando el mundo de la \loc{deep learning} (\pe: \sigla{GPT-3} o \sigla{DALL-E})

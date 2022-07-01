@@ -31,19 +31,19 @@ class CNN(nn.Module):  # pylint disable=too-few-public-methods
         linear_2 = linear_1 // 2
 
         # Dense layer.
-        self.dense = nn.Sequential(
+        self.drop = nn.Sequential(
             nn.Dropout(p=0.5),
             # nn.BatchNorm1d(linear_2),
         )
 
-        # Output layer.
-        self.class_output = nn.Sequential(
+        # Fully connected layers (linea + non-linear).
+        self.class_fc = nn.Sequential(
             linear_layer(linear_1, linear_2),
             linear_layer(linear_2, num_classes),
             nn.Softmax(dim=1),
         )
 
-        self.pose_output = nn.Sequential(
+        self.pose_fc = nn.Sequential(
             linear_layer(linear_1, num_pose_points),
             nn.Sigmoid(),
         )
@@ -59,13 +59,13 @@ class CNN(nn.Module):  # pylint disable=too-few-public-methods
         """
         x = self.convs(x)
         x = x.view(x.shape[0], -1)
-        x = self.dense(x)
+        x = self.drop(x)
 
         # Class output.
-        x1 = self.class_output(x)
+        x1 = self.class_fc(x)
 
         # Output for poses.
-        x2 = self.pose_output(x)
+        x2 = self.pose_fc(x)
 
         return x1, x2
 
@@ -114,6 +114,6 @@ def linear_layer(in_c: int, out_c: int):
     """
     linear_layer = nn.Sequential(
         nn.Linear(in_c, out_c),
-        nn.LeakyReLU(),
+        nn.ReLU(),  # nn.LeakyReLU() # nn.ELU() # nn.ReLU()
     )
     return linear_layer
