@@ -41,7 +41,6 @@ Check the [front-end](https://github.com/irg1008/Sign2Text-Astro) and [back-end]
     - [Activamos el entorno virtual](#activamos-el-entorno-virtual)
     - [Instalamos los paquetes necesarios](#instalamos-los-paquetes-necesarios)
     - [Instalamos PyTorch compatible con CUDA (en caso de que queramos usar GPU)](#instalamos-pytorch-compatible-con-cuda-en-caso-de-que-queramos-usar-gpu)
-  - [Próximo dataset a probar](#próximo-dataset-a-probar)
 
 ---
 
@@ -103,9 +102,3 @@ Esto nos instalará los binarios de CUDA y CuDNN.
 ```bash
 pip install torch==1.10.2+cu113 torchvision==0.11.3+cu113 torchaudio===0.10.2+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
 ```
-
-## Próximo dataset a probar
-
-<https://how2sign.github.io/#download>
-
-<https://www.youtube.com/watch?v=C3xZUdZ6WsY>

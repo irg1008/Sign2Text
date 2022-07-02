@@ -45,7 +45,6 @@ def get_transform(image_size: int) -> Compose:
         [
             ImgsToTensor(),
             Resize(image_size),
-            RandomCrop(image_size),
             normalize,
         ]
     )

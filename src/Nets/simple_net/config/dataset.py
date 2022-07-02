@@ -14,5 +14,7 @@ def get_dataset_path(dataset: str, model_name: str) -> Tuple[str, str]:
     """
     base_path = path.join(path.dirname(__file__), "../../../../")
     data_path = path.abspath(path.join(base_path, "data", dataset))
-    model_path = path.abspath(path.join(base_path, "models", f"{model_name}_simplemodel.pth"))
+    model_path = path.abspath(
+        path.join(base_path, "models", f"{model_name}_simplenet.pth")
+    )
     return data_path, model_path

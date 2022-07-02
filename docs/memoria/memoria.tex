@@ -17,7 +17,8 @@
 % Links
 \PassOptionsToPackage{hyphens}{url}\usepackage[colorlinks]{hyperref}
 \hypersetup{
-	allcolors = {red}
+	allcolors = {red},
+  urlcolor = cyan,
 }
 
 % Ecuaciones
@@ -56,11 +57,11 @@
 	\FloatBarrier
 }
 
-\newcommand{\imagenflotante}[2]{
+\newcommand{\imagenflotante}[3]{
 	\begin{figure}%[!h]
 		\centering
 		\includegraphics[width=0.9\textwidth]{#1}
-		\caption{#2}\label{fig:#1}
+		\caption{#2}\label{fig:#3}
 	\end{figure}
 }
 
@@ -109,7 +110,7 @@
 %
 % Nuevo comando para tablas pequeñas (menos de una página).
 \newcommand{\tablaSmall}[5]{%
- \begin{table}
+ \begin{table}[h]
   \begin{center}
    \rowcolors {2}{gray!35}{}
    \begin{tabular}{#2}
@@ -373,7 +374,7 @@
   }
 \makeatother
 
-\newcommand{\project}[1][Sign2Text]{{\textsf{#1}}}
+\newcommand{\project}[1]{{\textsf{#1}}}
 \newcommand{\titulo}{Sign2Text - Transcripción de lenguaje de signos (a nivel de palabra) mediante DL}
 \newcommand{\tutores}{Dr. Daniel Urda Muñoz y Dr. Bruno Baruque Zanon}
 \newcommand{\nombre}{Iván Ruiz Gázquez}

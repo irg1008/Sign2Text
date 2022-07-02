@@ -1,97 +1,251 @@
 \capitulo{5}{Aspectos relevantes del desarrollo del proyecto}
 
+En esta sección vamos a hablar de algunos de los problemas y retos con los que nos hemos enfrentado en el proyecto. Vamos a hablar de la carga de los datos y de como pasamos de clasificaciónd de imágenes a clasificación de video. Seguiremos hablando un poco del tratamiento de los datos. Tras esto mencionaremos una de las estructuras de \sigla{CNN} usada, ResNet. Continuamos hablando de la estructura de nuestra red y problemas que hemos tenido, junto con la hiperparametrización y el entrenamiento. Para terminar hablaremos de como hemos usado una red con dos salidas para intentar mejorar el \loc{accuracy} y de como se ha explorado la cuantización para comprimir el modelo y hacerlo <<\loc{deployment-ready}>>.
 
 \section{Carga de datos}
 
-\subsection{Extracción de frames de videos}
+El objetivo de este proyecto es la clasificación de lenguajes de signo a nivel palabra. El \loc{dataset} usado \bib{li2020word} es \sigla{WLASL} (Word-Level American Sign Language) y está extraido de un paper que ganó mención honorable en el \sigla{WACV} (2020). Este \loc{dataset} se compone de 21083 videos, que se clasifican en 2000 palabras distintas.
+
+Al comienzo del proyecto, pensabamos que usando \prog{PyTorch} ibamos a tener las herramientas necesarias para cargar los datos en formato video y procesar las transformaciones directamente. Esto resultó no ser así.
+
+Nos dimos cuenta que no teniamos una forma directa de cargar un video con \prog{Pytorch} y transformarlo a un tensor con el en el cual podíamos ejecutar transformaciones o usar como entrada.
+
+Por eso, lo primero que hicimos, fue crear unos \loc{scripts} con los que transformar los videos en \loc{frames}. Con la idea de poder ser reutilizado lo máximo posible, nos pusimos a diseñar los \loc{scripts} de forma dinámica, es decir; los \loc{scripts} debían aceptar distintos argumentos para procesar distintos \loc{datasets}, independientemente de que el más importante fuera el citado arriba.
+
+Puedes ver más con detalle la estructura del script en el anexo <<Manual del programador>> pero básicamente el \loc{script} se puede ejecutar con las siguiente opciones:
+
+GLOBALES
+\begin{itemize}
+  \item -i, --input: Carpeta con los videos a procesar (Opcional).
+  \item -o, --output: Carpeta donde se guardaran los frames (Opcional).
+  \item -l, --labels: Número de labels a procesar. Puede ser un número o ``all`` para procesar todos (Opcional).
+  \item -c, --config: Archivo de configuración con las etiquetas (Opcional).
+  \item -h, --help: Muestra esta ayuda.
+\end{itemize}
+
+EXTRACCIÓN DE FRAMES
+\begin{itemize}
+  \item -m, --merge: Indica si se debe unir los frames en una imagen (Opcional).
+  \item -f, --frames: Número de frames aleatorios del video (Opcional).
+\end{itemize}
+
+EXTRACCIÓN DE VIDEOS
+\begin{itemize}
+  \item -v, --video: Extrae todos los frames del video en una carpeta única para ese video. Deshabilita las opciones -f y -m (Opcional).
+\end{itemize}
+
+Con estas opciones nos ahorramos tener que estar transformando los datos de forma <<manual>> o haciendo cambios a los \loc{scripts} cada vez que queríamos usar unas u otras etiquetas.
+
+Bien, una vez nos creamos estos \loc{scripts} para transformar de video a \loc{frames}, estabamos listos para cargarlos con \prog{PyTorch} en un \prog{DataLoader} (clase de \prog{PyTorch} usada para cargar datos desde la estructura de archivos).
+
+Como funciona el \prog{DataLoader}, usa la estructura de archivos para cargar los datos, es decir, que carga los datos y los relaciona con la etiqueta correspondiente según el nombre de la carpeta en la que están.
+
+\imagen{./img/memoria/aspectos/FolderStructure}{Estructura de carpetas necesaria para la carga de datos con \prog{PyTorch}}{FolderStructure}
+
+En la figura \ref{fig:FolderStructure} podemos observar que los \loc{frames} exportados se situan en carpetas según la etiqueta que los clasifica. Al tenerlo de este modo, podemos cargar todo el dataset con \prog{PyTorch} y hacer dentro la división en \loc{set} de entrenamiento, test y validación.
+
+Nota: Esta estructura de clases se mantiene para todos los dataset. La figura que acabamos de ver se corresponde con la red que clasifica únicamente \loc{frames} y no videos (la primera red construida). La estructura de carpetas para el dataset con videos es muy similar, solo que en vez de haber un frame por video en cada clase, tenemos una carpeta por video con los frames de ese video, para cada clase (un nivel más).
+
+\subsection{Volvemos a unir los frames}
+
+Una vez tenemos la estructura lista para cargar los datos con \prog{PyTorch}, debemos unir los frames en un tensor <<video>> (en el caso de que tengamos más de un frame por video). Para esto usamos un \loc{DataLoader} personalizado, que va a concatenar las imagenes en un tensor único. De este modo pasamos de tener un tensor de tamaño $(3xHxW)$ a uno de tamaño $(Fx3xHxW)$ donde la $H$ y la $W$ representan la altura y la anchura de un \loc{frame} respectivamente, y la $F$ el número de frames cargados para un video en particular \footnote{El 3 identifica los tres canales \sigla{RGB} de una imagen en color}.
+
+Una vez hemos hecho la concatenación, ya tenemos nuestro dataset tarnsformado en tensores de 4 dimensiones. Ahora debemos dividir los datos en \loc{sets} de entrenamiento, test y validación, no sin antes, hacer las transformaciones necesarias en los datos y agrupar los videos en \loc{batches}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Tratamiento de los datos}
 
+Una vez hemos cargado los datos, comienza una de las parte más importantes en el \loc{machine learning} y la minería de datos: la transformación de los datos y adaptación para el entrenamiento.
+
+En nuestro caso, al usar \sigla{CCNs}, y como hemos visto en el apartado teórico, el tratamiento de datos no es tán importante. Esto se debe a que en la fase de convolución, el \loc{kernel} tendrá en cuenta todas las dimensiones presentes en nuestro tensor de entrada, y se entrenará para sacar las caracterísitcas que más importen.
+
+Aún así, hay una transformación en los datos que es muy importante, ya que debido al alto consumo de las \sigla{CNNs}, necesitamos un ajuste sobre el tamaño de las imagenes, pasando del tamaño original a $(224x224)$ (píxeles).
+
+Una vez hecha esta transformación sobre las imágenes, normalizamos los datos.
+
 \subsection{Normalización}
+
+La normalización, que consiste en trasladar valores de su rango de valores original a otro controlado (normalmente entre 0 y 1), es muy útil cuando estamos tratando entardas con datos que se situan en rangos muy distintos \footnote{\pe: un valor enumerado entre 0 y 5 y un valor continuo entre 100 y 200}.
+
+En nuestro caso la entrada de los datos está compuesta únicamente por imágenes de color (esto son 3 canales con pixeles que varian entre 0 y 255), por lo que al no mezclar con otro tipos de datos y rangos, podríamos proceder sin normalizar.
+
+Pero no es la mejor opción. normalizar los datos es una práctica común para conseguir acercar la media de los datos a 0 y acelera el aprendizaje de la red proporcionando una convergencia más rápida.
 
 \subsection{\loc{Data Augmentation}}
 
-\subsection{Transformación de datos a tensores}
+El \loc{data augmentation} consiste en aumentar el tamaño del \loc{dataset} duplicando datos del mismo y alterándolos para que parezcan distintos.
+
+En nuestro caso no hemos incluido esta técnica debido a tratar con videos y no con imágenes. Al tener la transformación de los datos a nivel imágen (\loc{resize} y normalización), se nos complicaba la aumentación de los datos ya que debiamos <<alterar>> los datos para todos los \loc{frames} del mismo video, con tal de no alterar la información espacial de dicho video.
+
+Esto es algo que nos gustaría marcar para un plan futuro en el proyecto, ya que el \loc{dataset}, aunque muy extenso, tiene muy pocos videos por etiqueta (aproximadamente 40), y aumentar este número aunque sea en 10, sería una extensión notable del dataset.
 
 \subsection{\loc{Batching}}
 
+A la hora de entrenar una red, no podemos usar el \loc{dataset} completo como entrada, ya que nos quedaríamos sin memoria enseguida. Por esto agrupamos las entradas en \loc{batches} o partes. Al hacer esto, tenemos que modificar nuestra red para aceptar los datos en grupos.
+
+El \loc{batching} realmente lo que está haciendo es aumentar la dimensión de nuestro tensor de entrada. En los puntos anteriores hemos visto que nuestro tensor de entrada era del tipo $(Fx3xHxW)$ y que representaba un video de nuestro dataset. Ahora añadimos una dimensión más $B$ representando el tamaño de cada \loc{batch}: $(BxFx3xHxW)$, resultando en un tensor de entrada de 5 dimensiones.
+
+Cuando entrenamos una \sigla{CNN} con un tensor de entrada de 5 dimensiones decimos que tenemos una red convolución 3D \footnote{Una \sigla{CNN} 1D se usa para procesar datos lineales, como la altura según el tiempo. Una \sigla{CNN} 2D se usa para imágenes y una 3D (que significa de 3 o más dimensiones) para videos u otros datos que necesitan imágenes en \loc{stack} }.
+
 \subsection{\loc{Subsampling}}
 
-\subsection{Eliminación de datos innecesarios}
+En el subsampling divisimos los \loc{batches} creados en \loc{sets} de entrenamiento, test y validación.
+
+En nuestro caso hemos usado un \loc{subsampler} aleatorio porporcionado por \prog{PyTorch}: \prog{SubsetRandomSampler} con una división de 70\%, 20\% y 10\% para entranamiento, test y validación.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Red Neuronal ResNet}
 
+Antes de comenzar a construir nuestra \sigla{CNN}, probamos el \loc{dataset} con una \loc{ResNet} ya construida. Una ResNet \bib{ResNet} es una estructura que usa numerosas capas de \sigla{CNNs} una detrás de la otra y conectadas entre sí cada dos o tres capas (conexión residual). Tenemos varios tipos identificadas por el número de capas que tienen: \loc{ResNet18}, \loc{ResNet34} \loc{ResNet50}, \loc{ResNet101}, etc.
+
+En nuestro caso, la prueba que hicimos con una \loc{ResNet} fue usando un dataset con fotos de animales \bib{alessio_2019} con 10 etiquetas y con aproximadamente 50 ejemplos por etiqueta. El accuracy conseguido en entrenamiento y test (ya que en este punto incial no teníamos validación) es:
+
+\tablaSmall{Accuracy de una red ResNet con un dataset pequeño de imágenes de animales \bib{alessio_2019}}
+{l c c}{acc_resnet18}
+{ Tipo de ResNet & Entrenamiento & Test \\}{
+  ResNet18 & 97,59\% & 95,51\%  \\
+}
+
+Por otro lado, la misma red con nuestro dataset compuesto por un único frame por video consiguió el siguiente \loc{accuracy}:
+
+\tablaSmall{Accuracy de una red ResNet con nuestro dataset original con 10 etiquetas, 30 videos por etiqueta, 1 solo frame por video}
+{l c c}{acc_resnet_frame}
+{ Tipo de ResNet & Entrenamiento & Test \\}{
+  ResNet18 & 92,4\% & 64,6\%  \\
+}
+
+Como vemos, mucho menor. Pero esto es normal, ya que clasificar un signo completo de un video con un solo frame es imposible. A la hora de probar el modelo con una inferencia por webcam, los resultados eran prácticamente aleatorios.
+
+Al ver esto, decidimos entonces pasar ya a crear nuestra propia red convolucional.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Estructura de la red convolucional}
+\section{Estructuras de la redes convolucionales}
 
-\subsubsection{\loc{BatchNormalization}}
+La estructura de nuestra primera red convolucional (denominada <<SimpleNet>>), usada para clasificación de video, es mucho más simple que la que vemos en una red \loc{ResNet}. Se compone de tres capas de convolución con \loc{pooling} y una capa densa (o \loc{fully connected}) con activación \loc{softmax} al final. Podemos ver la estructura en la figura \ref{fig:1stCNN}.
 
-\subsection{\loc{Dense layers}}
+\imagen{./img/memoria/aspectos/1stCNN}{Estructura de una \sigla{CNN} exportada con \loc{Netron}}{1stCNN}
 
-\subsection{\loc{Capas de salida}}
+La segunda red convolucional que tenemos, que hemos nombrado <<TwoOutNet>>, tiene una estructura que comienza con dos capas convolucionales. Tras esto, tenemos una gran diferencia con la primera, y es que en este caso, generamos dos salidas (la clase y la pose detectada). Por eso tenemos dos capas densas, una por salida, con una función de activación de la capa oculta \loc{softmax} y \loc{sigmoid} respectivamente.
 
-\subsubsection{Sigmoide}
-\subsubsection{Softmax}
+Podemos ver en la figura \ref{fig:2ndCNN} la estructura mencionada con la división en dos tras la segunda convolucional.
+
+\imagen{./img/memoria/aspectos/2ndCNN}{Estructura de una \sigla{CNN} con doble salida exportada con \loc{Netron}}{2ndCNN}
+
+Para saber más sobre el porque de la doble capa de salida, adelanta al apartado de <<Dos salidas en la misma red>>
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Entrenamiento e hiperparametrización}
 
-\subsection{\loc{Pipeline} del proceo}
+Los hiperparámetros que hemos cambiado en las pruebas son:
 
-\subsection{\loc{Optimizer}}
+\begin{itemize}
+  \item Número de segmentos: Esto indica el número de partes en los que dividimos un video.
 
-\subsection{\loc{Scheduler}}
+  \item \loc{Frames} por segmento: Con este valor cambiamos el número de frames que seleccionamos en cada segmento.
 
-\subsection{\loc{Criterion}}
+  \item \loc{Batch size}: El tamaño del \loc{batch} de entrada de la red. Un número muy alto necesita mucha memoria de \sigla{GPU}.
+
+  \item Tamaño de la imagen de entrada: En píxeles, aquí indicamos el tamaño que se debe usar en la fase de transformación de los datos antes de entrar en la red.
+
+  \item Número de \loc{epochs}: El número de iteraciones de entrenamiento de la red. Como vimos en la teoría, hay un punto en que el \loc{accuracy} de validación de la red disminuye y comienza a sobreajustarse.
+
+  \item \loc{Learning rate}: El learning rate nos indica lo rápido que aprende la red.
+\end{itemize}
+
+\subsection{Optimizer}
+
+Un optimizador es un algoritmo usado en \loc{deep learning} para disminuir las funciones de pérdida. Son funciones que dependen de los parámetros de pesos, bias y en algunos casos, del \loc{learning rate}. Hay muchos optimizadores como el descenso de gradiente, \sigla{SGD} (\loc{Stochastic Gradient Descent}), \sigla{AdaGrad} (\loc{Adaptive Gradient Descent}), \sigla{RMS-Prop} (\loc{Root Mean Square Propagation}) o \sigla{Adam} (\loc{Adaptive Moment Estimation}).
+
+En nuestro caso hemos usado \sigla{Adam} y \sigla{SGD}, siendo este último el que mejores resultados nos ha dado.
+
+\subsection{Scheduler}
+
+\subsection{Criterion}
+
+O funciones de pérdida, nos ayudan a calcular la calidad del entrenamiento de la red. Esta medida es mucho más fiable que el \loc{accuracy} global, ya que este puede estar contaminado por un valor que se está clasificando especialmente bien. A la hora de calcular la perdida entre la salida de la red y el \loc{ground truth}, buscamos que el valor sea el mínimo posible.
+
+Las funciones de pérdida usadas son:
+
+\begin{itemize}
+  \item \loc{Cross Entropy Loss} \bib{crossentropyloss}: Esta función forma parte de las llamadas funciones de pérdida \sigla{NLL} (\loc{Negative Log-Likelihood }). Esta familia de funciones se usa únicamente en clasificación.
+  \item \sigla{MSLoss} (\loc{Median Square Error Loss}) \bib{mseloss}: Esta función de pérdida se usa en la regresión de las poses. Compara el vector salido de la red con las poses correctas y calcula el error cuadrático medio.
+\end{itemize}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Salida de la red}
+\section{Dos salidas en la misma red}
 
-\subsection{Dos salidas en la misma red}
+En los apartados anteriores hemos hablado de clases y poses cuando nos hemos referido a la salida de la red. Esto es porque en nuestra última \sigla{CNN} creada, tenemos dos salidas, una con las probabilidades de cada clase y otra con un vector de poses sobre el gesto de entrada.
 
-\subsubsection{Las salidas se controlan entre ellas}
+Esto significa que nos enfrentamos a dos problemas, uno de clasificación y uno de regresión. Es por esto que cada salida tiene una función de pérdida distinta.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+La hipotesis que fundamento la creación de está estructura fue:
 
-\section{Comprobación de resultados}
+``A la hora de clasificar gestos, la red \loc{SimpleNet} se centra más en los sujetos que hacen los gestos que en los propios gestos. Se comprueba que cuando el sujeto es completamente distinto, la salida de la red identifica el gesto por la persona más que por los movimientos de las manos. Por esto se piensa que añadiendo el factor movimiento con las poses, podemos <<hacer olvidar>> a la red del sujeto y conseguir centrarla en la detección de los gestos.``
 
-¿Cómo podemos saber si el resultado incorrecto se debe a la estructura de la red o a los datos introducidos?
+Tras pensar esto, añadimos la segunda salida de la red, creamos la fución de pérdida, y sumamos el valor del coste para dicha salida al ya existente de la clasificación. Tras esto, hacemos el \loc{backpropagation} con la suma de las pérdidas. La mejora en \loc{accuracy} es mínima pero vemos que es capaz de centrarse mucho mejor en los gestos que en la persona en concreto. Incluso es capaz de adivinar un gesto dada una entrada de un dibujo animado, como vemos en la figura \ref{fig:DrawingSign}.
+
+\imagen{./img/memoria/aspectos/DrawingSign}{La red es capaz de adivinar un signo hecho por un dibujo animado}{DrawingSign}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Exportación del modelo}
 
-\subsection{Formatos estándares}
+A la hora de exportar el modelo, hemos usado la herramienta interna de \prog{PyTorch}, que nos exporta modelos con formato <<\prog{.pth}>>. Este formato es perfecto si nos mantenemos en el ecosistema de \prog{PyTorch}, pero si quremos usar el modelo con otros \loc{frameworks} o librerias, debemos exportarlo a un formato estandar.
 
-\subsubsection{\sigla{ONNX}}
+\subsection{ONNX}
+
+El formato estandar más utilizado es \prog{ONNX}. Puedes ir a la parte de herramientas en \ref{tool:ONNX} para más información.
+
+Con este formato, hemos podido usar el modelo con la librería de \prog{ONNXRuntime} y así conseguir una inferencia mucho más rápida. Por otro lado, hemos usado esta misma librería para comprimir el modelo usando cuantización.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Copresión del modelo}
-
-\subsection{Consecuencias}
-
-\subsubsection{Velocidad}
-
-\subsubsection{\loc{Accuracy}}
-
-\subsection{Métodos de compresión}
+\section{Compresión del modelo}
 
 \subsubsection{\loc{Quantization}}
 
-\subsubsection{\loc{Prunning}}
+La cuantización es el proceso de reducir la precisión que tienen los pesos de las neuronas, así como los \loc{bias}, con la intención de reducir el uso de memoria y el tamaño del modelo.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Estudio de escalabilidad del modelo}
+Para hacer esto transformamos el tipo de dato de los pesos, que normalmente es un \loc{float} de 32 \loc{bits}, a un tipo que ocupe mucho menos espacio, como por ejemplo puede ser un \loc{int} de 8 \loc{bits}.
 
-Vamos a comprobar hasta que punto la red neuronal es capaz de mantener la precisión de clasificación con el aumento de las etiquetas. Para todo lo anterior el número de etiquetas a clasificar han sido 8. Vamos a aumentar esto hasta 100 etiquetas.
+En este movimiento de transformar de 32 a 8 \loc{bits}, estamos reduciendo el tamaño 45 veces, reduciendo de forma significativa el consumo de memoria.
 
-En la siguiente tabla blabla
+La pega que tiene esto, es que el \loc{accuracy} se puede ver ligeramente rebajado. Aquí es donde tenemos que estudiar si merece la pena la reducción de tamañoi y uso de memoria en contra de la pérdida de acierto.
+
+En la figura \ref{fig:quantization} podemos observar la diferencia de tamaño entre el modelo en formato <<.onnx>> antes y después de cuantizar.
+
+\imagen{./img/memoria/aspectos/quantization}{Modelo exportado antes y después de cuantizar con \prog{ONNXRuntime}}{quantization}
+
+Un ejemplo claro de esa pérdida de \loc{accuracy} la vemos a la hora de inferir el mismo video del dibujo animado del apartado anterior. Esta vez en vez de inferir correctamente <<Book>>, infiere <<Before>>.
+
+Por otro lado, la cuantización nos ha permitido poder subir el modelo contenedorizado de forma más sencilla y rápida.
+
+\section{Repasemos un experimento}
+
+Voy por último a hablar de uno de los experimentos realizados en el proyecto.
+
+Antes de pasar a crear la \sigla{CNN} para clasificación de video, y cuando estaba en la fase en la que los datos de entrada eran únicamente \loc{frames}; pensé que podía incluir la secuencia de \loc{frames} de un video en una única imagen.
+
+Podemos ver uno de los ejemplos en la figura \ref{fig:framesConcat}.
+
+\imagen{./img/memoria/aspectos/framesConcat}{Concatenación de frames con la intención de representar un video (gesto es <<Before>>). Imágenes del dataset WLASL \cite{li2020word}}{framesConcat}
+
+Esto fue un auténtico fracaso, el \loc{accuracy} de la red era mínimo, y cuando concatenabamos números \loc{frames} de una imagen, acabábamos con un tensor único enorme.
+
+El problema principal es que una entrada de este estilo confunde mucho a una red convolucional, ya que esta intenta buscar características espaciales en la dimension, pero se está encontrando con muchos problemas:
+
+\begin{enumerate}
+  \item Píxeles <<muertos>>: Para empezar, al concatenar la imagen, hemos añadido píxeles negros entre \loc{frames}. El \loc{kernel} va a pasar por ellos y no va a recibir nin´gún tipo de información espacial.
+  \item Demasiada información para una dimensión: Estamos dando información sobre las caracterísitcas espaciales de la imagen al mismo tiempo que buscamos encontrar el movimiento de los gestos entre \loc{frames}
+        . Para que esto funcione correctamente, el movimiento de los gestos entre \loc{frames}
+        debe estar en otra dimension, y que sea el \loc{kernel} de esa dimensión el que produzca la convolución que detecte los movimientos.
+\end{enumerate}
+
+Tras esto, pudimos comprender que necesitábamos pasarnos a la clasificación de un video, uniendo los \loc{frames}, no como una imagen única, sino como una nueva dimensión en el tensor de entrada.

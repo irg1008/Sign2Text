@@ -142,7 +142,7 @@ Algunos de los métodos usados en aprendizaje semi-supervisado son los siguiente
 
 \imagen{./img/memoria/conceptos/Taxonomy_Semi-Supervised_Methods}{Visualización de la taxonomia de los métodos de aprendizaje semi-supervisado. En la rama correspondiente a los métodos basados en grafo podemos observar las distintas fases de clasificación \bib{van2020survey}}{SSLTaxonomy}
 
-\subsection{Supervised Learning}
+\section{Supervised Learning}
 
 Poco hace falta una definición de aprendizaje supervisado después de haber revisado aprendizaje no supervisado y aprendizaje semi-supervisado, pero por mantener el aislamiento de los apartados, diremos que: tambien llamado \loc{classification}\footnote{A pesar que no solo trate problemas de clasificación} o \loc{inductive learning} (recordemos fig. \ref{fig:MachineLearningTypes}), el aprendizaje supervisado es aquel aprendizaje cuyas instancias de datos (usadas para que nuestro programa aprenda) están todas etiquetadas.
 
@@ -163,9 +163,9 @@ Gracias al \loc{set} de validación, detectamos el momento en el que la red comi
 
 En la imagen vemos que el valor del eje de ordenadas tenemos el valor de los costes sobre las iteraciones (\loc{epochs} en inglés). Veremos más sobre esto en el apartado de \loc{fine-tunning} e hiperparametrización de una red neuronal. Veamos ahora los distintos tipos de aprendizaje supervisado.
 
-\subsubsection{Regression}
+\subsection{Regression}
 
-En la regresión, el objetivo es predecir un valor numérico y contínuo. Uno de los usos principales de modelos de regresión es el relleno de espacios en los datos o la estimación de valores futuros. Por otro lado, la regresión tambiñen se puede utilizar para determinar realciones casuales entre variables dependientes e independientes \bib{maulud2020review}.
+En la regresión, el objetivo es predecir un valor numérico y contínuo. Uno de los usos principales de modelos de regresión es el relleno de espacios en los datos o la estimación de valores futuros. Por otro lado, la regresión también se puede utilizar para determinar realciones casuales entre variables dependientes e independientes \bib{maulud2020review}.
 
 En los modelos de regresión, las variables independientes predicen a las variables dependientes. El análisis de regresión estima la variable dependiente $y$ en base al rango de variables independientes $x$. En cuanto a los tipos de regresión, puede ser simple o múltiple.
 
@@ -196,7 +196,7 @@ En los modelos de regresión, las variables independientes predicen a las variab
 
 \end{itemize}
 
-\subsubsection{Classification}
+\subsection{Classification}
 
 El segundo y último tipo de tipo de aprendizaje supervisado es también el más familiar. La clasificación consiste en etiquetar una variable discreta $y$ dada una variable de entrada $x$. Según el número de etiquetas disponibles para la clasificación hablamos de clasificación binaria o multi-clase.
 
@@ -248,7 +248,7 @@ Aunque no listamos todos los métodos, a continuación se pueden observar los m�
 
         El \loc{boosting} por otro lado se compone de dos pasos. En el primero usa \loc{subsets} del \loc{set} de entrenamiento para producir modelos con rendimiento medio. Tras esto estimula el rendimiento combinándolos usando el voto mayoritario. En el \loc{boosting}, la creación de \loc{subsets} no es aleatoria y depende del rendimiento de los modelos anteriores.
 
-        La principal diferencia entonces entre los dos, es que \loc{bagging} aprende el \loc{dataset} completo de forma paralela mientars que \loc{boosting} aprende usando los resuultados de los modelos anteriores. \loc{Boosting} muestra una mejor \loc{accuracy} que \loc{bagging} \bib{quinlan1996bagging}, pero tambiñen tiene a producir \loc{overfitting} en los modelos.
+        La principal diferencia entonces entre los dos, es que \loc{bagging} aprende el \loc{dataset} completo de forma paralela mientars que \loc{boosting} aprende usando los resuultados de los modelos anteriores. \loc{Boosting} muestra una mejor \loc{accuracy} que \loc{bagging} \bib{quinlan1996bagging}, pero también tiene a producir \loc{overfitting} en los modelos.
 
   \item \textbf{\loc{Random Forest}}: El \loc{random forest} también se puede usar en tareas de regresión. El principio que se sigue es que un conjunto de clasificadores <<débiles>> se puede unir para crear un clasificador <<fuerte>>. En este caso tenemos un \loc{ensemble} de árboles de decisión que funciona mejor que \loc{bagging} y \loc{boosting} tanto en \loc{accuracy} como en \loc{overfitting}. Cada árbol del \loc{ensemble} tiene un \loc{set} de entrenamiento distinto. Debemos tener en cuenta que si necesitamos una descipción de las relaciones existentes entre los datos, los \loc{random forest} no son la mejor opción, ya que al tener un conjunto de árboles, se hace difícil la compresión de la estructura general.
 
@@ -301,7 +301,7 @@ Aunque no listamos todos los métodos, a continuación se pueden observar los m�
         \end{itemize}
 \end{enumerate}
 
-\subsubsection{Deep Learning}
+\section{Deep Learning}
 
 Hemos visto en el último apartado las características de una red neuronal de forma individual: como se compone, que tipos de funciones de activación tenemos y como podemos evaluar y medir la salida de una neurona.
 
@@ -375,6 +375,6 @@ Las redes neuronales convolucionales son más complejas y su particularidad, com
         Existen numerosas arquitecturas de redes neuronales convolucionales que han demostrado ser muy útiles en la resolución de distintos problemas. Algunas son: \sigla{AlexNet} \bib{krizhevsky_sutskever_hinton_2012}, \sigla{LeNet}\bib{lenet}, \sigla{VGGNet} \bib{VGGNet}, \sigla{GoogLeNet} \bib{GoogLeNet}, \sigla{ZFNet} \bib{ZFNet} o \sigla{ResNet} \bib{ResNet}.
 \end{itemize}
 
-Todas estas no son ni mucho menos todas las redes neuronales del campo del \loc{deep learning}. Cada pocos meses se publica un \loc{paper} que muestra estructuras nuevas con oportunidades futuras impresionantes. En la actualidad, otro de los modelos de \loc{deep learning} que más atención (nunca mejor dicho) genera, son los modelos \loc{transformers} expuestos por primera vez en el famoso \loc{paper} <<\loc{Attention is all you need}>>, parte de un libro de (2017) \bib{attention}. Estos modelos usan el llamado <<mecanismo de atención>> que da pesos distintos a las distintas partes de nuestro dato de entrada. Los principales campos en los que se usan los \loc{transformers} son el campo del \loc{natural planguage processing} (\sigla{NLP}) y el campo de \loc{computer vision} (\sigla{CV}).
+Todas estas no son ni mucho menos todas las redes neuronales del campo del \loc{deep learning}. Cada pocos meses se publica un \loc{paper} que muestra estructuras nuevas con oportunidades futuras impresionantes. En la actualidad, otro de los modelos de \loc{deep learning} que más atención (nunca mejor dicho) genera, son los modelos \loc{transformers}, expuestos por primera vez en el famoso \loc{paper} <<\loc{Attention is all you need}>>, parte de un libro de (2017) \bib{attention}. Estos modelos usan el llamado <<mecanismo de atención>> que da pesos diferentes a las distintas partes de nuestro dato de entrada (llamados \loc{tokens}). Los principales campos en los que se usan los \loc{transformers} son el campo del \loc{natural language processing} (\sigla{NLP}) y el campo de \loc{computer vision} (\sigla{CV}).
 
-\textbf{Nota del autor}: Los \loc{transformrs} se alejan un poco del tema principal de este proyecto, pero invito a leer el fantástico paper y descubrir sobre los modelos que usan esta red y que están revolucionando el mundo de la \loc{deep learning} (\pe: \sigla{GPT-3} o \sigla{DALL-E})
+\textbf{Nota del autor}: Los \loc{transformrs} se alejan un poco del tema principal de este proyecto, pero invito a leer el fantástico paper y descubrir sobre los modelos que usan esta red y que están revolucionando el mundo del \loc{deep learning} (\pe: \sigla{GPT-3} o \sigla{DALL-E})

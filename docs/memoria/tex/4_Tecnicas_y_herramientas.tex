@@ -1,6 +1,319 @@
 \capitulo{4}{Técnicas y herramientas}
 
-% Esta parte de la memoria tiene como objetivo presentar las técnicas metodológicas y las herramientas de desarrollo que se han utilizado para llevar a cabo el proyecto. Si se han estudiado diferentes alternativas de metodologías, herramientas, bibliotecas se puede hacer un resumen de los aspectos más destacados de cada alternativa, incluyendo comparativas entre las distintas opciones y una justificación de las elecciones realizadas. 
-% No se pretende que este apartado se convierta en un capítulo de un libro dedicado a cada una de las alternativas, sino comentar los aspectos más destacados de cada opción, con un repaso somero a los fundamentos esenciales y referencias bibliográficas para que el lector pueda ampliar su conocimiento sobre el tema.
+\section{Lenguajes}
+
+\subsection{Python}
+
+Hemos usado \prog{Python} como lenguaje de programación en la creación del modelo. La versión utilizada ha sido la \prog{3.9.8}. Se ha usado este lenguaje porque es el más común en \loc{computer science} y es el lenguaje con más librerias de matemáticas, tensores y \loc{machine leanring} en general. En nuestro caso hemos usado \prog{PyTorch}, una alternativa a \prog{Tensorflow} con un paradigma más programático.
+
+Por otro lado usar Python nos ha permitido crear scripts rápidos con muy poco código que han facilitado mucho el desarrollo y prueba de distintos \loc{datasets}.
+
+Y no solo eso, sino que por facilidad y reutilización de código, hemos creado el servidor y \sigla{API} con \prog{FastAPI}, un \loc{framework} para crear \sigla{APIs}, con rendimiento similar a \prog{NodeJS} o \prog{Go}.
+
+\subsection{HTML y CSS}
+
+A la hora de crear nuestro \prog{front-end} para el usuario, hemos usado \prog{HTML} paar el marcado y \prog{CSS} para los estilos. En este último lenguaje, hemos usado un \loc{framework} de prototipado rápido llamado \prog{Tailwind} (hablaremos de él un poco más adelante).
+
+\subsection{JavaScript}
+
+Con \prog{HTML} y \prog{CSS} podemos crear una \loc{landing page} simple (aunque estilosa), pero ninguno es un lenguaje de programación. Con \prog{JavaScript} podemos hacer peticiones \sigla{HTTP}, transformar el \sigla{DOM} en el navegador o renderizar la \sigla{UI} desde el sevidor (\sigla{SSR}).
+
+JavaScript es un lenguaje dinámicamente tipado y orientado a objetos que sigue el estandar \prog{ECMAScript}. Es un lenguaje multi paradigma que soporta estilos de programacion funcionales, basados en eventos e imperativos. El lenguaje nos ofrece distintas \sigla{APIs} para trabajar con el navegador: desde expresiones regulares, el \sigla{DOM} hasta \loc{webworkers}, y una larga lista.
+
+En el apartado Web veremos que librerias hemos usado para facilitar la creación de la \sigla{UI} así como la carga del modelo en este entorno. Allí hablaremos de dos frameworks muy interesantes para contrucción de páginas estáticas y \sigla{SSR}: \prog{Astro} y \prog{Svelte}.
+
+\subsection{Markdown}
+
+\prog{Markdown} es un lenguaje ligero de marcado que se ha usado para documentar la carpeta raíz o carpetas individuales del proyecto. En algunos de los \prog{markdown} podemos obervar guias de instalación o guias de uso, así como pasos para conseguir descargar el contenedor con el modelo, consumir de la API que hemos creado, entre otros.
+
+\subsection{\LaTeX}
+
+Por último, LaTeX. Hemos usado LaTeX para generar esta memoria que estás leyendo, así como los anexos. Como nota personal, es la primera vez que lo hemos usado y nos ha sorprendido la velocidad con la que se escriben algunas estructuras de texto, ecuaciones y figuras. Desde luego seguiremos usándolo en el futuro.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Metodologías}
+
+\subsection{Metodología SCRUM}
+
+La metodología \sigla{SCRUM} es un proceso de metodología ágil con el que se busca llevar a cabo un conjunto de tareas de forma colaborativa. El objetivo es mejorar un producto en incrementos regulares, añadiendo nuevas características según el beneficio que aporten. Por esto es muy útil en proyectos complejos, con requisitos que cambian contínuamente y en los que debemos ser flexibles a cambios repentinos.
+
+\subsubsection{Fases}
+
+\begin{enumerate}
+  \item Planificación (\loc{Product Backlog}): En esta fase establecemos las tareas que se deben cumplir, aportanto la información necesaria. Esta lista de tareas se formula con el equipo de trabajo y el \loc{Product Owner}. Cada tarea recibe unos <<puntos de historia>> que priorizan unas u otras. Una vez tenemos el \loc{product backlog} listo, comenzamos el primer \loc{sprint}.
+
+  \item Ejecución: Un \loc{sprint} es un intervalo del tiempo en el cual intentamos realizar todas las tareas marcadas en el \loc{product backlog} con la intención de tener un <<entregable>> (o <<producto mínimo viable>> en el caso del primer \loc{sprint}). Una vez hemos iterado sobre nuestro producto, debemos medir el progreso hecho.
+
+  \item Control: en la fase de control (o \loc{burn down}) medimos el progerso realizado en el anterior \loc{sprint}. El \loc{scrum master} será el encargado de actualizar los gráficos con los \loc{story points} de las tareas realizadas.
+\end{enumerate}
+
+\subsection{\loc{Continous Integration} / \loc{Continous Development} (\sigla{CI/CD})}
+
+El desarrollo contínuo es un término que engloba a muchos otros términos. Todos ellos teniendo en común la automaticación de procesos, que se lanzan cuando cambiamos algo en nuestro código. Los términos que componen el desarrollo contínuo son: la integración contínua, el \loc{continous testing}, \loc{continous delivery} y el \loc{continuos deployment}.
+
+La integración continua es la práctica de automatizar la integración de cambio en el código con otro software <<externo>> o de terceros. Un ejemplo sería la comprobación de tipos de en nuestro código justo depués de hacer un \loc{commit} con \prog{Git}. En nuestro proyecto hemos integrado tres herramientas que se ejecutaban justo después de realizar un \loc{commit} de los cambios.
+
+\subsubsection{PyLint}
+
+\prog{PyLint} es un herramienta de \loc{linting} para \prog{Python}, así como \prog{ESLint} lo es para JavaScript. El \loc{linting} es la práctica de revisar el código en busca de errores de sintaxis, código poco intuitivo, detección de <<malas prácticas>> o uso de estilos inconsistentes (\pe: uso de variables estilo \loc{snake case} con \loc{camel case}). Las herramientas de \loc{linting} pertencen al grupo de herramientas de análisis estático.
+
+\subsubsection{Black}
+
+\prog{Black} es un formateador de código opinionado para \prog{Python}. Nos permite mantener un estilo constante en toda nuestra \loc{codebase}, entre proyectos, y entre distintos desarrolladores. Es muy útil en proyectos compartidos y permite mejorar la legibilidad del código. Podemos personalizar reglas como el tamaño máximo de una línea de código o el uso de comillas simples (') o compuestas (").
+
+\subsubsection{MyPy}
+
+\prog{MyPy} es un comprobador de tipos estático para, lo has adivinado, \prog{Python}. Esta herramienta nos ayduda a comprobar que todos los tipos de nuestra funciones y variables son correctos, o que en su defecto, no nos los hemos dejado vacios. Es una herramienta opcional; pues al igual que \prog{JavaScript}, \prog{Python} es un lenguaje dinámicamente tipado y no necesita tipos para funcionar correctamente.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Herramientas}
+
+\subsection{Git}
+
+\prog{Git} es un controlador de versiones y manejo de código basado en la velocidad. Con \prog{Git} podemos realizar \loc{commits} con los cambios incrementales que hacemos en nuestro código y así mantener un historial. De esta forma podemos desarrollar código sabiendo que todas las iteraciones sobre el código están guardadas y si fuera necesario, podemos volver a ellas.
+
+\prog{Git} se usa como un \sigla{CLI} (\loc{Command-Line Interface}), aunque hay muchas herramientas que lo integran con una \sigla{UI} simple e intuitiva (\pe: GitKraken, Github Desktop o Turtoise)
+
+\subsubsection{GitHub}
+
+Github es una herramienta de \loc{hosting} de repositorios de \prog{Git} controlada por Microsoft. Nos proporciona una interfaz web en la que podemos ver nuestros repositorios o los de los demás (siempre que sean públicos).
+
+Por otro lado nos ofrece herramientas para implementar \sigla{CI/CD}, así como una ventana en la que mostrar nuestras contribuciones en \loc{Open Source}.
 
 
+\subsubsection{GitLab}
+
+Gitlab es una alternativa a Github. Las características ofrecidas son prácticamente las mismas. Una de las diferencias, aunque es mínima, es que Gitlab ofrece mayor compatibilidad a la hora de hacer \loc{continous deployment} con los servicios de Google.
+
+
+\subsection{PyTorch}
+
+\prog{Pytorch} es un framework de \loc{machine learning} para \prog{Python} que acelera la creación de prototipos y salida de moelos a producción. Fue creado por Facebook para rivalidar con \prog{Tensorboard}. \prog{Pytorch} nos ofrece un ecosistema con numerosas librerias y herramientas para acelerar el desarrollo. Algunas son \prog{PyTorch3D} (computación 3D), \prog{ONNX Runtime} (para ejecutar modelos en el formato estandar \sigla{ONNX}), \prog{Transformers} (herramienats para procesado de lenguaje natural), \prog{PyTorch Lighting} (para crear modelos de forma rápida, al estilo \prog{Keras}) y \prog{Ensemble-PyTorch} (para generar \loc{ensambles} de modelos).
+
+Por otro lado nos ofrece librerias para tratar con distintos formatos de datos: torchaudio (audio), torchtext (texto) y torchvision (imágenes y videos). También nos ofrece distintas clases para cargar datasets  y transformar los datos que hemos cargado.
+
+En el \loc{snippet} de código \ref{fig:PyTorch_Transform} podemos ver un ejemplo de una transformación de datos usando el módulo <<Compose>>. Vemos que dado un tamaño de imagen, vamos a convertir una lista de imágenes a tensor, tras esto vamos a ajustar el tamaño de cada imagen y normalizar los valores.
+
+\imagen{./img/memoria/herramientas/PyTorch_Transform}{Ejemplo de \loc{transform} en \prog{PyTorch}}{PyTorch_Transform}
+
+Pytorch nos otorga cientos de herramientas que hacen fácil cargar y transformar los datos, trabajar con tensores, crear y entrenar redes neuronales, exportarlas y cargarlas de nuevo; todo el proceso.
+
+\subsubsection{Tensorflow}
+
+\prog{Tensorflow} es también un \loc{framework} de \prog{Python} de \loc{machine learning}. Tiene la mayoría de herramientas que nos ofrece \prog{Pytorch}, aunque existen varias diferencias entre ambos (ver tabla \ref{table:difs_tensorflow_pytorch} para una lista más completa).
+
+\tablaSmall{Diferencias entre \prog{Tensorflow} y \prog{PyTorch}}
+{p{0.2\textwidth} p{0.4\textwidth} p{0.4\textwidth}}{difs_tensorflow_pytorch}
+{ & Tensorflow & PyTorch \\}{
+  Desarrollador & Google & Facebook \\
+  Adopción & Más usado & Relativamente nuevo \\
+  Definición de grafos & Estático. Definimos los grafos antes de ejecutar el modelo. Todas las comunicaciones se hacen usando el módulo \prog{tf.Session} &  Más imperativo y dinámico. Podemos definir y cambiar los nodos en plena ejecución \\
+  \loc{Debugging} & Debemos usar una herramienta especializada: tfdbg. Nos permite hacer log de tensores en la \loc{session} en la que estamos & Podemos usar nuestras herramientas favoritas de \loc{debugging} ya que se define en \loc{runtime}. También podemos usar \prog{print} \\
+  Visualización & Tenemos \prog{Tensorboard}. Una herramienta de \loc{log} y \loc{debugging} que funciona a tiempo real ofreciendo una interfaz web. Ofrece tanto que hemos dedicado un pequeño apartado justo abajo & También es compatible con \prog{Tensorboard}, lo que lo hace tan visual como \prog{Tensorflow} \\
+  \loc{Deployment} & \prog{Tensorflow} nos ofrece \prog{Tennsorflow Serving}, un \loc{framework} para hacer \loc{deploy} de nuestros modelos en servidores especiales & No tenemos una herramienta especializada para hacer \loc{deploy}. Debemos usar otros \loc{frameworks} como \prog{Flask} o \prog{Django} (en nuestro caso hemos usado \prog{FastAPI}) \\
+  Paralelismo & Es un proceso manual y se debe hacer de forma individual por modelo, aunque otorga un control más granular & El paralelismo es muy fácil de implementar. Simplemente llamamos a \prog{torch.nn.DataParallel} y <<mágicamente>> funcionará sin ningún esfuerzo\\
+  \loc{Framework} vs Libreria & \prog{Tensorflow} se parece más a una libreria, ya que la mayoría de opciones son de <<bajo nivel>>. Debes configurar muchas operaciones simples y produce algo de \loc{boilerplate}. Es por esto que \prog{Tensorflow} se suele usar junto a \prog{Keras}, un \loc{framework} de \loc{deep learning} <<diseñado para humanos>> & PyTorch es un \loc{framework}. Tiene muchas abstracciones con estructuras comunes disponibles de forma directa para un rápido prototipado. Además de herramientas de transformación, carga de distintos formatos y múltiples \loc{datasets} famosos listos para ser descargados y usados\\
+}
+
+\subsection{ONNX}\label{tool:ONNX}
+
+\prog{ONNX} (\loc{Open Neural Network Exchange}) es un formato abierto contruido para representar modelos de \loc{machine learning}. Busca ofrecer un formato estándar para poder compartir modelos entre distintos lenguajes, herramientas, \loc{frameworks}, \loc{runtimes} y compiladores. El proyecto es de código abierto con más de 200 \loc{contributors} y está escrito en \prog{C++}.
+
+
+\prog{PyTorch} tiene un módulo para exportar y cargar modelos en \prog{ONNX}. Por otro lado \prog{ONNX} nos ofrece una libreria, \prog{ONNXRuntime} para inferencia y serialización de los modelos, así como \loc{quantization}.
+
+Y por mantener el espíritu de la estandarización y reutilización entre lenguajes y ecosistemas, tenemos también una libreria para usar los modelos en la web con \prog{NodeJS}: \prog{ONNX.js}.
+
+\subsubsection{Netron}
+
+Netron es una aplicación web en la que podemos subir neustros modelos con formato \prog{ONNX}, \sigla{PTH} o similar para visualizar su estructura. En la figura \ref{fig:Netron} podemos ver la estructura de uno de los modelos entrenados en este proyecto.
+
+\imagen{./img/memoria/herramientas/Netron}{Estructura de un modelo con \sigla{CNNs} en formato \prog{ONNX}. Visualización con Netron}{Netron}
+
+Nos muestra de que <<tipo>> es cada capa de la red, el tamaño de entrada y salida, las funciones de activación usadas, la capa \loc{flatten} y muchos datos más.
+
+\subsection{Docker}
+
+Docker es un \prog{PaaS} que usa la virtualización a nivel de \sigla{OS} (sistema operativo) para distribuir software en <<contenedores>>. Un contenedor esta aislado del resto del sistema y consume muchos menos recursos que una máquina virtual convencional.
+
+Los contenedores se construyen a traves de imágenes. Las imágenes se crean normalmente usando un archivo de configuración \prog{Dockerfile} (aunque hay más opciones). En este archivo añadimos las <<instrucciones>> para crear nuestra imagen, aunque no es hasta que instanciamos un contenedor, que sabemos si la imagen está corerctamente construida.
+
+Hemos usado \prog{docker} a la hora de crear una imagen para nuestro \loc{back-end} y modelo. Esto nos ha permitido asegurarnos que si la imagen funcionaba en local, iba a funcionar también en producción.
+
+Tras tener la imagen, ya podemos subirla a distintos sitios y así poder generar instancias de contenedores y poner neustro servicio en funcionamiento. Como veremos en el siguiente apartado, nosotros tenemos la imagen alojada para producción en \loc{Google Cloud Registry}, un servicio de almacenamiento y registro de imágenes \prog{Docker}.
+
+Por otro lado y para poder compartir la imagen con la comunidad, también la hemos alojado en \loc{DockerHub}, la plataforma de \loc{hosting} propio de \prog{Docker}.
+
+\begin{itemize}
+  \item Accede a la imagen de \project{Sign2Text-API} en \url{https://hub.docker.com/repository/docker/gazquez/sign2text}
+\end{itemize}
+
+\subsection{\loc{Deployment}}
+
+En el proyecto se han considerado y probado numerosas opciones de \loc{deploy} tanto para el modelo, el \loc{back-end} y el \loc{front-end}.
+
+\subsubsection{Google Drive}
+
+Comencemos con el modelo. El modelo está alojado en \loc{Google Drive}. \loc{Google Drive} no es el mejor \sigla{CDN} en el que alojar nuestros modelos, pero nos ha servido en nuestro caso. El tenerlo en \loc{Google Drive} nos permite hacer iteraciones sobre el modelo sin tener que volver a construir el contenedor de \prog{Docker} en local. Esto es útil para separar el desarrollo de la red neuronal de otros desarrollos como es el \loc{front-end} y, sobre todo, el \loc{back-end}.
+
+De esta forma podemos descargar el modelo programáticamente cuando nos movemos al entorno de producción. Para esto usamos una pequeña libreria de \prog{Python}: \prog{gdown} con la que ejecutamos la descarga del modelo en el \prog{Dockerfile} en la fase de construcción de la imagen.
+
+Esto nos ha ayudado mucho a reducir el tamaño del repositorio y la dependencia entre proyectos (\project{Sign2Text} y \project{Sign2Text-API}).
+
+\begin{itemize}
+  \item Librería gdown: \url{https://github.com/wkentaro/gdown.git}
+  \item Repositorio \project{Sign2Text-API}: \url{https://github.com/irg1008/Sign2Text-API.git}
+\end{itemize}
+
+\subsubsection{Google Cloud}
+
+Moviéndonos a la \sigla{API}. La \sigla{API} está alojada en Google Cloud, más concretamente en \prog{Cloud Run}.
+
+Google Cloud es un \sigla{IaaS} (infrastructure as a service) y \sigla{PaaS} (Platform as a Service) que ofrece servicios que se ejecutan en la nube y que tratan \loc{hosting}, computación, \loc{big data}, \sigla{IoT} (\loc{Internet Of Things}), \loc{machine learning}, almacenamiento y bases de datos, entre otros.
+
+En nuestro caso, necesitabamos alojar una \sigla{API} que consumiera pocos recursos. Hemos conseguido esto usando la tecnología \loc{serverless} y \prog{Cloud Run}.
+
+En la tecnología \loc{serverless} el servidor aloja solo los recursos necesarios para realizar una tarea, y lo hace a demanda. Es decir, que solo se ejecuta mientras un cliente necesite acceso al servicio. Esto hace que el tiempo que está ejecutándose se minimice, disminuyendo a su vez los costes. La pega con esto, es que si el servicio no se está utilizando, la instancia se apaga. Al apagarse, la próxima vez que un cliente quiera acceder al recurso, deberá inicializarse de nuevo y asignar los recursos, y dependiendo de las neecsidades de nuestro servicio; este tiempo puede ser mayor o menor.
+
+En nuestro caso, y con el objetivo de probar estos tiempos, hemos asignado cero instancias mínimas al servicio (esto indica que puede apagarse en caso de que no reciba peticiones). Al asignar cero instancias y no recibir peticiones en un tiempo, el servicio se apaga. El tiempo medio de recuperación (o \loc{up time}) es de 15s. Este tiempo es inutilizable en entornos de producción reales (ninguna persona va a esperar 15 segundos a que comience un servicio). Por esta razón, el número de servicios activos que hemos usado es <<uno>>. Con un servicio activo, la instancia no se apaga y podemos responder a los clientes de forma rápida. El \loc{drawback} de esto es que el precio de uso aumenta muchísimo, ya que la clave del \loc{serverless} es consumir solo los recurosos necesarios.
+
+Google \prog{Cloud Run} es la herramienta de Google para instancias \loc{serverless}. Amazon y Azure tienen sus propias implementaciones de estás tecnologías.
+
+\begin{itemize}
+  \item Se puede acceder a \prog{Cloud Run} en \url{https://cloud.google.com/run}
+  \item Se puede acceder a la \sigla{API} de \project{Sign2Text} (es posible que el tiempo de respuesta sea algo lento) en \url{https://api.sign2text.com/docs}
+\end{itemize}
+
+\textbf{Azure}
+
+Azure es la alternativa de Microsoft a Google Cloud con herramientas muy similares. Se incluye en la lista de herramientas ya que se usó durante un tiempo para alojar el contenedor con el \loc{back-end} y el modelo. Como nota personal, la experiencia y la \sigla{DX} (\loc{developer experience}) con Azure es muy mala. La \sigla{UI} es muy desorganizada y no ofrece \loc{logs} a tiempo real de la construcción de las imágenes o los contendores.
+
+\textbf{AWS}
+
+Igual que Azure, AWS es la alternativa a Google Cloud. También tiene herramientas muy similares \bib{cloudCompare}. AWS es la plataforma de cloud más usada, seguido de Azure y Google \bib{gupta2021review}.
+
+En la realización de este proyecto, se han usado las tres herramientas para alojar el \loc{back-end}. Si se desea una guía <<paso a paso>> de como subir el contenedor y hacer \loc{deploy} con el modelo descrito en el apartado anterior en cada una de ellas accédase en \url{https://github.com/irg1008/Sign2Text-API#readme}
+
+\subsubsection{Vercel}
+
+Hemos hablado de donde tenemos alojado el \loc{back-end} y el modelo, pero, no menos importante, es el \loc{front-end}, que permite a los usuarios una plataforma para usar y experimentar con nuestro modelo.
+
+Vercel es un \sigla{PaaS} que busca la agilidad a la hora de desarrollar, previsualizar y expedir nuestro software. Es una plataforma que nos permite integrar fácilmente \sigla{CI/CD}, obteniendo el código necesario para producción de nuestros repositorios.
+
+La \sigla{DX} es espectacular, ya que nos ofrece toda slas herramientas que necesitamos (\loc{serverless}, \loc{edge functions}, dominios, etc) para desarollar y llevar nuestro proyecto a producción de forma rápida. Además, el plan gratuito es suficiente para empezar con un proyecto medianamente grande.
+
+De forma transparente, Vercel usa AWS y Cloudflare (Cloudflare Workers) para otorgar los servicios. Esto hace que el servicio ofrecido sea rápido y el \loc{uptime} muy bajo. Por otro lado, Vercel es dueña también de un \loc{framework} (\prog{Next.JS}) escrito sobre la librería más usada de JavaScript: \prog{React}. En este proyecto no se ha usado \prog{Next.JS}, ya que se ha optado por otro \loc{framework} (\prog{Astro}) de prototipado rápido.
+
+\begin{itemize}
+  \item Se puede acceder a Vercel en \url{https://vercel.com}
+  \item \prog{Next.JS} está disponible en \url{https://nextjs.org}
+\end{itemize}
+
+\subsection{Front-end}
+
+El \loc{front-end} es la interfaz que se ofrece a un <<cliente>> para acceder de forma sencilla a la plataforma y las caracteristicas ofrecidas por una aplicación en el \loc{back-end} (lado del servidor).
+
+En nuestro caso, hemos realizado una web sencilla en la que los usuarios pueden arrastrar un video a la pantalla. Tras arrastrar el video, se muestra una \loc{preview} con un botón. Al pulsar el botón se envía
+el video a nuestro \loc{back-end} para ser procesado. El usuario recibe entonces el signo identificado para el video. Se puede ver un análisis más en profundidad de este proceso en el anexo de <<Diseño>> y el <<Manual del Usuario>>.
+
+Veamos que herramientas se han usado para crear el \loc{front-end}:
+
+\subsubsection{Tailwind}
+
+Tailwind es un \loc{frameworj} de \prog{CSS} para construir y estilar páginas de forma rápida y sin salirnos del \prog{HTML}. Tailwind nos ofrece todas las herramientas disponibles en \prog{CSS}:
+\begin{itemize}
+  \item \loc{Element states} como <<:hover>> o <<:active>>.
+  \item Media queries para construir sitios \loc{responsive}
+  \item Accesibilidad
+        \begin{itemize}
+          \item Modo oscuro
+          \item \loc{Reduced motion}
+        \end{itemize}
+  \item Animaciones y transiciones
+  \item Tipografía
+  \item Sombras
+  \item Y mucho más
+\end{itemize}
+
+\subsubsection{Svelte}
+
+\prog{Svelte} es un \loc{framework} de \loc{JavaScript} como \prog{React}, \prog{Angular} o \prog{Vue}, solo que algo distinto.
+
+En vez de usar el navegador y el denominado \loc{virtual} \sigla{DOM}, \prog{Svelte} solo cambia los elementos necesarios del \sigla{DOM} según cambien los estados internos de la aplicación.
+
+Por otro lado, este \loc{framework} nos permite escribir \prog{JS} (\prog{JavaScript}), \prog{CSS} y \prog{HTML} en el mismo archivo. Esto no es algo nuevo, pues podemos hacerlo en un archivo html normal. La diferencia con \prog{Svelte} es que podemos acceder de forma programática sin tener que usar el \sigla{DOM API}, reduciendo muchísimo \loc{boilerplate}, como podemos apreciar en la figura \ref{fig:Svelte_HTML}
+
+\imagen{./img/memoria/herramientas/Svelte_Example}{Ejemplo de código de detección de la anchura de un botón con Svelte (izquierda) y HTML (derecha)}{Svelte_HTML}
+
+\subsubsection{Astro}
+
+\prog{Astro} es un constructor de sitios estáticos centrado en la \sigla{DX} y en la optimización del tamaño de la salida tras la compilación. \prog{Astro} se basa en el concepto de <<microislas>>.
+
+Una isla o <<microisla>> se entiende como un fragmento de código que funciona por si mismo y no tiene dependencias de otros fragmentos o islas e nuestro código. También se conoce como \loc{Partial Hydration} y permite rehidratar solo las partes necesarias de nuestra \sigla{UI}. De esta forma reducimos la carga en el sistema y los tiempos de actualización con el servidor, ya que también es \sigla{SSR}.
+
+El \sigla{SSR} o \loc{server side rendering} permite ejecutar todos los cambios sobre la \sigla{UI} (con \prog{JavaScript} o \prog{CSS}) en el servidor. De este modo el cliente solo recibe el código \prog{HTML} a mostrar.
+
+El sistema de islas es muy útil, porque al <<aislar>> todos los componentes por separado, podemos mezclar distintas tecnologías y \loc{frameworks}, sin miedo a que interfieran entre sí. Es por esto por lo que hemos podido usar \prog{Svelte} para hacer toda la lógica, y hemos mantenido la parte estática en HTML puro.
+
+\begin{itemize}
+  \item Puedes acceder a la web de astro en: \url{https://astro.build}
+  \item Svelte se puede visitar en \url{https://svelte.dev}
+  \item También está disponible el \loc{front} del proyecto proyecto en \url{https://sign2text.com}
+\end{itemize}
+
+\subsection{Figma}
+
+Figma es una herramienta de diseño, del estilo de Asobe Illustrator, per orientada a desarrollo web. En ella podemos manejar archivos vectoriales, crear animaciones, maquetar páginas webs, entre otras cosas. La comunidad es muy activa dentro del ecosistema de esta herramienta, por lo que se nos ofrecen cientos de \loc{plugins} y \loc{templates} para cubrir todas nuestars necesidades.
+
+Las figuras y dibujos que se ven en esta memoria están hechos con esta herramienta.
+
+Puedes acceder a figma en \url{https://figma.com}.
+
+\subsection{Back-end}
+
+El back-end es la parte más importante de una aplicación web, ya que es donde tenemos toda la lógica de negocio, los accesos a las bases de datos, llamadas a \sigla{APIs} externas, entre otras cosas. El código del back-end se ejecuta en servidores (o en nodos de borde) y el cliente no modificar ni acceder a este código (como si pasa en el  \loc{front-end}).
+
+En neustro caso hemos usado un \loc{framework} sobre \prog{Python} para crear una \sigla{API} optimizada y documentada.
+
+\subsubsection{FastAPI}
+
+\prog{FastAPI} es un \loc{framework} sobre \loc{Python} moderno y orientado a la velocidad. Gracias a sus amplias herramientas, nos permite crear \loc{endpoints} documentados en base al estandar OpenAPI de forma rápida. Todo esto sumado a la cantidad de librerias que nos ofrece el ecosistema de \prog{Python}, \prog{FastAPI} es una opción perfecta para crear \loc{endpoints} en neustro \loc{back-end} (Netflix usa \prog{FastAPI} en producción).
+
+Por otro lado, junto a \prog{FastAPI}, usamos \prog{Uvicorn}. \prog{Uvicorn} es un \sigla{ASGI} (\loc{Asynchronous Server Gateway Interface}) \loc{server} usado para inicializar el servidor en desarollo y en producción. Permite \loc{hot reload} para un desarrollo más rápido.
+
+\begin{itemize}
+  \item FastAPI: https://fastapi.tiangolo.com/
+  \item Uvicorn: https://www.uvicorn.org/
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Miscelania}
+
+\subsection{Shields.io}
+
+Shields.io es una herramienta que permite la creación de \loc{badges} personalizadas para nuestros archivos \prog{markdown}. Podemos elegir colores y añadir etiquetas e iconos personzalizados.
+
+\subsection{Github Copilot}
+
+Github copilot es una herramienta de \sigla{IA} que funciona como un asistente de código. Su función es sugerir \loc{autocompletes} para el código que vamos escribiendo a tiempo real, facilitando mucho la labor de tareas sencillas.
+
+\subsection{Insomnia}
+
+Insomnia es un cliente de \sigla{APIs}. Nos permite hacer llamadas y tests sobre nuestros \loc{endpoints}. Nos ayuda mucho a la hora de añadir \loc{headers} personalizados y mantener una colección de peticiones ordenada.
+
+\subsection{IDE}
+
+\subsubsection{VSCode}
+
+Se ha usado VSCode como IDE para el desarrollo tanto del modelo, como el \loc{front-end}, el \loc{back-end} y esta memoria. VSCode es un IDE multifacético de Microsoft y de código abierto. El ecosistema de \loc{plugins} y la \sigla{API} interna del programa permite a la comunidad adaptar y suportar cientos de lenguajes y herramientas.
+
+Este IDE está construido con \prog{JavaScript} y porteado a escritorio usando \prog{Electron}, un \loc{framework} para crear aplicaciones de escritorio.
+
+\subsection{\TeX Maker}
+
+Texmaker es un editor de \LaTeX con un visor de PDF personalizado. Soporta Linux, macOS y Windows e integra todas las herramientas que necesitas para desarrollar documentos complejos y profesionales.
+
+Podemos acceder en \url{https://www.xm1math.net/texmaker/}
