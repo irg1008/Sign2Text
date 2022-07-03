@@ -17,17 +17,29 @@
 % Links
 \PassOptionsToPackage{hyphens}{url}\usepackage[colorlinks]{hyperref}
 \hypersetup{
-	allcolors = {red}
+	allcolors = {red},
+  urlcolor = cyan,
 }
 
 % Ecuaciones
 \usepackage{amsmath}
+\DeclareMathOperator{\argmax}{argmax}
 
 % Rutas de fichero / paquete
 \newcommand{\ruta}[1]{{\sffamily #1}}
 
 % Párrafos
-\nonzeroparskip
+\setlength{\parskip}{1em}
+\setlength{\parindent}{4em}
+
+% Abreviaturas
+\newcommand{\pe}{i.e.}
+
+% Siglas
+\newcommand{\sigla}[1]{{\textsc{#1}}}
+
+% Otro idioma
+\newcommand{\loc}[1]{{\textit{#1}}}
 
 % Huérfanas y viudas
 \widowpenalty100000
@@ -38,11 +50,11 @@
 
 % Imagenes
 \usepackage{graphicx}
-\newcommand{\imagen}[2]{
+\newcommand{\imagen}[3]{
 	\begin{figure}[!h]
 		\centering
 		\includegraphics[width=0.9\textwidth]{#1}
-		\caption{#2}\label{fig:#1}
+		\caption{#2}\label{fig:#3}
 	\end{figure}
 	\FloatBarrier
 }
@@ -100,7 +112,7 @@
 %
 % Nuevo comando para tablas pequeñas (menos de una página).
 \newcommand{\tablaSmall}[5]{%
- \begin{table}
+ \begin{table}[h]
   \begin{center}
    \rowcolors {2}{gray!35}{}
    \begin{tabular}{#2}
@@ -314,6 +326,8 @@
 \usepackage{xcolor}
 \newcommand{\tutor}[1]{\def\@tutor{#1}}
 \newcommand{\course}[1]{\def\@course{#1}}
+
+
 \definecolor{cpardoBox}{HTML}{E6E6FF}
 \def\maketitle{
   \null
@@ -343,7 +357,7 @@
     \noindent\LARGE
     Presentado por \@author{}\\ 
     en Universidad de Burgos --- \@date{}\\
-    Tutor: \@tutor{}\\
+    Tutores: \@tutor{}\\
   }%
   \end{center}%
   \null
@@ -351,11 +365,17 @@
   }
 \makeatother
 
+\date{\today}
+
+\newcommand{\project}[1]{{\textsf{#1}}}
+\newcommand{\titulo}{Sign2Text - Documentación técnica}
+\newcommand{\tutores}{Dr. Daniel Urda Muñoz y Dr. Bruno Baruque Zanon}
+\newcommand{\nombre}{Iván Ruiz Gázquez}
 
 % Datos de portada
-\title{título del TFG \\Documentación Técnica}
-\author{nombre alumno}
-\tutor{nombre tutor}
+\title{\titulo}
+\author{\nombre}
+\tutor{\tutores}
 \date{\today}
 
 \begin{document}

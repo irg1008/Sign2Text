@@ -3,3 +3,5 @@
 * Se pueden ver las curvas de pérdida y accuracy
 * Se pueden ver las imágenes de los batch de entrada
 * Podemos ver la estructura del modelo recien entrenado
+
+Ejecutar con `python run.py`
