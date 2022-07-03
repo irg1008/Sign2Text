@@ -136,7 +136,7 @@ Podemos ver en la figura \ref{fig:2ndCNN} la estructura mencionada con la divisi
 
 \imagen{./img/memoria/aspectos/2ndCNN}{Estructura de una \sigla{CNN} con doble salida exportada con \loc{Netron}}{2ndCNN}
 
-Para saber más sobre el porque de la doble capa de salida, adelanta al apartado de <<Dos salidas en la misma red>>
+Para saber más sobre el porque de la doble capa de salida, avance al apartado de <<Dos salidas en la misma red>>
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -225,7 +225,7 @@ La cuantización es el proceso de reducir la precisión que tienen los pesos de 
 
 Para hacer esto transformamos el tipo de dato de los pesos, que normalmente es un \loc{float} de 32 \loc{bits}, a un tipo que ocupe mucho menos espacio, como por ejemplo puede ser un \loc{int} de 8 \loc{bits}.
 
-En este movimiento de transformar de 32 a 8 \loc{bits}, estamos reduciendo el tamaño 45 veces, reduciendo de forma significativa el consumo de memoria.
+En este movimiento de transformar de 32 a 8 \loc{bits}, estamos reduciendo el tamaño 4 veces, disminuyendo de forma significativa el consumo de memoria.
 
 La pega que tiene esto, es que el \loc{accuracy} se puede ver ligeramente rebajado. Aquí es donde tenemos que estudiar si merece la pena la reducción de tamaño y uso de memoria en contra de la pérdida de acierto.
 

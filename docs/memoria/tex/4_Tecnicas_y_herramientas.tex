@@ -4,11 +4,11 @@
 
 \subsection{Python}
 
-Hemos usado \prog{Python} como lenguaje de programación en la creación del modelo. La versión utilizada ha sido la \prog{3.9.8}. Se ha usado este lenguaje porque es el más común en \loc{computer science} y es el lenguaje con más librerias de matemáticas, tensores y \loc{machine leanring} en general. En nuestro caso hemos usado \prog{PyTorch}, una alternativa a \prog{Tensorflow} con un paradigma más programático.
+Hemos usado \prog{Python} como lenguaje de programación en la creación del modelo. La versión utilizada ha sido la \prog{3.9.8}. Se ha usado este lenguaje porque es el más común en \loc{computer science} y es el lenguaje con más librerias de matemáticas, tensores y \loc{machine learning} en general. En nuestro caso hemos usado \prog{PyTorch}, una alternativa a \prog{Tensorflow} con un paradigma más programático.
 
-Por otro lado usar Python nos ha permitido crear scripts rápidos con muy poco código que han facilitado mucho el desarrollo y prueba de distintos \loc{datasets}.
+Por otro lado usar \prog{Python} nos ha permitido crear \loc{scripts} rápidos con muy poco código que han facilitado mucho el desarrollo y prueba de distintos \loc{datasets}.
 
-Y no solo eso, sino que por facilidad y reutilización de código, hemos creado el servidor y \sigla{API} con \prog{FastAPI}, un \loc{framework} para crear \sigla{APIs}, con rendimiento similar a \prog{NodeJS} o \prog{Go}.
+Y no solo eso, sino que por facilidad y reutilización de código, hemos creado el servidor y \sigla{API} con \prog{FastAPI}, un \loc{framework} para crear \sigla{APIs}, con un rendimiento similar a \prog{NodeJS} o \prog{Go}.
 
 \subsection{HTML y CSS}
 
@@ -18,7 +18,7 @@ A la hora de crear nuestro \prog{front-end} para el usuario, hemos usado \prog{H
 
 Con \prog{HTML} y \prog{CSS} podemos crear una \loc{landing page} simple (aunque con mucho estilo), pero ninguno es un lenguaje de programación. Con \prog{JavaScript} podemos hacer peticiones \sigla{HTTP}, transformar el \sigla{DOM} en el navegador o renderizar la \sigla{UI} desde el servidor (\sigla{SSR}).
 
-JavaScript es un lenguaje dinámicamente tipado y orientado a objetos que sigue el estándar \prog{ECMAScript}. Es un lenguaje multi-paradigma que soporta estilos de programación funcionales, basados en eventos e imperativos. El lenguaje nos ofrece distintas \sigla{APIs} para trabajar con el navegador: desde expresiones regulares, el \sigla{DOM} hasta \loc{webworkers}, y una larga lista.
+JavaScript es un lenguaje dinámicamente tipado y orientado a objetos que sigue el estándar \prog{ECMAScript}. Es un lenguaje multi-paradigma que soporta estilos de programación funcionales, basados en eventos e imperativos. El lenguaje nos ofrece distintas \sigla{APIs} para trabajar con el navegador: desde expresiones regulares, el \sigla{DOM}, hasta \loc{webworkers}, y una larga lista.
 
 En el apartado Web veremos que librerías hemos usado para facilitar la creación de la \sigla{UI} así como la carga del modelo en este entorno. Allí hablaremos de dos \loc{frameworks} muy interesantes para construcción de páginas estáticas y \sigla{SSR}: \prog{Astro} y \prog{Svelte}.
 
@@ -41,18 +41,18 @@ La metodología \sigla{SCRUM} es un proceso de metodología ágil con el que se 
 \subsubsection{Fases}
 
 \begin{enumerate}
-  \item Planificación (\loc{Product Backlog}): En esta fase establecemos las tareas que se deben cumplir, aportando la información necesaria. Esta lista de tareas se formula con el equipo de trabajo y el \loc{Product Owner}. Cada tarea recibe unos <<puntos de historia>> que priorizan unas u otras. Una vez tenemos el \loc{product backlog} listo, comenzamos el primer \loc{sprint}.
+  \item \textbf{Planificación (\loc{Product Backlog})}: En esta fase establecemos las tareas que se deben cumplir, aportando la información necesaria. Esta lista de tareas se formula con el equipo de trabajo y el \loc{Product Owner}. Cada tarea recibe unos <<puntos de historia>> que priorizan unas u otras. Una vez tenemos el \loc{product backlog} listo, comenzamos el primer \loc{sprint}.
 
-  \item Ejecución: Un \loc{sprint} es un intervalo del tiempo en el cual intentamos realizar todas las tareas marcadas en el \loc{product backlog} con la intención de tener un <<entregable>> (o <<producto mínimo viable>> en el caso del primer \loc{sprint}). Una vez hemos iterado sobre nuestro producto, debemos medir el progreso hecho.
+  \item \textbf{Ejecución}: Un \loc{sprint} es un intervalo del tiempo en el cual intentamos realizar todas las tareas marcadas en el \loc{product backlog} con la intención de tener un <<entregable>> (o <<producto mínimo viable>> en el caso del primer \loc{sprint}). Una vez hemos iterado sobre nuestro producto, debemos medir el progreso hecho.
 
-  \item Control: en la fase de control (o \loc{burn down}) medimos el progreso realizado en el anterior \loc{sprint}. El \loc{scrum master} será el encargado de actualizar los gráficos con los \loc{story points} de las tareas realizadas.
+  \item \textbf{Control}: en la fase de control (o \loc{burn down}) medimos el progreso realizado en el anterior \loc{sprint}. El \loc{scrum master} será el encargado de actualizar los gráficos con los \loc{story points} de las tareas realizadas.
 \end{enumerate}
 
 \subsection{\loc{Continous Integration} / \loc{Continous Development} (\sigla{CI/CD})}
 
 El desarrollo continuo es un término que engloba a muchos otros términos. Todos ellos teniendo en común la automatización de procesos, que se lanzan cuando cambiamos algo en nuestro código. Los términos que componen el desarrollo continuo son: la integración continua, el \loc{continous testing}, \loc{continous delivery} y el \loc{continuos deployment}.
 
-La integración continua es la práctica de automatizar la integración de cambio en el código con otro software <<externo>> o de terceros. Un ejemplo sería la comprobación de tipos de en nuestro código justo después de hacer un \loc{commit} con \prog{Git}. En nuestro proyecto hemos integrado tres herramientas que se ejecutaban justo después de realizar un \loc{commit} de los cambios.
+La integración continua es la práctica de automatizar la integración de cambio en el código con otro software <<externo>> o de terceros. Un ejemplo sería la comprobación de tipos de en nuestro código justo después de hacer un \loc{commit} con \prog{Git}. En nuestro proyecto hemos integrado tres herramientas que se ejecutaban justo después de realizar un \loc{commit} de los cambios. Estas son:
 
 \subsubsection{PyLint}
 
@@ -64,7 +64,7 @@ La integración continua es la práctica de automatizar la integración de cambi
 
 \subsubsection{MyPy}
 
-\prog{MyPy} es un inspector de tipos estático para, lo has adivinado, \prog{Python}. Esta herramienta nos ayuda a comprobar que todos los tipos de nuestra funciones y variables son correctos, o que en su defecto, no nos los hemos dejado vacíos. Es una herramienta opcional; pues al igual que \prog{JavaScript}, \prog{Python} es un lenguaje dinámicamente tipado y no necesita tipos para funcionar correctamente.
+\prog{MyPy} es un inspector de tipos estático para \prog{Python}. Esta herramienta nos ayuda a comprobar que todos los tipos de nuestra funciones y variables son correctos, o que en su defecto, no nos los hemos dejado vacíos. Es una herramienta opcional; pues al igual que \prog{JavaScript}, \prog{Python} es un lenguaje dinámicamente tipado y no necesita tipos para funcionar correctamente.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -80,7 +80,7 @@ La integración continua es la práctica de automatizar la integración de cambi
 
 Github es una herramienta de \loc{hosting} de repositorios de \prog{Git} controlada por Microsoft. Nos proporciona una interfaz web en la que podemos ver nuestros repositorios o los de los demás (siempre que sean públicos).
 
-Por otro lado nos ofrece herramientas para implementar \sigla{CI/CD}, así como una ventana en la que mostrar nuestras contribuciones en \loc{Open Source}.
+Por otro lado nos ofrece herramientas para implementar \sigla{CI/CD}, así como una ventana en la que mostrar nuestras contribuciones de \loc{Open Source}.
 
 
 \subsubsection{GitLab}
@@ -102,7 +102,7 @@ Pytorch nos otorga cientos de herramientas que hacen fácil cargar y transformar
 
 \subsubsection{Tensorflow}
 
-\prog{Tensorflow} es también un \loc{framework} de \prog{Python} de \loc{machine learning}. Tiene la mayoría de herramientas que nos ofrece \prog{Pytorch}, aunque existen varias diferencias entre ambos (ver tabla \ref{table:difs_tensorflow_pytorch} para una lista más completa).
+\prog{Tensorflow} es también un \loc{framework} de \prog{Python} de \loc{machine learning}. Tiene la mayoría de herramientas que nos ofrece \prog{Pytorch}, aunque existen varias diferencias entre ambos (ver tabla \ref{tabla:difs_tensorflow_pytorch} para una lista más completa).
 
 \tablaSmall{Diferencias entre \prog{Tensorflow} y \prog{PyTorch}}
 {p{0.2\textwidth} p{0.4\textwidth} p{0.4\textwidth}}{difs_tensorflow_pytorch}
@@ -128,7 +128,7 @@ Y por mantener el espíritu de la estandarización y reutilización entre lengua
 
 \subsubsection{Netron}
 
-Netron es una aplicación web en la que podemos subir nuestros modelos con formato \prog{ONNX}, \sigla{PTH} o similar para visualizar su estructura. En la figura \ref{fig:Netron} podemos ver la estructura de uno de los modelos entrenados en este proyecto.
+Netron es una aplicación web en la que podemos subir nuestros modelos con formato \sigla{ONNX}, \sigla{PTH} o similar para visualizar su estructura. En la figura \ref{fig:Netron} podemos ver la estructura de uno de los modelos entrenados en este proyecto.
 
 \imagen{./img/memoria/herramientas/Netron}{Estructura de un modelo con \sigla{CNNs} en formato \prog{ONNX}. Visualización con Netron}{Netron}
 
