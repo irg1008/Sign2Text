@@ -76,7 +76,9 @@ Pero no es la mejor opción. normalizar los datos es una práctica común para c
 
 El \loc{data augmentation} consiste en aumentar el tamaño del \loc{dataset} duplicando datos del mismo y alterándolos para que parezcan distintos.
 
-En nuestro caso no hemos incluido esta técnica debido a tratar con videos y no con imágenes. Al tener la transformación de los datos a nivel imágen (\loc{resize} y normalización), se nos complicaba la aumentación de los datos ya que debiamos <<alterar>> los datos para todos los \loc{frames} del mismo video, con tal de no alterar la información espacial de dicho video.
+En nuestro caso no hemos incluido esta técnica tratando con videos . Al tener la transformación de los datos a nivel imágen (\loc{resize} y normalización), se nos complicaba la aumentación de los datos ya que debiamos <<alterar>> los datos para todos los \loc{frames} del mismo video, con tal de no alterar la información espacial de dicho video.
+
+En el caso de \loc{SimpleNet}, hemos aplicado \loc{data augmentation} con un \loc{random crop}.
 
 Esto es algo que nos gustaría marcar para un plan futuro en el proyecto, ya que el \loc{dataset}, aunque muy extenso, tiene muy pocos videos por etiqueta (aproximadamente 40), y aumentar este número aunque sea en 10, sería una extensión notable del dataset.
 

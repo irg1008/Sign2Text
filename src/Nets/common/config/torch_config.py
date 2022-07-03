@@ -1,7 +1,6 @@
 from typing import List
 from torchvision.transforms import (
     Resize,
-    RandomCrop,
     Normalize,
     ToTensor,
     Compose,
