@@ -32,7 +32,7 @@ class CNN(nn.Module):  # pylint disable=too-few-public-methods
 
         # Dense layer.
         self.drop = nn.Sequential(
-            nn.Dropout(p=0.25),
+            nn.Dropout(p=0.5),
             # nn.BatchNorm1d(linear_2),
         )
 
@@ -45,7 +45,7 @@ class CNN(nn.Module):  # pylint disable=too-few-public-methods
 
         self.pose_fc = nn.Sequential(
             linear_layer(linear_1, num_pose_points),
-            nn.Sigmoid();
+            nn.Sigmoid(),
         )
 
     def forward(self, x: Tensor) -> Tuple[Tensor, Tensor]:
@@ -93,8 +93,8 @@ def conv_layer_set(
     """
     conv_layer = nn.Sequential(
         nn.Conv3d(in_c, out_c, kernel_size=kernel_size, stride=stride, padding=padding),
+        # nn.LeakyReLU(),
         nn.MaxPool3d(pool),
-        nn.LeakyReLU(),
         nn.BatchNorm3d(
             out_c, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True
         ),

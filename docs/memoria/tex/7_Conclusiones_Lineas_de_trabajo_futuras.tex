@@ -1,4 +1,54 @@
 \capitulo{7}{Conclusiones y Líneas de trabajo futuras}
 
-Todo proyecto debe incluir las conclusiones que se derivan de su desarrollo. Éstas pueden ser de diferente índole, dependiendo de la tipología del proyecto, pero normalmente van a estar presentes un conjunto de conclusiones relacionadas con los resultados del proyecto y un conjunto de conclusiones técnicas. 
-Además, resulta muy útil realizar un informe crítico indicando cómo se puede mejorar el proyecto, o cómo se puede continuar trabajando en la línea del proyecto realizado. 
+Vamos a analizar las conclusiones extraidas de la realización de este proyecto y ver que mejoras se pueden realizar de cara al futuro.
+
+\section{Conclusiones}
+
+Este proyecto ha sido una aventura y me ha abierto los ojos al mundo del \loc{deep learning} y la investigación. Cuando comencé pensaba que iba a ser capaz de crear una red neuronal con un \loc{accuracy} alto y que iba a poder crear una red \loc{transformers} con la que sintetizar las salidas de la \sigla{CNN}. También pensaba que todo esto lo iba a hacer en los cuatro primeros \loc{sprints}. Tras esto, la idea era poder crear una aplicación web que usará el modelo en los dos últimos meses.
+
+\textbf{Nada más lejos de la realidad}.
+
+Este proyecto ha sido una prueba a la paciencia: prueba tras prueba, cambio tras cambio. El avance era lento, y había semanas en las que me quedaba atascado cambiando la estructura de la red, o probando una y otra vez con distintos hiperparámetros.
+
+El hecho de tratar con datos que producían un tensor de entrada de la red de 5 dimensiones ha hecho que las iteraciones y mejoras sobre el modelo sean lentas, muy lentas. En ocasiones el modelo ha estado entrenando durante casi un día completo (¡y en GPU!), inhabilitando cualquier posibilidad de trabajar en él.
+
+Aun así, este proyecto me ha hecho comprender mucho más a fondo el comportamiento de la redes neuronales en general, y sobre todo, de las redes neuronales convolucionales. Comencé sin saber lo que era una convolución y un \loc{kernel}, con miedo a averiguar lo que significaba \loc{ResNet}; y he terminado creando una \loc{CNN} con un accuracy alto (aunque con relativas pocas etiquetas) y he perdido el miedo a investigar y leer artículos.
+
+Por otro lado, he podido realizar una demo web para que cualquier usuario pueda probar el modelo con tan solo subir un video. Esto me ha permitido aprender tecnologías webs que todavía no había descubierto. También he creado una API en Python, con lo que he aprendido un \loc{framework} más.
+
+Y además me he tenido que enfrentar a los tres grandes de la computación en la nube hasta que he conseguido subir el pesado modelo a una de ellas. De esta experiencia salió una guia que se puede leer en el repositorio del servidor.
+
+En general, la experiencia ha sido genial y el aprendizaje ha sido inmenso. Me ha hecho ver que el campo del \loc{machine learning} es el futuro en todos los ámbitos tanto en investigación como cotidianos. El uso de tecnologías que usen \loc{deep learning} está creciendo enormemente en la actualidad, y esta experiencia me impulsa a seguri investigando en este campo e intentar trabajar con y de esto en el futuro.
+
+Para finalizar, me gustaría agradecer a todos los tutores la paciencia que han tenido conmigo. Desde el primer día me han explicado lo básico de la mejor manera posible, aportanto fuentes y ayudando en todo.
+Muchas gracias a Bruno y Daniel, los tutores de la UBU, y muchas muchísimas gracias a María, Alejandro y Pablo, los tutores de HP SCDS, no se que habría hecho sin vosotros.
+
+Tanto me ha gustado el proyecto, tanto he aprendio, y tanto me he dado cuenta que no se, que lo único que quiero hacer es seguir, y hacerlo mejor, con mejor información. Veamos las líneas de futuro.
+
+\section{Líneas futuras}
+
+El modelo actual está bien. Funciona y es medianamente escalable, pero no es nada comparado con el \loc{State of the Art} \bib{fang2017deepasl} \bib{li2020word} en la actualidad.
+
+Ha habido pasos en la creación del modelo, en los que podría haber tomado mejores decisiones. Como en la carga y transformación de los datos, en la creación de la estructura de la \sigla{CNN} o en la elección de \loc{schedulers} y \loc{optimizers}.
+
+Por lo tanto, quedan muchas aspectos que mejorar. Algunas son los siguientes:
+
+\begin{itemize}
+  \item Cambio de \loc{dataset}: Uno de los grandes aspectos que ha realentizado las mejoras e iteraciones de la red ha sido el \loc{dataset}. Aunque el número de videos del \loc{dataset} es correcto, la cantidad de videos por etiqueta es algo corta. Por otro lado, los datos de poses tenían muchas veces datos nulos o valores a 0, que no aportaban información en el entrenamiento. En algunas ocaiones en las que he probado el modelo con datasets distintos, el \loc{accuracy} ha subido una media de 25\% en test y validación. Por todo esto, el primer cambio que haría sería el \loc{dataset}. el recambio perfecto es How2Sign, un \loc{dataset} mucho más extenso con datos de profundidad, gestos en 3D y transcripciones de audio \bib{Duarte_CVPR2021}.
+
+  \item Mejorar la estructura de la red: En las redes y estructuras sobre \sigla{CNNs} ya establecidas observamos estructuras de decenas e incluso cientos de capas convolucionales, mezcladas con \loc{pooling}, seguidas de capas densas o incluso otras estructuras complejas formando un \loc{ensemble}. La idea de futuro es estudiar y completar una estructura más compleja de convolucionales, que permita escalar el modelo a un número mucho mayor de etiquetas.
+
+  \item Probar otro tipo de redes de \loc{deep learning}, como \sigla{RNN} (\loc{Recursive Neural Netowrks})
+
+  \item Mejorar la documentación a nivel \loc{codebase} y repositorio. Me gustaría haber podido documentar mucho mejor los resultados obtenidos. Es una pena que descubrí herramientas como \prog{Tensorboard} en las últimas etapas del proyecto.
+
+  \item Creación de una \loc{landing page} de presentación, mejoría de la demo subida para inferencia con webcam. Me gustaría poder mejorar el \loc{front-end} para incluir inferencia a tiempo real con el modelo en el \loc{back-end}. Es algo que puedo hacer muy pronto, con el estado actual del proyecto, pero que se ha quedado fuera de la iteración final.
+
+  \item Utilización de \loc{criterions}, \loc{optimizers} y \loc{schedulers} distintos. No he podido probar tantas opciones commo me hubiera gustado. Pretendo investigar en la literatura cuales son las que ofrecen mejor resultado en los distintos escenarios, y ver como puedo aplicarlo en este proyecto.
+
+  \item Buscar la forma de compartirlo en la comunidad Open Source. Me gustaría buscar la forma de expandir el proyecto, y así encontrar personas que estén interesadas en continuar con el proyecto o en colaborar de algún modo.
+
+  \item Y mucho más. Me encantaría poder seguir mejorando el modelo e intentar terminar creando un producto viable con el que las personas se puean beneficiar. Me parece que el objetivo es muy noble y con un poco de impulso por mi parte, o por cualquier desarrollador que siga con el proyecto; podemos conseguir algo que funcione genial.
+
+\end{itemize}
+

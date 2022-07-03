@@ -164,6 +164,8 @@ En nuestro caso hemos usado \sigla{Adam} y \sigla{SGD}, siendo este último el q
 
 \subsection{Scheduler}
 
+Un \loc{scheduler} se encarga de disminuir el \loc{learning rate} (\loc{lr}) en las distintas \loc{epochs} del entrenamiento.En neustro caso, el \loc{lr} utilizado es <<ReduceLROnPlateau>>. This \loc{scheduler} funciona reduciendo el \loc{lr} cuando la red deja de funcionar durante $n$ número de \loc{epochs}. El número de iteraciones que deben pasar para actualizar el \loc{lr} se denomina <<paciencia>>. En el momento en que la red no mejore el número de iteraciones establecidos, se multiplicará el valor actual del \loc{lr} por un factor de disminución.
+
 \subsection{Criterion}
 
 O funciones de pérdida, nos ayudan a calcular la calidad del entrenamiento de la red. Esta medida es mucho más fiable que el \loc{accuracy} global, ya que este puede estar contaminado por un valor que se está clasificando especialmente bien. A la hora de calcular la perdida entre la salida de la red y el \loc{ground truth}, buscamos que el valor sea el mínimo posible.
@@ -191,6 +193,12 @@ La hipotesis que fundamento la creación de está estructura fue:
 Tras pensar esto, añadimos la segunda salida de la red, creamos la fución de pérdida, y sumamos el valor del coste para dicha salida al ya existente de la clasificación. Tras esto, hacemos el \loc{backpropagation} con la suma de las pérdidas. La mejora en \loc{accuracy} es mínima pero vemos que es capaz de centrarse mucho mejor en los gestos que en la persona en concreto. Incluso es capaz de adivinar un gesto dada una entrada de un dibujo animado, como vemos en la figura \ref{fig:DrawingSign}.
 
 \imagen{./img/memoria/aspectos/DrawingSign}{La red es capaz de adivinar un signo hecho por un dibujo animado}{DrawingSign}
+
+Una idea muy parecida se puede ver en \bib{maruyama2021word}. En este \loc{paper} proponen usar numerosas entradas de la red junto con datos de poses. Proponen introducir la imagen completa, junto a la imagen por separado de las manos y la cara y por otro lado pretenden también introducir información de poses del cuerpo completo.
+
+Por otro lado, en \bib{fang2017deepasl} podemos ver el acercamiento basado únicamente en poses. En este caso usa una \sigla{DRNN} (\loc{Deep Recurrent Neural Network}).
+
+Nota: El \loc{dataset} de las poses está proporcionado por los mismo investigadores de \sigla{WLASL} \bib{li2020word}. Este dataset está a su vez generado usando \loc{PoseNet}, un modelo de generación de poses bastante renombrado \bib{cao2017realtime}\bib{wei2016cpm}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -249,3 +257,24 @@ El problema principal es que una entrada de este estilo confunde mucho a una red
 \end{enumerate}
 
 Tras esto, pudimos comprender que necesitábamos pasarnos a la clasificación de un video, uniendo los \loc{frames}, no como una imagen única, sino como una nueva dimensión en el tensor de entrada.
+
+\section{Estado actual del modelo}
+
+El modelo ha sido entrenado con 8 etiquetas (\loc{all, before, book, drink, help, no, walk, yes}) y mantiene los siguientes \loc{accuracies} (tabla {tabla:accs})
+
+\tablaSmall{Accuracy actual tra}
+{c c c}{accs}
+{ Entrenamiento & Test & Validación \\}{
+  99,3\% & 79,88\% & 78,65\%  \\
+}
+
+Este modelo es accesible en DockerHub. Se puede consumir desde la API abierta o desde la demo en la web. El código es Open Source en Gitlab y Github.
+
+\begin{itemize}
+  \item \textbf{Dockerhub}: \url{https://hub.docker.com/repository/docker/gazquez/sign2text}
+  \item \textbf{API Abierta}: \url{https://api.sign2text.com/docs}
+  \item \textbf{Demo Web}: \url{https://sign2text.com/}
+  \item \textbf{Repositorio del modelo}: \url{https://github.com/irg1008/Sign2Text.git}
+  \item \textbf{Respositorio de la demo}: \url{https://github.com/irg1008/Sign2Text-Astro.git}
+  \item \textbf{Repositorio del servidor}: \url{https://github.com/irg1008/Sign2Text-API.git}
+\end{itemize}

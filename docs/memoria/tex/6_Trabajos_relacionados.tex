@@ -1,3 +1,40 @@
 \capitulo{6}{Trabajos relacionados}
 
-Este apartado sería parecido a un estado del arte de una tesis o tesina. En un trabajo final grado no parece obligada su presencia, aunque se puede dejar a juicio del tutor el incluir un pequeño resumen comentado de los trabajos y proyectos ya realizados en el campo del proyecto en curso. 
+\section{Sign2Text - \loc{Letter level translation}}
+
+Este proyecto, con el mismo nombre que el mio, tiene 125 estrellas en Github y se trata de un traductor a tiempo real de lenguaje de signos \sigla{ASL} a texto a nivel de letra. Es capaz de traducir las letras del abecedario usando inferencia por webcam. Usa un modelo preentrenado \sigla{ResNet50} y tien el modelo alojado en una instancia en AWS.
+
+Podemos acceder al repositorio en \url{https://github.com/BelalC/sign2text.git}
+
+\section{ASL Translator}
+
+Esta aplicación, subida al App Store ya que usa el mismo \loc{dataset} que hemos usado en eeste proyecto, es una app de traducción de texto a signos, es decir, todo lo contrario a la nuestra. Asegura:
+
+\begin{enumerate}
+  \item Traducir más de 30000 palabras
+  \item Ser capaz de traducir frases complejas
+  \item Usar un algoritmo que mezcla los videos con los signos de forma que muestran oraciones complejas de forma suavizada y sin cortes.
+\end{enumerate}
+
+No compite directamente con la idea de este proyecto pero parece un proyecto interesante y con un hueco en el mercado sin competencia.
+
+Se puede acceder a la página de la app en \url{https://apps.apple.com/us/app/asl-translator/id421784745}
+
+\section{\loc{ASL to english} - traducción a nivel palabra}
+
+Este proyecto, que cogió mucha fuerza después de aparecer en algún ártículo y hacerse ligeramente viral en LinkedIn, tiene 674 estrellas en Github.
+
+En este proyecto se traducen <<6>> palabras de lenguaje de signo a texto; eso sí, ninguna de las palabras se representa con un gesto en movimiento, todas son estáticas. Usa también una red preentrenada y una webcam como entrada para la inferencia.
+
+Como curiosidad, al comienzo de este proyecto, se mantuvo una conversación con la autora por email para ver si se podría hacer una colaboración.
+
+Se puede acceder al repositorio del proyecto en \url{https://github.com/priiyaanjaalii0611/ASL_to_English.git}
+
+
+\section{How2Sign}
+
+How2Sign \bib{Duarte_CVPR2021} es un dataset de \sigla{ASL} no solo compuesto de imágenes y videos de gestos, sino que también aporta audios, transcripciones, mapas de profundidad y datos de poses.
+
+Todos los videos están grabados usando un \loc{chroma key} para mayor facilidad de cambio de fondo y las poses han sido calculadas en 3D en un estudio dedicado. Por esta razón el tamaño del dataset aumenta a 290GB.
+
+Con una licencia CC y sin permiso para uso comercial, el datasewt se puede acceder en \url{https://how2sign.github.io/}
