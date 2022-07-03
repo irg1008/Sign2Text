@@ -1,6 +1,6 @@
 \capitulo{5}{Aspectos relevantes del desarrollo del proyecto}
 
-En esta sección vamos a hablar de algunos de los problemas y retos con los que nos hemos enfrentado en el proyecto. Vamos a hablar de la carga de los datos y de como pasamos de clasificaciónd de imágenes a clasificación de video. Seguiremos hablando un poco del tratamiento de los datos. Tras esto mencionaremos una de las estructuras de \sigla{CNN} usada, ResNet. Continuamos hablando de la estructura de nuestra red y problemas que hemos tenido, junto con la hiperparametrización y el entrenamiento. Para terminar hablaremos de como hemos usado una red con dos salidas para intentar mejorar el \loc{accuracy} y de como se ha explorado la cuantización para comprimir el modelo y hacerlo <<\loc{deployment-ready}>>.
+En esta sección vamos a hablar de algunos de los problemas y retos con los que nos hemos enfrentado en el proyecto. Vamos a hablar de la carga de los datos y de como pasamos de clasificación de imágenes a clasificación de vídeo. Seguiremos hablando un poco del tratamiento de los datos. Tras esto mencionaremos una de las estructuras de \sigla{CNN} usada, ResNet. Continuamos hablando de la estructura de nuestra red y problemas que hemos tenido, junto con la hiperparametrización y el entrenamiento. Para terminar hablaremos de como hemos usado una red con dos salidas para intentar mejorar el \loc{accuracy} y de como se ha explorado la cuantización para comprimir el modelo y hacerlo <<\loc{deployment-ready}>>.
 
 \section{Carga de datos}
 
@@ -200,17 +200,17 @@ Una idea muy parecida se puede ver en \bib{maruyama2021word}. En este \loc{paper
 
 Por otro lado, en \bib{fang2017deepasl} podemos ver el acercamiento basado únicamente en poses. En este caso usa una \sigla{DRNN} (\loc{Deep Recurrent Neural Network}).
 
-Nota: El \loc{dataset} de las poses está proporcionado por los mismo investigadores de \sigla{WLASL} \bib{li2020word}. Este dataset está a su vez generado usando \loc{PoseNet}, un modelo de generación de poses bastante renombrado \bib{cao2017realtime}\bib{wei2016cpm}.
+Nota: El \loc{dataset} de las poses está proporcionado por los mismo investigadores de \sigla{WLASL} \bib{li2020word}. Este \loc{dataset} está a su vez generado usando \loc{PoseNet}, un modelo de generación de poses bastante renombrado \bib{cao2017realtime}\bib{wei2016cpm}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Exportación del modelo}
 
-A la hora de exportar el modelo, hemos usado la herramienta interna de \prog{PyTorch}, que nos exporta modelos con formato <<\prog{.pth}>>. Este formato es perfecto si nos mantenemos en el ecosistema de \prog{PyTorch}, pero si quremos usar el modelo con otros \loc{frameworks} o librerias, debemos exportarlo a un formato estandar.
+A la hora de exportar el modelo, hemos usado la herramienta interna de \prog{PyTorch}, que nos exporta modelos con formato <<\prog{.pth}>>. Este formato es perfecto si nos mantenemos en el ecosistema de \prog{PyTorch}, pero si queremos usar el modelo con otros \loc{frameworks} o librerías, debemos exportarlo a un formato estándar.
 
 \subsection{ONNX}
 
-El formato estandar más utilizado es \prog{ONNX}. Puedes ir a la parte de herramientas en \ref{tool:ONNX} para más información.
+El formato estándar más utilizado es \prog{ONNX}. Puedes ir a la parte de herramientas en \ref{tool:ONNX} para más información.
 
 Con este formato, hemos podido usar el modelo con la librería de \prog{ONNXRuntime} y así conseguir una inferencia mucho más rápida. Por otro lado, hemos usado esta misma librería para comprimir el modelo usando cuantización.
 
@@ -227,7 +227,7 @@ Para hacer esto transformamos el tipo de dato de los pesos, que normalmente es u
 
 En este movimiento de transformar de 32 a 8 \loc{bits}, estamos reduciendo el tamaño 45 veces, reduciendo de forma significativa el consumo de memoria.
 
-La pega que tiene esto, es que el \loc{accuracy} se puede ver ligeramente rebajado. Aquí es donde tenemos que estudiar si merece la pena la reducción de tamañoi y uso de memoria en contra de la pérdida de acierto.
+La pega que tiene esto, es que el \loc{accuracy} se puede ver ligeramente rebajado. Aquí es donde tenemos que estudiar si merece la pena la reducción de tamaño y uso de memoria en contra de la pérdida de acierto.
 
 En la figura \ref{fig:quantization} podemos observar la diferencia de tamaño entre el modelo en formato <<.onnx>> antes y después de cuantizar.
 
@@ -241,24 +241,24 @@ Por otro lado, la cuantización nos ha permitido poder subir el modelo contenedo
 
 Voy por último a hablar de uno de los experimentos realizados en el proyecto.
 
-Antes de pasar a crear la \sigla{CNN} para clasificación de video, y cuando estaba en la fase en la que los datos de entrada eran únicamente \loc{frames}; pensé que podía incluir la secuencia de \loc{frames} de un video en una única imagen.
+Antes de pasar a crear la \sigla{CNN} para clasificación de vídeo, y cuando estaba en la fase en la que los datos de entrada eran únicamente \loc{frames}; pensé que podía incluir la secuencia de \loc{frames} de un vídeo en una única imagen.
 
 Podemos ver uno de los ejemplos en la figura \ref{fig:framesConcat}.
 
-\imagen{./img/memoria/aspectos/framesConcat}{Concatenación de frames con la intención de representar un video (gesto es <<Before>>). Imágenes del dataset WLASL \cite{li2020word}}{framesConcat}
+\imagen{./img/memoria/aspectos/framesConcat}{Concatenación de \loc{frames} con la intención de representar un vídeo (gesto es <<Before>>). Imágenes del \loc{dataset} WLASL \cite{li2020word}}{framesConcat}
 
-Esto fue un auténtico fracaso, el \loc{accuracy} de la red era mínimo, y cuando concatenabamos números \loc{frames} de una imagen, acabábamos con un tensor único enorme.
+Esto fue un auténtico fracaso, el \loc{accuracy} de la red era mínimo, y cuando concatenábamos números \loc{frames} de una imagen, acabábamos con un tensor único enorme.
 
-El problema principal es que una entrada de este estilo confunde mucho a una red convolucional, ya que esta intenta buscar características espaciales en la dimension, pero se está encontrando con muchos problemas:
+El problema principal es que una entrada de este estilo confunde mucho a una red convolucional, ya que esta intenta buscar características espaciales en la dimensión, pero se está encontrando con muchos problemas:
 
 \begin{enumerate}
-  \item Píxeles <<muertos>>: Para empezar, al concatenar la imagen, hemos añadido píxeles negros entre \loc{frames}. El \loc{kernel} va a pasar por ellos y no va a recibir nin´gún tipo de información espacial.
-  \item Demasiada información para una dimensión: Estamos dando información sobre las caracterísitcas espaciales de la imagen al mismo tiempo que buscamos encontrar el movimiento de los gestos entre \loc{frames}
+  \item Píxeles <<muertos>>: Para empezar, al concatenar la imagen, hemos añadido píxeles negros entre \loc{frames}. El \loc{kernel} va a pasar por ellos y no va a recibir ningún tipo de información espacial.
+  \item Demasiada información para una dimensión: Estamos dando información sobre las características espaciales de la imagen al mismo tiempo que buscamos encontrar el movimiento de los gestos entre \loc{frames}
         . Para que esto funcione correctamente, el movimiento de los gestos entre \loc{frames}
-        debe estar en otra dimension, y que sea el \loc{kernel} de esa dimensión el que produzca la convolución que detecte los movimientos.
+        debe estar en otra dimensión, y que sea el \loc{kernel} de esa dimensión el que produzca la convolución que detecte los movimientos.
 \end{enumerate}
 
-Tras esto, pudimos comprender que necesitábamos pasarnos a la clasificación de un video, uniendo los \loc{frames}, no como una imagen única, sino como una nueva dimensión en el tensor de entrada.
+Tras esto, pudimos comprender que necesitábamos pasarnos a la clasificación de un vídeo, uniendo los \loc{frames}, no como una imagen única, sino como una nueva dimensión en el tensor de entrada.
 
 \section{Estado actual del modelo}
 
@@ -270,13 +270,13 @@ El modelo ha sido entrenado con 8 etiquetas (\loc{all, before, book, drink, help
   99,3\% & 79,88\% & 78,65\%  \\
 }
 
-Este modelo es accesible en DockerHub. Se puede consumir desde la API abierta o desde la demo en la web. El código es Open Source en Gitlab y Github.
+Este modelo es accesible en DockerHub. Se puede consumir desde la \sigla{API} abierta o desde la demo en la web. El código es \loc{Open Source} en Gitlab y Github.
 
 \begin{itemize}
   \item \textbf{Dockerhub}: \url{https://hub.docker.com/repository/docker/gazquez/sign2text}
-  \item \textbf{API Abierta}: \url{https://api.sign2text.com/docs}
+  \item \textbf{\sigla{API} Abierta}: \url{https://api.sign2text.com/docs}
   \item \textbf{Demo Web}: \url{https://sign2text.com/}
   \item \textbf{Repositorio del modelo}: \url{https://github.com/irg1008/Sign2Text.git}
-  \item \textbf{Respositorio de la demo}: \url{https://github.com/irg1008/Sign2Text-Astro.git}
+  \item \textbf{Repositorio de la demo}: \url{https://github.com/irg1008/Sign2Text-Astro.git}
   \item \textbf{Repositorio del servidor}: \url{https://github.com/irg1008/Sign2Text-API.git}
 \end{itemize}

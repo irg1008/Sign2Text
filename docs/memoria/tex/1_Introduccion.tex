@@ -1,23 +1,22 @@
 \capitulo{1}{Introducción}
 
-En este proyecto vamos a implementar una transcrpción automática de lenguaje de signos a texto a nivel palabra usando técnicas de inteligencia artificial.
+En este proyecto vamos a implementar una transcripción automática de lenguaje de signos a texto a nivel palabra usando técnicas de inteligencia artificial.
 
-El lenguaje de signos es una forma de comunicación por gestos gracias a la cual más de 72 millones de personas con disacapacidad auditiva pueden comunicarse. Hay más de 300 lenguas de signo distintas y dentro de un mismo lenguaje hay varios gestos que pueden significar palabras distintas dependiendo del contexto.
+El lenguaje de signos es una forma de comunicación por gestos gracias a la cual más de 72 millones de personas con discapacidad auditiva pueden comunicarse. Hay más de 300 lenguas de signo distintas y dentro de un mismo lenguaje hay varios gestos que pueden significar palabras distintas dependiendo del contexto.
 
 En la actualidad existen transcriptores a nivel letra o nivel palabra, solo que estos transcriptores solo detectan gestos estáticos, que no tienen movimiento. No existe ningún traductor de lenguaje de signos que sea capaz de transcribir gestos con movimiento incluido.
 
-\project{Sign2Text} tiene el propósito de crear un transcriptor a tiempo real usando redes neuronales, \loc{deep learning} y procesado de imagen y video. Para esto se ha usado un dataset muy completo de \sigla{ASL} (\loc{American Sign Language}) \bib{li2020word} compuesto por secuencias cortas de video e información de poses de distintos sujetos. Se van a aplicar técnicas de \loc{deep learning} como redes neuronales convolucionales, \loc{transformers} y procesado 3D (dos dimensiones para la imagen y otra para el tiempo).
+\project{Sign2Text} tiene el propósito de crear un transcriptor a tiempo real usando redes neuronales, \loc{deep learning} y procesado de imagen y vídeo. Para esto se ha usado un \loc{dataset} muy completo de \sigla{ASL} (\loc{American Sign Language}) \bib{li2020word} compuesto por secuencias cortas de vídeo e información de poses de distintos sujetos. Se van a aplicar técnicas de \loc{deep learning} como redes neuronales convolucionales, \loc{transformers} y procesado 3D (dos dimensiones para la imagen y otra para el tiempo).
 
-Tras crear la red que transcriba el texto, se pretende crear una demo \loc{web} para que cualquier usuario alrededor del mundo pueba probarlo. También se busca poder contenedorizar el modelo y dejarlo libre para que cualquier desarrollador pueda descargarlo y crear su propia aplicación.
-
+Tras crear la red que transcriba el texto, se pretende crear una demo \loc{web} para que cualquier usuario alrededor del mundo prueba probarlo. También se busca poder contenedorizar el modelo y dejarlo libre para que cualquier desarrollador pueda descargarlo y crear su propia aplicación.
 
 \section{Estructura del trabajo}
 
 \begin{itemize}
-  \item \textbf{Objetivos del trabajo}: En este apartado vamos a listar los objetivos que queremos cumplir en la realización del proyecto, así como las caracterísitcas que esperamos cumpla nuestro modelo de \loc{deep learning}.
-  \item \textbf{Conceptos teóricos}: En este apartado vamos a hacer un \loc{overview} de \loc{machine learning}, comenzando por el aprendizaje no supervisado, siguiendo del semi-supervisado y terminando en lo que más no interesa, el supervisado y el \loc{deep learning}. Veremos las prinicipales técnicas en cada tipo de aprendizaje para conocer cuales son las mejores opciones en el desarrollo del proyecto.
+  \item \textbf{Objetivos del trabajo}: En este apartado vamos a listar los objetivos que queremos cumplir en la realización del proyecto, así como las características que esperamos cumpla nuestro modelo de \loc{deep learning}.
+  \item \textbf{Conceptos teóricos}: En este apartado vamos a hacer un \loc{overview} de \loc{machine learning}, comenzando por el aprendizaje no supervisado, siguiendo del semi-supervisado y terminando en lo que más no interesa, el supervisado y el \loc{deep learning}. Veremos las principales técnicas en cada tipo de aprendizaje para conocer cuales son las mejores opciones en el desarrollo del proyecto.
   \item \textbf{Técnicas y herramientas}: Aquí listaremos y explicaremos todas las herramientas usadas en la realización de \project{Sign2Text}. También comentaremos un poco como las hemos usado nosotros y que alternativas tenemos en cada caso. Hablaremos de las herramientas con las que desarrollaremos nuestro modelo y con las que crearemos nuestro \loc{front-end} y \loc{back-end}.
-  \item \textbf{Aspectos relevantes del desarrollo}: En este apartado hablaremos sobre exprimentos y experiencias del proyecto. Aquí contaremos las mejoras que se han hecho a media que iteramos con el modelo, así como curiosidades y problemas con los que nos hayamos encontrado.
+  \item \textbf{Aspectos relevantes del desarrollo}: En este apartado hablaremos sobre experimentos y experiencias del proyecto. Aquí contaremos las mejoras que se han hecho a media que iteramos con el modelo, así como curiosidades y problemas con los que nos hayamos encontrado.
   \item \textbf{Trabajos relacionados}: Esta sección pretende mostrar otras herramientas y proyectos similares a \project{Sign2Text} disponibles en la comunidad y el mercado.
   \item \textbf{Conclusiones y líneas futuras}: Por último haremos un repaso de las mejoras que se pueden realizar en el proyecto. Hablaremos de las conclusiones que hemos sacado al finalizarlo y repasaremos que porcentaje de los objetivos hemos cumplido al finalizar el proyecto.
 \end{itemize}

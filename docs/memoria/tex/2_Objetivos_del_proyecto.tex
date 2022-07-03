@@ -11,10 +11,10 @@ La principal motivación del proyecto es:
 
 \begin{enumerate}
   \item Creación de un modelo de \sigla{DL}\footnote{\textit{Deep Learning}} capaz de clasificar ASL\footnote{\textit{American Sign Language}} a nivel palabra.
-  \item Poner en producción un método para que los usuarios puedan probar el modelo de forma libre y transparante.
-  \item Generar una \sigla{API} de código abierto para que otros desarrolladores puedan crear plataformas de cliente, con el objeto de aumentar la audencia y alcance del proyecto.
+  \item Poner en producción un método para que los usuarios puedan probar el modelo de forma libre y transparente.
+  \item Generar una \sigla{API} de código abierto para que otros desarrolladores puedan crear plataformas de cliente, con el objeto de aumentar la audiencia y alcance del proyecto.
   \item Liberar y contenedorizar el modelo para su libre distribución.
-  \item Creación de herramientas que permitan el tratamiento de datos y la transformación entre distintos formatos\footnote{\pe: extracción de fotogramas de un video, concatenación de imágenes}.
+  \item Creación de herramientas que permitan el tratamiento de datos y la transformación entre distintos formatos\footnote{\pe: extracción de fotogramas de un vídeo, concatenación de imágenes}.
   \item Estudio del comportamiento, estructura e hiperparametrización de redes neuronales convolucionales.
   \item Aprender a fondo el uso de \prog{PyTorch}\cite{PYTORCH}, un \loc{framework} para acelerar la creación y prototipado de redes neuronales.
   \item Exportación del modelo entrenado a un formato estándar que facilite la compatibilidad con el mayor número de librerías en distintos lenguajes de programación.
@@ -28,10 +28,10 @@ Estos objetivos representan en general la filosofía y los objetivos teóricos d
 
 \begin{itemize}
   \item Debemos ser capaces de inferir resultados del modelo entrenado a tiempo real.
-  \item Se desarrollará un modelo fácilmente escalable y adaptable a distintos dataset de cualquier tamaño.\footnote{El formato de los datasets debe ser el mismo. Un modelo entrenado para clasificación de imágenes no podrá clasificar en formato video o audio.}
+  \item Se desarrollará un modelo fácilmente escalable y adaptable a distintos dataset de cualquier tamaño.\footnote{El formato de los \loc{datasets} debe ser el mismo. Un modelo entrenado para clasificación de imágenes no podrá clasificar en formato vídeo o audio.}
   \item Se realizará una fase de \loc{data augmentation} sobre los datos iniciales.
-  \item Se implementarán distintas redes neuronales para los ditintos formatos de datos (imagen y video). Deben ser fácilmente refactorizables y mantenibles.
+  \item Se implementarán distintas redes neuronales para los distintos formatos de datos (imagen y vídeo). Deben ser fácilmente refactorizables y mantenibles.
   \item Cada vez que se estudie el uso de un nuevo formato de dataset, se creará una nueva red, manteniendo la usabilidad de la anterior intacta.
   \item A lo largo de las pruebas y entrenamientos de la red, vamos a probar distintos \loc{schedulers}, \loc{optimizers} y \loc{criterions}\footnote{Funciones de cálculo de pérdida} buscando el que mejor se adecúe al formato de los datos y la estructura de la red.
-  \item Se mantendrán unas estadísticas a tiempo real de la fase de \loc{trainning} y \loc{test} mediante el uso de \prog{Tensorboard}, una herramienta analítica que permite mantener un \loc{log} de imágenes generadas en la ejecución; así como gráficas de costes y \loc{accuracies}.
+  \item Se mantendrán unas estadísticas a tiempo real de la fase de \loc{training} y \loc{test} mediante el uso de \prog{Tensorboard}, una herramienta analítica que permite mantener un \loc{log} de imágenes generadas en la ejecución; así como gráficas de costes y \loc{accuracies}.
 \end{itemize}
