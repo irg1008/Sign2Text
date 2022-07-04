@@ -385,19 +385,19 @@ Todas estas no son ni mucho menos todas las redes neuronales del campo del \loc{
 \section{Data Augmentation}
 
 Las redes neuronales convolucionales, como hemos visto en los apartados anteriores, tienen a funcionar
-extraordinariamente bien en tareas de clasificaicón de video e imagen, pero, en contrapartida, necesitan gran cantidad de datos para evitar \loc{overfitting} \bib{shorten2019survey}.
+extraordinariamente bien en tareas de clasificación de vídeo e imagen, pero, en contrapartida, necesitan gran cantidad de datos para evitar \loc{overfitting} \bib{shorten2019survey}.
 
 Desgraciadamente, son muchas las ocasiones en las que no podemos usar datos de entrenamiento suficientes para evitar \loc{overfitting}, como en el caso de datos médicos. En estos casos, aplicamos la aumentación de datos.
 
 \loc{Data augmentation} o aumentación de los datos, agrupa un conjunto de técnicas con las cuales buscamos extender el conjunto de datos de entrenamiento de nuestros modelos, en caso de que sean insuficientes.
 
-Las principales técnicas de aumentación de datos son la transformación geométrica, las transformaciones en el espacio de color, aplicación de filtros \loc{kernel} (como hemos visto en la convolución), mezcla de distintas imágenes o videos, borrado aleatorio, aumentación del espacio de características, transferencia de estilo y redes generativas adversarias (\sigla{GANs}).
+Las principales técnicas de aumentación de datos son la transformación geométrica, las transformaciones en el espacio de color, aplicación de filtros \loc{kernel} (como hemos visto en la convolución), mezcla de distintas imágenes o vídeos, borrado aleatorio, aumentación del espacio de características, transferencia de estilo y redes generativas adversarias (\sigla{GANs}).
 
 La aumentación de datos busca un acercamiento al \loc{overfitting} desde la raíz principal del problema: el \loc{dataset}. Esto es asumiendo que el \loc{dataset} tienen datos que pueden ser aumentados.
 
-Estas aumentaciones artificales inflan el \loc{dataset} en tamaño de dos formas: por deformación de datos (\loc{data warping}) o por \loc{oversampling} (sobremuestreo).
+Estas aumentaciones artificiales inflan el \loc{dataset} en tamaño de dos formas: por deformación de datos (\loc{data warping}) o por \loc{oversampling} (sobremuestreo).
 
-Las deformaciones de datos transforman los datosa existentes preservando su etiqueta. Algunos tipos son:
+Las deformaciones de datos transforman los datos existentes preservando su etiqueta. Algunos tipos son:
 
 \begin{enumerate}
   \item Transformación geométrica y/o de color
@@ -409,8 +409,8 @@ Por otro lado, el supersampleo consiste en mantener los datos actuales y añadir
 
 Podemos observar en la figura \ref{fig:dataAugmentation} un esquema de la mayoría de técnicas de aumentación de datos.
 
-\imagen{./img/memoria/conceptos/dataAugmentation}{Ejemplo de \loc{data augmentation} aplicando \loc{adversarial neural netowkrs}, más concretamente \loc{CycleGANs}. Extraido de \bib{face_CycleGANs}}{dataAugmentation}
+\imagen{./img/memoria/conceptos/dataAugmentation}{Ejemplo de \loc{data augmentation} aplicando \loc{adversarial neural netowkrs}, más concretamente \loc{CycleGANs}. Extraído de \bib{face_CycleGANs}}{dataAugmentation}
 
-Lo que hace el reconocimiento de imágenes y video un problema tan complejo en \loc{deep learning} es que el modelo de reconocimiento debe sobrellevar problemas del punto de visión, la luz, la oclusión ambiental, el color del fondo, la escala de los elementos, entre otros. La aumentación de datos consiste en internalizar estas pequeñas variaciones de movimeiento y color en los datos, de tal modo que, una vez entrenado el modelo, funcione en todas las situaciones posibles.
+Lo que hace el reconocimiento de imágenes y vídeo un problema tan complejo en \loc{deep learning} es que el modelo de reconocimiento debe sobrellevar problemas del punto de visión, la luz, la oclusión ambiental, el color del fondo, la escala de los elementos, entre otros. La aumentación de datos consiste en internalizar estas pequeñas variaciones de movimiento y color en los datos, de tal modo que, una vez entrenado el modelo, funcione en todas las situaciones posibles.
 
 Pero el \loc{data augmentation} no es la única técnica que se puede aplicar para evitar \loc{overfitting}. Otra técnica bastante común (y que nosotros hemos aplicado) es el denominado \loc{batch normalization}. El \loc{batch normalization} es una técnica de regularización de los datos que normaliza los \loc{sets} de las capas de activación de una red neuronal. Esta normalización funciona restando la media de cada activación y dividiendo entre la desviación estándar de todos los valores del \loc{batch} \bib{shorten2019survey}.
