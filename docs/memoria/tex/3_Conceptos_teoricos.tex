@@ -59,47 +59,47 @@ Las reglas de asociación es un método que busca encontrar las relaciones entre
 \begin{itemize}
   \item \textbf{Algoritmo Apriori}: Este algoritmo permite encontrar <<conjuntos de elementos frecuentes>>. Estos conjuntos sirven para generar reglas de asociación que permiten extender los \loc{sets} a \loc{sets} de mayor tamaño.
 
-        \begin{algorithm}[H]
-          \caption{Algoritmo Apriori}
+        % \begin{algorithm}[H]
+        %   \caption{Algoritmo Apriori}
 
-          \BlankLine
-          \KwIn{Para un \loc{dataset} $T$, un umbral de soporte $\varepsilon$ y un conjunto de datos $C_{k}$ para el nivel $k$}
-          \BlankLine
+        %   \BlankLine
+        %   \KwIn{Para un \loc{dataset} $T$, un umbral de soporte $\varepsilon$ y un conjunto de datos $C_{k}$ para el nivel $k$}
+        %   \BlankLine
 
-          $L_1 \gets findFrequentOneItemsets(T)$\\
-          $k \gets $2\\
+        %   $L_1 \gets findFrequentOneItemsets(T)$\\
+        %   $k \gets $2\\
 
-          \BlankLine
-          \While{$L_{k-1}$ not empty}{
-            \tcc{Generación de Apriori}
-            $C_k \gets \text{empty list}$\\
-            \ForAll{$p \subseteq L\text{, } q \subseteq L $}{
-              $c \gets p \cup q_{k-1}$\\
+        %   \BlankLine
+        %   \While{$L_{k-1}$ not empty}{
+        %     \tcc{Generación de Apriori}
+        %     $C_k \gets \text{empty list}$\\
+        %     \ForAll{$p \subseteq L\text{, } q \subseteq L $}{
+        %       $c \gets p \cup q_{k-1}$\\
 
-              \ForAll{$u \in L$}{
-                \If{$u \subseteq c$}{
-                  $C_k \gets C_k \cup \lbrace{c}\rbrace$\\
-                }
-              }
-            }
+        %       \ForAll{$u \in L$}{
+        %         \If{$u \subseteq c$}{
+        %           $C_k \gets C_k \cup \lbrace{c}\rbrace$\\
+        %         }
+        %       }
+        %     }
 
-            \BlankLine
-            \tcc{Cálculo de candidatos}
-            \For{$t \in T$}{
-              $D_t \gets \lbrace c \in C_k : c \subseteq t\rbrace$\\
-              \For{$c \in D_t$}{
-                $count[c] \gets count[c] + 1$\\
-              }
-            }
+        %     \BlankLine
+        %     \tcc{Cálculo de candidatos}
+        %     \For{$t \in T$}{
+        %       $D_t \gets \lbrace c \in C_k : c \subseteq t\rbrace$\\
+        %       \For{$c \in D_t$}{
+        %         $count[c] \gets count[c] + 1$\\
+        %       }
+        %     }
 
-            $k \gets k+1$\\
-            $L_k \gets \lbrace c \in C_k : count[c] \geq \varepsilon \rbrace $\\
-          }
+        %     $k \gets k+1$\\
+        %     $L_k \gets \lbrace c \in C_k : count[c] \geq \varepsilon \rbrace $\\
+        %   }
 
-          \BlankLine
-          \Return{$Union\left(L_k\right)$}
+        %   \BlankLine
+        %   \Return{$Union\left(L_k\right)$}
 
-        \end{algorithm}
+        % \end{algorithm}
 
 \end{itemize}
 
