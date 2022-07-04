@@ -1,8 +1,41 @@
 \capitulo{6}{Trabajos relacionados}
 
+En esta sección vamos a repasar trabajos similares al realizado en este proyecto. Se buscan redes neuronales con similar propósito, así como proyectos cuya idea central similar, usen \loc{datasets} similares, etc.
+
+Las caracterísitcas de este proyecto y las que vamos a nombrar para el resto por comparación son:
+
+\begin{itemize}
+  \item \textbf{Nombre}: Sign2Text
+  \item \textbf{Tipo (Red/\loc{Dataset}/Otro)}: Red
+  \item \textbf{Nivel de traducción}: nivel palabra
+  \item \textbf{Detección de movimient en gestos}: sí
+  \item \textbf{Lenguaje de entrada}: \sigla{ASL}
+  \item \textbf{Lenguaje de salida}: texto (inglés)
+  \item \textbf{\loc{Dataset}}: \loc{Dataset} de dominio público extraido de \bib{li2020word}. Compuesto de más de 20000 vídeos con +2000 palabras
+  \item \textbf{Librería o \loc{framework}}: \prog{PyTorch}
+  \item \textbf{Técnicas adicionales aplicadas}: \loc{data augmentation}
+  \item \textbf{Estructura o red neuronal aplicada}: \loc{CNN}, propia
+\end{itemize}
+
 \section{Sign2Text - \loc{Letter level translation}}
 
-Este proyecto, con el mismo nombre que el mio, tiene 125 estrellas en Github y se trata de un traductor a tiempo real de lenguaje de signos \sigla{ASL} a texto a nivel de letra. Es capaz de traducir las letras del abecedario usando inferencia por webcam. Usa un modelo preentrenado \sigla{ResNet50} y tiene el modelo alojado en una instancia en AWS.
+Este proyecto, con el mismo nombre que este proyecto, tiene 125 estrellas en Github y se trata de un traductor a tiempo real de lenguaje de signos \sigla{ASL} a texto a nivel de letra. Es capaz de traducir las letras del abecedario usando inferencia por webcam. Usa un modelo preentrenado \sigla{ResNet50} y tiene el modelo alojado en una instancia en AWS.
+
+\subsection{Datos sobre el proyecto}
+
+\begin{itemize}
+  \item \textbf{Nombre}: Sign2Text
+  \item \textbf{Tipo (Red/\loc{Dataset}/Otro)}: Red
+  \item \textbf{Nivel de traducción}: nivel letra (letras del abecedario)
+  \item \textbf{Detección de movimient en gestos}: no
+  \item \textbf{Lenguaje de entrada}: \sigla{ASL}
+  \item \textbf{Lenguaje de salida}: texto (inglés)
+  \item \textbf{\loc{Dataset}}: \loc{Dataset} con imágenes de signos referenciando las letras del abecedario. Dataset no referenciado
+  \item \textbf{Red implementada}: No implementada desde cero. Reentrenamiento sobre \sigla{ResNet50}
+  \item \textbf{Librería o \loc{framework}}: \prog{TensorFlow}, \prog{Keras}
+  \item \textbf{Técnicas adicionales aplicadas}: Ninguna, \loc{dataset} usado ya preprocesado
+  \item \textbf{Estructura o red neuronal aplicada}: \loc{ResNet} (preentrenado)
+\end{itemize}
 
 Podemos acceder al repositorio en \url{https://github.com/BelalC/sign2text.git}
 
@@ -16,6 +49,21 @@ Esta aplicación, subida al App Store ya que usa el mismo \loc{dataset} que hemo
   \item Usar un algoritmo que mezcla los vídeos con los signos de forma que muestran oraciones complejas de forma suavizada y sin cortes.
 \end{enumerate}
 
+Las caracterísitcas técnicas del proyecto son:
+
+\begin{itemize}
+  \item \textbf{Nombre}: ASL Translator
+  \item \textbf{Tipo (Red/\loc{Dataset}/Otro)}: Aplicación
+  \item \textbf{Nivel de traducción}: nivel oración
+  \item \textbf{Detección de movimient en gestos}: no
+  \item \textbf{Lenguaje de entrada}: texto (inglés)
+  \item \textbf{Lenguaje de salida}: \sigla{ASL} compuesto de varios \loc{clips} fusionados para crear un \loc{video stream} sin cortes.
+  \item \textbf{\loc{Dataset}}: No se especifica, pero por las imágenes de la aplicación se puede observar el uso de \loc{dataset}
+  \item \textbf{Librería o \loc{framework}}: No se especifica
+  \item \textbf{Técnicas adicionales aplicadas}: Desconocido
+  \item \textbf{Estructura o red neuronal aplicada}: Desconocido
+\end{itemize}
+
 No compite directamente con la idea de este proyecto pero parece un proyecto interesante y con un hueco en el mercado sin competencia.
 
 Se puede acceder a la página de la \loc{app} en \url{https://apps.apple.com/us/app/asl-translator/id421784745}
@@ -25,6 +73,21 @@ Se puede acceder a la página de la \loc{app} en \url{https://apps.apple.com/us/
 Este proyecto, que cogió mucha fuerza después de aparecer en algún artículo y hacerse ligeramente viral en LinkedIn, tiene 674 estrellas en Github.
 
 En este proyecto se traducen <<6>> palabras de lenguaje de signo a texto; eso sí, ninguna de las palabras se representa con un gesto en movimiento, todas son estáticas. Usa también una red preentrenada y una webcam como entrada para la inferencia.
+
+La ficha técnica de este proyecto es la siguiente:
+
+\begin{itemize}
+  \item \textbf{Nombre}: ASL to english
+  \item \textbf{Tipo (Red/\loc{Dataset}/Otro)}: Red
+  \item \textbf{Nivel de traducción}: nivel palabra
+  \item \textbf{Detección de movimient en gestos}: no
+  \item \textbf{Lenguaje de entrada}: texto (inglés)
+  \item \textbf{Lenguaje de salida}: \sigla{ASL}
+  \item \textbf{\loc{Dataset}}: Propio
+  \item \textbf{Librería o \loc{framework}}: \prog{Tensorflow}
+  \item \textbf{Técnicas adicionales aplicadas}: Desconocido
+  \item \textbf{Estructura o red neuronal aplicada}: \loc{MobileNet} (preentrenado)
+\end{itemize}
 
 Como curiosidad, al comienzo de este proyecto, se mantuvo una conversación con la autora por \loc{e-mail} para ver si se podría hacer una colaboración.
 
@@ -36,5 +99,14 @@ Se puede acceder al repositorio del proyecto en \url{https://github.com/priiyaan
 How2Sign \bib{Duarte_CVPR2021} es un \loc{dataset} de \sigla{ASL} no solo compuesto de imágenes y vídeos de gestos, sino que también aporta audios, transcripciones, mapas de profundidad y datos de poses.
 
 Todos los vídeos están grabados usando un \loc{chroma key} para mayor facilidad de cambio de fondo y las poses han sido calculadas en 3D en un estudio dedicado. Por esta razón el tamaño del \loc{dataset} aumenta a 290GB.
+
+\begin{itemize}
+  \item \textbf{Nombre}: How2Sign
+  \item \textbf{Tipo (Red/\loc{Dataset}/Otro)}: Dataset
+  \item \textbf{Nivel de traducción}: nivel palabra
+  \item \textbf{Detección de movimient en gestos}: sí
+  \item \textbf{Lenguaje de \loc{dataset}}: \loc{ASL}
+  \item \textbf{Técnicas adicionales aplicadas}: Grbación con \loc{chroma key}, estudio de pose en 3D, transcripción de audio.
+\end{itemize}
 
 Con una licencia \sigla{CC} y sin permiso para uso comercial, el \loc{dataset} se puede acceder en \url{https://how2sign.github.io/}

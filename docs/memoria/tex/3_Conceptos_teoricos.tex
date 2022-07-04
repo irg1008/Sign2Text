@@ -43,7 +43,7 @@ El \loc{clustering} consiste en el agrupamiento de datos no etiquetados basándo
           \item Distancia mínima: Se define por la distancia mínima entre dos puntos de dos \loc{clusters} diferentes.
         \end{enumerate}
         La medida más común a la hora de calcular estas distancias es la distancia euclídea, aunque otra muy común en la literatura es la distancia \loc{Manhattan}.
-        
+
         Por otro lado, el acercamiento divisivo, o \loc{<<top-down>>} funciona dividiendo un único \loc{cluster} basándose en las diferencias entre instancias (puntos del \loc{cluster}). Visualmente se parece a un dendrograma\footnote{Representación gráfica de datos en forma de árbol para organizar datos en categorías y subcategorías hasta alcanzar el nivel de detalle deseado}.
 
   \item \textbf{Probabilísticos}: En un algoritmo probabilístico, los puntos se agrupan basándose en la probabilidad de que pertenezcan a una distribución paramétrica \footnote{La estadística paramétrica es una rama de la estadística con la que se deciden valores basándose en distribuciones desconocidas. Estas se determinan según un número finito de parámetros.}. El \sigla{GMM} (\loc{Gaussian Mixture Model}) es el método más usado en \loc{clustereing} probabilístico.
@@ -130,8 +130,6 @@ Algunos de los métodos usados en aprendizaje semi-supervisado son los siguiente
         \begin{equation*}
           \underset{\theta}{\argmax} \left( \log p\left(\left\{x_i, y_i\right\}_{i=1}^{l} \mid \theta\right)+\lambda \log p\left(\left\{x_i\right\}_{i=l+1}^{l+u} \mid \theta \right) \right)
         \end{equation*}
-
-  \item \textbf{\loc{Support Vector Machines}} (\sigla{SVM}) \label{SSL-SVM}: Según Van Engelen \et \bib{van2020survey} un \sigla{SVM} es un clasificador que intenta buscar la frontera de decisión que maximice el margen, que a su vez se define como la distancia entre la frontera de decisión y los puntos cercanos a ella\footnote{A veces el margen también se refiere a la zona delimitada por la frontera de decisión en la que caen los puntos}. En el escenario del aprendizaje semi-supervisado, un objeto adicional gana importancia: también queremos minimizar el número de datos <<no etiquetados>> que viola el margen. Como no podemos saber la etiqueta de los datos <<no etiquetados>>, aquellos puntos que violan el margen son penalizados basándonos en su distancia a la frontera de decisión.
 
   \item \textbf{Modelos basados en grafos}: Este modelo asume un grafo $G = {V,E}$ tal que los vértices $V$ son las instancias de datos (etiquetados y no etiquetados) y $E$ las aristas no dirigidas que conectan las instancias $i,j$ con un peso $w_{ij}$ \bib{song2022graph}\bib{van2020survey}. La construcción de un grafo se cumple en los siguientes pasos. Podemos ver estos pasos en la figura \ref{fig:SSLTaxonomy}:
         \begin{enumerate}
@@ -249,7 +247,9 @@ Aunque no listamos todos los métodos, a continuación se pueden observar los m�
 
   \item \textbf{\loc{Random Forest}}: El \loc{random forest} también se puede usar en tareas de regresión. El principio que se sigue es que un conjunto de clasificadores <<débiles>> se puede unir para crear un clasificador <<fuerte>>. En este caso tenemos un \loc{ensemble} de árboles de decisión que funciona mejor que \loc{bagging} y \loc{boosting} tanto en \loc{accuracy} como en \loc{overfitting}. Cada árbol del \loc{ensemble} tiene un \loc{set} de entrenamiento distinto. Debemos tener en cuenta que si necesitamos una descripción de las relaciones existentes entre los datos, los \loc{random forest} no son la mejor opción, ya que al tener un conjunto de árboles, se hace difícil la compresión de la estructura general.
 
-  \item \textbf{\sigla{SVM} (\loc{Support Vector Machines})}: Los \sigla{SVM} también están presentes en la regresión. En el caso de la clasificación, tenemos un conjunto de puntos en un espacio de dimensión $N$. Cada \loc{set} perteneciendo a una de las posibles clases, el \sigla{SVM} busca los planos separados que maximicen los margenes entre los \loc{sets} de datos. Ya hemos visto en \ref{SSL-SVM} un caso de \sigla{SVM} en aprendizaje semi-supervisado, solo que en este caso funciona distino. A la hora de clasificar un dato, separamos dos planos y calculamos el error cuadrático de los puntos a dichos planos. En algunas ocasiones, los planos pueden no ser linealmente separables; en estos casos, debemos aumentar el número de dimensiones hasta que lo sean. Para esto se usa lo que se denomina función \loc{kernel} \bib{busuttil2003support} \[K(x,y)=\langle f(x), f(y) \rangle \] donde $x$ e $y$ son las entradas de dimensión $n$, y $f$ es un mapa de paso de dimensión-$n$ a dimensión-$m$. Normalmente nos encontraremos con que $m$ es un número mucho mayor a $n$.
+  \item \textbf{\loc{Support Vector Machines}} (\sigla{SVM}): Según Van Engelen \et \bib{van2020survey} un \sigla{SVM} es un clasificador que intenta buscar la frontera de decisión que maximice el margen, que a su vez se define como la distancia entre la frontera de decisión y los puntos cercanos a ella\footnote{A veces el margen también se refiere a la zona delimitada por la frontera de decisión en la que caen los puntos}.
+
+        Los \sigla{SVM} también están presentes en la regresión. En el caso de la clasificación, tenemos un conjunto de puntos en un espacio de dimensión $N$. Cada \loc{set} perteneciendo a una de las posibles clases, el \sigla{SVM} busca los planos separados que maximicen los margenes entre los \loc{sets} de datos. A la hora de clasificar un dato, separamos dos planos y calculamos el error cuadrático de los puntos a dichos planos. En algunas ocasiones, los planos pueden no ser linealmente separables; en estos casos, debemos aumentar el número de dimensiones hasta que lo sean. Para esto se usa lo que se denomina función \loc{kernel} \bib{busuttil2003support} \[K(x,y)=\langle f(x), f(y) \rangle \] donde $x$ e $y$ son las entradas de dimensión $n$, y $f$ es un mapa de paso de dimensión-$n$ a dimensión-$m$. Normalmente nos encontraremos con que $m$ es un número mucho mayor a $n$.
 
   \item \textbf{\loc{Naive Bayes}}: Este clasificador probabilístico se basa en el teorema de Bayes y asume que todas las características están independientemente condicionadas por la etiqueta de la clase \bib{murphy2006naive}. Aunque esto no suele ocurrir, el modelo resultante funciona sorprendentemente bien, a veces compitiendo con técnicas mucho más sofisticadas \bib{rish2001empirical}. Este modelo ha probado ser muy útil en tareas de clasificación de texto y diagnóstico médico, entre otros. En \bib{domingos1997optimality} se prueba que \loc{naive Bayes} funciona de forma óptima en problemas con un alto grado de dependencia entre características.
 
@@ -331,13 +331,13 @@ Las redes neuronales convolucionales son más complejas y su particularidad, com
 
         \begin{enumerate}
           \item \textbf{Extracción de características o convolución}: En esta fase se busca reducir la dimensionalidad de la entrada manteniendo las características espaciales de los datos. De esta forma no perdemos información y es más fácil procesarla en las siguiente capas. En redes neuronales tradicionales, transformaríamos una entrada (imagen o vídeo) en un vector de dimensión uno.
-          
-          Al hacer esto perderíamos información de formas en la imagen, o de movimientos de objetos o personas en los vídeos. Por esa razón, la extracción de características de una imagen se hacía antes de forma manual en la fase de preparación de los datos.
+
+                Al hacer esto perderíamos información de formas en la imagen, o de movimientos de objetos o personas en los vídeos. Por esa razón, la extracción de características de una imagen se hacía antes de forma manual en la fase de preparación de los datos.
 
                 Para eliminar esta fase manual, las \sigla{CNN} actúan directamente en matrices de datos multidimensionales (o tensores \footnote{Un tensor es un objeto algebraico que representa un espacio vectorial. Puede mapear vectores y matrices multidimensionales \bib{wiki:tensor}}), en vez de actuar sobre vectores. Pero, ¿cómo extraemos información de un tensor?
-                
+
                 Para extraer información de un tensor manteniendo sus características espaciales vamos a usar \loc{kernels} o filtros.
-                
+
                 Un filtro es un tensor con las mismas dimensiones que el tensor de entrada de la red, pero con tamaños mucho menores. \pe: si tenemos como entrada una imagen de $(200x200)$ píxeles, tendremos un filtro de dos dimensiones, por ejemplo, de $(3x3)$ píxeles. Si en vez de una imagen, estamos clasificando un vídeo con 10 \loc{frames} $(10x200x200)$ tendremos un filtro que por ejemplo puede tener el tamaño $(2x3x3)$, siendo 2 el número de \loc{frames}.
 
                 Una vez tenemos nuestro tensor de entrada y nuestro \loc{kernel}, podemos iniciar el proceso de convolución. Para hacer esto, vamos a <<mover>> nuestro \loc{kernel} por nuestro tensor de entrada, generando un <<mapa de características>>. Veamos un ejemplo:
@@ -347,7 +347,7 @@ Las redes neuronales convolucionales son más complejas y su particularidad, com
                 Vemos en la figura \ref{fig:Kernel} que tenemos un tensor bidimensional (\pe una imagen) de tamaño $(5x5)$ con un \loc{kernel} de tamaño $(3x3)$. El mapa de características resultante tiene un tamaño de $(3x3)$\footnote{Da la casualidad de que el tamaño de la salida es igual al tamaño del kernel, pero no es la norma. Si tuviéramos una entrada de $(5x7)$ obtendríamos una salida de $(3x5)$}.
 
                 En este caso no hemos tenido ningún problema y hemos podido <<encajar>> nuestro \loc{kernel} en la matriz perfectamente. Esto no siempre es así, ya que si queremos adaptarnos a cualquier tipo de entrada, es posible que tengamos tamaños cuyo \loc{kernel} no <<encaje>> de forma perfecta.
-                
+
                 Por ejemplo, si nuestra matriz fuera de $(4x4)$ en vez de $(5x5)$, tendríamos que para el tercer cálculo, nuestro \loc{kernel} se sitúa fuera de la matriz (en el lado derecho). Para solucionar este problema usamos \loc{padding} o \loc{stride}.
 
                 \begin{itemize}
@@ -381,3 +381,36 @@ Las redes neuronales convolucionales son más complejas y su particularidad, com
 Todas estas no son ni mucho menos todas las redes neuronales del campo del \loc{deep learning}. Cada pocos meses se publica un \loc{paper} que muestra estructuras nuevas con oportunidades futuras impresionantes. En la actualidad, otro de los modelos de \loc{deep learning} que más atención (nunca mejor dicho) genera, son los modelos \loc{transformers}, expuestos por primera vez en el famoso \loc{paper} <<\loc{Attention is all you need}>>, parte de un libro de (2017) \bib{attention}. Estos modelos usan el llamado <<mecanismo de atención>> que da pesos diferentes a las distintas partes de nuestro dato de entrada (llamados \loc{tokens}). Los principales campos en los que se usan los \loc{transformers} son el campo del \loc{natural language processing} (\sigla{NLP}) y el campo de \loc{computer vision} (\sigla{CV}).
 
 \textbf{Nota del autor}: Los \loc{transformrs} se alejan un poco del tema principal de este proyecto, pero invito a leer el fantástico \loc{paper} y descubrir sobre los modelos que usan esta red y que están revolucionando el mundo del \loc{deep learning} (\pe: \sigla{GPT-3} o \sigla{DALL-E})
+
+\section{Data Augmentation}
+
+Las redes neuronales convolucionales, como hemos visto en los apartados anteriores, tienen a funcionar
+extraordinariamente bien en tareas de clasificaicón de video e imagen, pero, en contrapartida, necesitan gran cantidad de datos para evitar \loc{overfitting} \bib{shorten2019survey}.
+
+Desgraciadamente, son muchas las ocasiones en las que no podemos usar datos de entrenamiento suficientes para evitar \loc{overfitting}, como en el caso de datos médicos. En estos casos, aplicamos la aumentación de datos.
+
+\loc{Data augmentation} o aumentación de los datos, agrupa un conjunto de técnicas con las cuales buscamos extender el conjunto de datos de entrenamiento de nuestros modelos, en caso de que sean insuficientes.
+
+Las principales técnicas de aumentación de datos son la transformación geométrica, las transformaciones en el espacio de color, aplicación de filtros \loc{kernel} (como hemos visto en la convolución), mezcla de distintas imágenes o videos, borrado aleatorio, aumentación del espacio de características, transferencia de estilo y redes generativas adversarias (\sigla{GANs}).
+
+La aumentación de datos busca un acercamiento al \loc{overfitting} desde la raíz principal del problema: el \loc{dataset}. Esto es asumiendo que el \loc{dataset} tienen datos que pueden ser aumentados.
+
+Estas aumentaciones artificales inflan el \loc{dataset} en tamaño de dos formas: por deformación de datos (\loc{data warping}) o por \loc{oversampling} (sobremuestreo).
+
+Las deformaciones de datos transforman los datosa existentes preservando su etiqueta. Algunos tipos son:
+
+\begin{enumerate}
+  \item Transformación geométrica y/o de color
+  \item Eliminación parcial aleatoria de datos espaciales
+  \item Transferencia de estilo (mediante redes adversarias generativas (\sigla{GANs}))
+\end{enumerate}
+
+Por otro lado, el supersampleo consiste en mantener los datos actuales y añadir nuevas instancias al \loc{set} de entrenamiento. La aplicación de \loc{oversampling} y \loc{data warping} no es una dicotomía mutuamente exclusiva.
+
+Podemos observar en la figura \ref{fig:dataAugmentation} un esquema de la mayoría de técnicas de aumentación de datos.
+
+\imagen{./img/memoria/conceptos/dataAugmentation}{Ejemplo de \loc{data augmentation} aplicando \loc{adversarial neural netowkrs}, más concretamente \loc{CycleGANs}. Extraido de \bib{face_CycleGANs}}{dataAugmentation}
+
+Lo que hace el reconocimiento de imágenes y video un problema tan complejo en \loc{deep learning} es que el modelo de reconocimiento debe sobrellevar problemas del punto de visión, la luz, la oclusión ambiental, el color del fondo, la escala de los elementos, entre otros. La aumentación de datos consiste en internalizar estas pequeñas variaciones de movimeiento y color en los datos, de tal modo que, una vez entrenado el modelo, funcione en todas las situaciones posibles.
+
+Pero el \loc{data augmentation} no es la única técnica que se puede aplicar para evitar \loc{overfitting}. Otra técnica bastante común (y que nosotros hemos aplicado) es el denominado \loc{batch normalization}. El \loc{batch normalization} es una técnica de regularización de los datos que normaliza los \loc{sets} de las capas de activación de una red neuronal. Esta normalización funciona restando la media de cada activación y dividiendo entre la desviación estándar de todos los valores del \loc{batch} \bib{shorten2019survey}.
