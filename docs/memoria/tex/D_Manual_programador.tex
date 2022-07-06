@@ -2,9 +2,9 @@
 
 \section{Introducción}
 
-En esta sección vamos a describir la documentación técnica de programación. Vamos a explicar la estructura de directorios, el proceso de instalación del entorno de desarollo y todas las librerias necesarias. Seguiremos explicando comom ejecutar el proyecto y terminaremos con una breve explicación de las pruebas de sistema aplicadas.
+En esta sección vamos a describir la documentación técnica de programación. Vamos a explicar la estructura de directorios, el proceso de instalación del entorno de desarrollo y todas las librerías necesarias. Seguiremos explicando como ejecutar el proyecto y terminaremos con una breve explicación de las pruebas de sistema aplicadas.
 
-Este proyecto está dividido en tres repositorios diferentes. Uno de ellos (\project{Sign2Text}), que es el proyecto principal, y dos de ellos (\project{Sign2Text-API} y \project{Sign2Text-Demo}), que son los repositorios de la API y la demo web respectivamente.
+Este proyecto está dividido en tres repositorios diferentes. Uno de ellos (\project{Sign2Text}), que es el proyecto principal, y dos de ellos (\project{Sign2Text-API} y \project{Sign2Text-Demo}), que son los repositorios de la \loc{API} y la demo web respectivamente.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -33,7 +33,7 @@ La estructura de este proyecto es:
           \item \prog{/memoria}: Aquí encontramos la documentación creada en formato \LaTeX sobre la memoria y los anexos.
         \end{itemize}
 
-  \item \prog{/data}: En esta carpeta podemos encontrar archivos usados para entrada del modelo o entrenamiento de la red. Tenemos distintos \loc{datasets} y una carpeta con videos demo para la web.
+  \item \prog{/data}: En esta carpeta podemos encontrar archivos usados para entrada del modelo o entrenamiento de la red. Tenemos distintos \loc{datasets} y una carpeta con vídeos demo para la web.
 
   \item \prog{/models}: Aquí es donde guardamos los modelos entrenados.
 
@@ -43,30 +43,30 @@ La estructura de este proyecto es:
                 \begin{itemize}
                   \item \prog{/common}: En esta carpeta tenemos código fuente común a todas las redes neuronales. En la raíz tenemos un archivo con útiles para la inferencia mediante \loc{webcam}.
                         \begin{itemize}
-                          \item \prog{/config}: En esta carpeta se albergan los archivos de ocnfiguración comunes a todas la redes, como la transformación de las imágenes a la entrada de la red.
+                          \item \prog{/config}: En esta carpeta se albergan los archivos de configuración comunes a todas la redes, como la transformación de las imágenes a la entrada de la red.
                           \item \prog{/utils}: Aquí tenemos archivos útiles como comprobaciones de balanceo de \loc{datasets}, funciones comunes de \loc{plot} y salida y similares.
                         \end{itemize}
 
                   \item \prog{/res\_net}: Esta carpeta es la carpeta que alberga el primer modelo neuronal de clasificación de imágenes desarrollado. En la raíz tenemos dos cuadernillos de \loc{Jupyter}. Con el primero llamamos a los módulos de \prog{Python} de carga de datos y entrenamiento. Con el segundo inferimos las imágenes.
                         \begin{itemize}
                           \item \prog{/config}: En esta carpeta tenemos los archivos de configuración únicos a esta red, así como las variables de hiperparámetros y la lista de \loc{datasets} disponibles.
-                          \item \prog{/lib}: En esta carpeta tenemos el modelo con la especificación de la red neuronal, y el script de entrenamiento de la red.
+                          \item \prog{/lib}: En esta carpeta tenemos el modelo con la especificación de la red neuronal, y el \loc{script} de entrenamiento de la red.
                           \item \prog{/utils}: Esta carpeta alberga los archivos de carga de datos, salida y compresión de la red.
                         \end{itemize}
 
-                  \item \prog{/simple\_net}: Esta carpeta es la carpeta que alberga el segundo modelo neuronal de clasificación de imágenes desarrollado. En la raíz tenemos dos cuadernillos de \loc{Jupyter}. Con el primero llamamos a los módulos de \prog{Python} de carga de datos y entrenamiento. Con el segundo inferimos los videos.
+                  \item \prog{/simple\_net}: Esta carpeta es la carpeta que alberga el segundo modelo neuronal de clasificación de imágenes desarrollado. En la raíz tenemos dos cuadernillos de \loc{Jupyter}. Con el primero llamamos a los módulos de \prog{Python} de carga de datos y entrenamiento. Con el segundo inferimos los vídeos.
                         \begin{itemize}
                           \item \prog{/config}: En esta carpeta tenemos los archivos de configuración únicos a esta red, así como las variables de hiperparámetros y la lista de \loc{datasets} disponibles.
-                          \item \prog{/lib}: En esta carpeta tenemos el modelo con la especificación de la red neuronal, y el script de entrenamiento de la red.
+                          \item \prog{/lib}: En esta carpeta tenemos el modelo con la especificación de la red neuronal, y el \loc{script} de entrenamiento de la red.
                           \item \prog{/utils}: Esta carpeta alberga los archivos de carga de datos, salida y compresión de la red.
                         \end{itemize}
 
-                  \item \prog{/two\_out\_net}: Esta carpeta es la carpeta que alberga el tercer modelo neuronal de clasificación de imágenes desarrollado. En la raíz tenemos dos cuadernillos de \loc{Jupyter}. Con el primero llamamos a los módulos de \prog{Python} de carga de datos y entrenamiento. Con el segundo inferimos los videos.
+                  \item \prog{/two\_out\_net}: Esta carpeta es la carpeta que alberga el tercer modelo neuronal de clasificación de imágenes desarrollado. En la raíz tenemos dos cuadernillos de \loc{Jupyter}. Con el primero llamamos a los módulos de \prog{Python} de carga de datos y entrenamiento. Con el segundo inferimos los vídeos.
                         \begin{itemize}
                           \item \prog{/config}: En esta carpeta tenemos los archivos de configuración únicos a esta red, así como las variables de hiperparámetros y la lista de \loc{datasets} disponibles.
-                          \item \prog{/lib}: En esta carpeta tenemos el modelo con la especificación de la red neuronal, y el script de entrenamiento de la red.
+                          \item \prog{/lib}: En esta carpeta tenemos el modelo con la especificación de la red neuronal, y el \loc{script} de entrenamiento de la red.
                           \item \prog{/utils}: Esta carpeta alberga los archivos de carga de datos, salida y compresión de la red.
-                          \item \prog{tensorboard}: En esta carpeta almacenamos los eventos ocurridos en las distintas ejecuciones para poder ver gráficos a tiempo real, así como ver las imágenes generadas. También se proporciona un README para ver como abrir dichos \loc{logs}.
+                          \item \prog{tensorboard}: En esta carpeta almacenamos los eventos ocurridos en las distintas ejecuciones para poder ver gráficos a tiempo real, así como ver las imágenes generadas. También se proporciona un <<README>> para ver como abrir dichos \loc{logs}.
                         \end{itemize}
                 \end{itemize}
 
@@ -76,9 +76,9 @@ La estructura de este proyecto es:
 
                   \item \prog{/quantization}: Este directorio contiene un \loc{script} para cuantización de modelos neuronales en formato \sigla{ONNX}.
 
-                  \item \prog{/SimpleVideo2Frame}: Esta carpeta tiene uno de los \loc{scripts} usados para la transformación de videos a \loc{frames}. Veremos como se ejecuta este script en el apartado de <<ejecución>>.
+                  \item \prog{/SimpleVideo2Frame}: Esta carpeta tiene uno de los \loc{scripts} usados para la transformación de vídeos a \loc{frames}. Veremos como se ejecuta este \loc{script} en el apartado de <<ejecución>>.
 
-                  \item \prog{/WLASL2Frame}: Esta carpeta contiene un \loc{script} adaptado a la transformación de datos con el formato único del \loc{dtaset} WLASL \bib{li2020word}.
+                  \item \prog{/WLASL2Frame}: Esta carpeta contiene un \loc{script} adaptado a la transformación de datos con el formato único del \loc{dtaset} \sigla{WLASL} \bib{li2020word}.
                 \end{itemize}
         \end{itemize}
 
@@ -96,9 +96,9 @@ El entorno de ejecución de este proyecto es:
   \item Conda: No
 \end{itemize}
 
-Las bibliotecas usadas en este proyecto se pueden ver en la tabla \ref{tabla:bibliotecasPrinc}. Todas estás librerias se detallan en el archivo \prog{requirements.txt} para una instalación más rápida. Es muy importante mantener las versiones indicadas en \ref{tabla:bibliotecasPrinc} para asegurar el correcto funcionamiento del proyecto. Es posible que funcione con versiones más modernas, pero se asegura con las versiones congeladas indicadas.
+Las bibliotecas usadas en este proyecto se pueden ver en la tabla \ref{tabla:bibliotecasPrinc}. Todas estás librerías se detallan en el archivo \prog{requirements.txt} para una instalación más rápida. Es muy importante mantener las versiones indicadas en \ref{tabla:bibliotecasPrinc} para asegurar el correcto funcionamiento del proyecto. Es posible que funcione con versiones más modernas, pero se asegura con las versiones congeladas indicadas.
 
-\tablaSmall{Lista de librerias y versiones usadas en \project{Sign2Text}}
+\tablaSmall{Lista de librerías y versiones usadas en \project{Sign2Text}}
 {l r}{bibliotecasPrinc}
 {\textbf{Biblioteca} & \textbf{Versión} \\}{
   pylint & 2.14.3 \\
@@ -135,7 +135,7 @@ Por otro lado, necesitaremos algún modo de ejecutar cuadernillos de \prog{Jupyt
 
 \subsection{Compilación, instalación y ejecución del proyecto}
 
-En estas secciones vamos a ver como instalar y ejecutar las distintas partes del proyecto. Antes de nada, debemos descargarnos el código fuente de GitHub o Gitlab. Para hacer esto usamos el comando \prog{git clone}. Puedes ver la url al comienzo de esta sección.
+En estas secciones vamos a ver como instalar y ejecutar las distintas partes del proyecto. Antes de nada, debemos descargarnos el código fuente de GitHub o Gitlab. Para hacer esto usamos el comando \prog{git clone}. Puedes ver la \loc{url} al comienzo de esta sección.
 
 Una vez hecho, entramos en la carpeta recién descargada para comenzar el paso de instalación.
 
@@ -150,7 +150,7 @@ Una vez hecho, entramos en la carpeta recién descargada para comenzar el paso d
 
   \item Una vez tenemos el entorno inicializado con el código fuente, podemos instalar las dependencias con el comando \prog{pip install -r requirements.txt}.
 
-  \item (Opcional): Si nuestro sistema tiene una GPU, podemos ejecutar todos los scripts de \prog{PyTorch} con ella. Para esto debemos descargar la versión de \prog{PyTorch} preparada para \prog{CUDA}.
+  \item (Opcional): Si nuestro sistema tiene una GPU, podemos ejecutar todos los \loc{scripts} de \prog{PyTorch} con ella. Para esto debemos descargar la versión de \prog{PyTorch} preparada para \prog{CUDA}.
 
         Para hacer esto usamos el comando \prog{pip install torch==1.10.2+cu113 torchvision==0.11.3+cu113 torchaudio===0.10.2+cu113 -f \url{https://download.pytorch.org/whl/cu113/torch_stable.html}}
 \end{enumerate}
@@ -164,14 +164,14 @@ Dentro de este proyecto, tenemos dos partes separadas que podemos ejecutar. La p
 En este carpeta tenemos los siguientes \loc{scipts}
 
 \begin{itemize}
-  \item Quantización: Tenemos un \loc{script} con el cual podemos cuantizar un modelo en formato \sigla{ONNX}. Para esto haremos \prog{python quantize.py}, estando en el directorio del \loc{script}.
-        Si necesitamos cambiar la url del modelo a cuantizar, debemos entrar en el \loc{scipt} y cambiar la variable dentro del \loc{pipeline} principal del archivo.
+  \item Cuantización: Tenemos un \loc{script} con el cual podemos cuantizar un modelo en formato \sigla{ONNX}. Para esto haremos \prog{python quantize.py}, estando en el directorio del \loc{script}.
+        Si necesitamos cambiar la \loc{url} del modelo a cuantizar, debemos entrar en el \loc{scipt} y cambiar la variable dentro del \loc{pipeline} principal del archivo.
 
-  \item SimpleVideo2Frame: Este \loc{script} se encarga de convertir un video en una serie de imágenes. Para ello, usamos el comando \prog{python simpleVideo2Frame.py}, o si estamos en \prog{windows}, también podemos usar \prog{./run.bat}. Las opciones disponibles para este comando se deben insertar por parámetro. Los parámetros de este \loc{script} son los siguientes:
+  \item SimpleVideo2Frame: Este \loc{script} se encarga de convertir un vídeo en una serie de imágenes. Para ello, usamos el comando \prog{python simpleVideo2Frame.py}, o si estamos en \prog{windows}, también podemos usar \prog{./run.bat}. Las opciones disponibles para este comando se deben insertar por parámetro. Los parámetros de este \loc{script} son los siguientes:
         \begin{itemize}
           \item -i, --input: El \loc{path} donde se encuentran los vídeos de entrada a convertir. Tipo de entrada es \loc{string}.
           \item -o, --output: El \loc{path} donde se guardarán las imágenes resultantes. Tipo de entrada es \loc{string}.
-          \item -l, --labels: El número de etiquetas del dataset que se deben procesar y exportar. Cuanto mayor sea el número de etiquetas, más tiempo tardará en ejecutarse el script. Tipo de entrada es entero.
+          \item -l, --labels: El número de etiquetas del \loc{dataset} que se deben procesar y exportar. Cuanto mayor sea el número de etiquetas, más tiempo tardará en ejecutarse el \loc{script}. Tipo de entrada es entero.
           \item -c, --convert: Si se debe convertir el vídeo a imágenes o se debe transformar a formato mp4 a la salida. Tipo de entrada es booleano. Por defecto es verdadero.
         \end{itemize}
 
@@ -181,22 +181,22 @@ En este carpeta tenemos los siguientes \loc{scipts}
         \begin{itemize}
           \item Opciones globales
                 \begin{itemize}
-                  \item -i, --input: Carpeta con los videos a procesar (Opcional).
-                  \item -o, --output: Carpeta donde se guardaran los frames (Opcional).
-                  \item -l, --labels: Número de labels a procesar. Puede ser un número o ``all`` para procesar todos (Opcional).
+                  \item -i, --input: Carpeta con los vídeos a procesar (Opcional).
+                  \item -o, --output: Carpeta donde se guardaran los \loc{frames} (Opcional).
+                  \item -l, --labels: Número de \loc{labels} a procesar. Puede ser un número o ``all`` para procesar todos (Opcional).
                   \item -c, --config: Archivo de configuración con las etiquetas (Opcional).
                   \item -h, --help: Muestra esta ayuda.
                 \end{itemize}
 
           \item Extracción de \loc{frames}
                 \begin{itemize}
-                  \item -m, --merge: Indica si se debe unir los frames en una imagen (Opcional).
-                  \item -f, --frames: Número de frames aleatorios del video (Opcional).
+                  \item -m, --merge: Indica si se debe unir los \loc{frames} en una imagen (Opcional).
+                  \item -f, --frames: Número de \loc{frames} aleatorios del vídeo (Opcional).
                 \end{itemize}
 
-          \item Extracción de videos
+          \item Extracción de vídeos
                 \begin{itemize}
-                  \item -v, --video: Extrae todos los frames del video en una carpeta única para ese video. Deshabilita las opciones -f y -m (Opcional).
+                  \item -v, --video: Extrae todos los \loc{frames} del vídeo en una carpeta única para ese vídeo. Deshabilita las opciones -f y -m (Opcional).
                 \end{itemize}
         \end{itemize}
 
@@ -210,27 +210,27 @@ Los siguientes archivos que podemos ejecutar son los cuadernillos de \prog{Jupyt
   \item \textbf{ResNet}: este primer modelo se encuentra en la carpeta \prog{/src/models/res\_net}. En esta carpeta podemos ejecutar dos cuadernillos.
 
         \begin{enumerate}
-          \item El cuadernillo de entrenamiento se puede ejecutar usando \loc{VSCode}. Este cuadernillo nos permite actualizar pesos de una red preentrenada. Podemos elegir uno de los datasets que se nos ofrece para entrenar la red. En este cuaderno veremos un ejemplo de uno de los datos del \loc{dataset} antes de comenzar el entrenamiento. Se hará una comprobación de balanceo del \loc{dataset} cargado. Cuando se entrene la red se mostrará una gráfica de costes, así como alguna comprobación del \loc{accuracy} en los \loc{sets} de entrenamiento, test y validación. Por último se exportará el modelo para su reutilización en el siguiente cuadernillo.
+          \item El cuadernillo de entrenamiento se puede ejecutar usando \loc{VSCode}. Este cuadernillo nos permite actualizar pesos de una red preentrenada. Podemos elegir uno de los \loc{datasets} que se nos ofrece para entrenar la red. En este cuaderno veremos un ejemplo de uno de los datos del \loc{dataset} antes de comenzar el entrenamiento. Se hará una comprobación de balanceo del \loc{dataset} cargado. Cuando se entrene la red se mostrará una gráfica de costes, así como alguna comprobación del \loc{accuracy} en los \loc{sets} de entrenamiento, test y validación. Por último se exportará el modelo para su reutilización en el siguiente cuadernillo.
 
-          \item Por otro lado tenemos el cuadernillo de inferencia. Con este podemos cargar el modelo entrenado en el cuadernillo anterior para ejecutar inferencia sobre una imágen o mediante \loc{webcam}.
+          \item Por otro lado tenemos el cuadernillo de inferencia. Con este podemos cargar el modelo entrenado en el cuadernillo anterior para ejecutar inferencia sobre una imagen o mediante \loc{webcam}.
         \end{enumerate}
 
   \item \textbf{SimpleNet}: este segundo modelo se encuentra en la carpeta \prog{/src/models/simple\_net}. En esta carpeta podemos ejecutar dos cuadernillos.
 
         \begin{enumerate}
-          \item el cuadernillo de entrenamiento: Al igual que en la red anterior, tenemos un cuaderno para entrenar el modelo. La diferencia con el anterior es que el \loc{dataset} que se debe alimentar a este modelo, es un \loc{dataset} de video.
+          \item el cuadernillo de entrenamiento: Al igual que en la red anterior, tenemos un cuaderno para entrenar el modelo. La diferencia con el anterior es que el \loc{dataset} que se debe alimentar a este modelo, es un \loc{dataset} de vídeo.
 
                 Por otro lado, este modelo no usa una red preentrenada, sino que implementa una estructura \sigla{CNN}. El programador podrá cambiar los hiperparámetros en el archivo de configuración en \prog{./config/consts}.
 
-          \item Muy similar al anterior cuaderno de inferencia en la red <<res\_net>>, podemos inferir a tiempo real entradas de video usando la \loc{webcam}.
+          \item Muy similar al anterior cuaderno de inferencia en la red <<res\_net>>, podemos inferir a tiempo real entradas de vídeo usando la \loc{webcam}.
         \end{enumerate}
 
   \item \textbf{TwoOutNet}: este tercer modelo se encuentra en la carpeta \prog{/src/models/two\_out\_net}. En esta carpeta podemos ejecutar dos cuadernillos y un \loc{log} a tiempo real.
 
         \begin{enumerate}
-          \item Este cuaderno de entrenamiento se parece mucho al anterior en cuanto a que aplica una red customizada de \sigla{CNN} y carga \loc{dataset} de video. La diferencia está en que a ser la red más compleja, tiene un \loc{log} a tiempo real. Por otro lado, en este archivo se muestra no sol información del tipo de signo que se debe detectar, sino de la pose de los individuos. Puedes ver un ejemplo de esto en la figura \ref{fig:pose_super}.
+          \item Este cuaderno de entrenamiento se parece mucho al anterior en cuanto a que aplica una red personalizada de \sigla{CNN} y carga \loc{dataset} de vídeo. La diferencia está en que a ser la red más compleja, tiene un \loc{log} a tiempo real. Por otro lado, en este archivo se muestra no sol información del tipo de signo que se debe detectar, sino de la pose de los individuos. Puedes ver un ejemplo de esto en la figura \ref{fig:pose_super}.
 
-          \item Por otro lado tenemos el cuadernillo de inferencia. Con este podemos cargar el modelo entrenado en el cuadernillo anterior para ejecutar inferencia sobre una imágen o mediante \loc{webcam}. La diferencia con el anterior está en que también se encuentra disponible la inferencia usando el \loc{runtime} de \sigla{ONNX}.
+          \item Por otro lado tenemos el cuadernillo de inferencia. Con este podemos cargar el modelo entrenado en el cuadernillo anterior para ejecutar inferencia sobre una imagen o mediante \loc{webcam}. La diferencia con el anterior está en que también se encuentra disponible la inferencia usando el \loc{runtime} de \sigla{ONNX}.
 
           \item Visualización del \loc{log} de ejecución. Para visualizar el \loc{log} debemos entrar en la carpeta situada en \prog{/src/models/two\_out\_net/tensorboard}. Aquí podemos leer el  <<README>> o podemos ejecutarlo con \prog{python run.py}. Al ejecutar esto, se nos abrirá una página web que nos permitirá visualizar el \loc{log} de ejecución. Puedes ver un ejemplo en la figura \ref{fig:tensorboard}.
         \end{enumerate}
@@ -239,7 +239,7 @@ Los siguientes archivos que podemos ejecutar son los cuadernillos de \prog{Jupyt
 
 \imagen{./img/anexos/pose_super}{Superposición de información de pose sobre \loc{frame} estático de una instancia de entrada en formato video. Imagen del \loc{dataset} \sigla{WLASL} \bib{li2020word}}{pose_super}
 
-\imagen{./img/anexos/tensorboard}{Utilización de la libreria \prog{Tensorboard} para visualizar \loc{logs} y estructuras de redes neuronales a tiempo real}{tensorboard}
+\imagen{./img/anexos/tensorboard}{Utilización de la librería \prog{Tensorboard} para visualizar \loc{logs} y estructuras de redes neuronales a tiempo real}{tensorboard}
 
 \subsection{Pruebas del sistema}
 
@@ -249,7 +249,7 @@ Debido a la naturaleza de prueba/error del proyecto, no se han realizado pruebas
 
 \section{\project{Sign2Text - API}}
 
-Este es uno de los dos proyectos secundarios. Este proyecto implementa una \sigla{API} en \prog{Python} con \prog{FastAPI}. El objetivo del proyecto es crear una plataforma con la que los desarrolladores puedan consumir del modelo sin necesaidad de tener conocimeintos relacionados con \loc{deep learning} o el framework \prog{PyTorch}.
+Este es uno de los dos proyectos secundarios. Este proyecto implementa una \sigla{API} en \prog{Python} con \prog{FastAPI}. El objetivo del proyecto es crear una plataforma con la que los desarrolladores puedan consumir del modelo sin necesidad de tener conocimientos relacionados con \loc{deep learning} o el \loc{framework} \prog{PyTorch}.
 
 \begin{itemize}
   \item \sigla{API}: La \sigla{API} se puede acceder a través de \url{https://api.sign2text.com}
@@ -267,9 +267,9 @@ La estructura de este proyecto es:
 
   \item \prog{/models}: En esta carpeta tenemos los modelos usados en el desarrollo de la \sigla{API}. Estos modelos solo se usan en la fase de desarrollo, ya que en producción, los modelos se consiguen haciendo una descarga a la hora de construir la imagen de docker. Esto se hace así paar ahorrar tiempos de transferencias en el momento de subir o bajar una actualización de la imagen.
 
-  \item \prog{/src}: En esta carpeta encontramos el código fuente de la aplicación. El archivo \prog{main} contiene la incialización del servirdor y el \loc{endpoint} en el que se recibe el vídeo. El \loc{script} \prog{dev} se usa para arrancar la aplicación en modo desarrollo.
+  \item \prog{/src}: En esta carpeta encontramos el código fuente de la aplicación. El archivo \prog{main} contiene la inicialización del servirdor y el \loc{endpoint} en el que se recibe el vídeo. El \loc{script} \prog{dev} se usa para arrancar la aplicación en modo desarrollo.
         \begin{itemize}
-          \item \prog{/utils}: Esta carpeta contiene archivos que no están directamnte relacionados con la funcionalidad de \prog{FastAPI}. Eston son la transformación del video recibido en \loc{frames} o la creación de una sesión de \prog{onnxruntime}.
+          \item \prog{/utils}: Esta carpeta contiene archivos que no están directamente relacionados con la funcionalidad de \prog{FastAPI}. Eston son la transformación del vídeo recibido en \loc{frames} o la creación de una sesión de \prog{onnxruntime}.
         \end{itemize}
 
 \end{itemize}
@@ -290,7 +290,7 @@ El entorno de ejecución de este proyecto secundario es:
 
 Las bibliotecas usadas en este proyecto se pueden ver en la tabla \ref{tabla:bibliotecasAPI}. Todas estás librerias se detallan en el archivo \prog{requirements.txt} para una instalación más rápida. Es muy importante mantener las versiones indicadas en \ref{tabla:bibliotecasAPI} para asegurar el correcto funcionamiento del proyecto. Es posible que funcione con versiones más modernas, pero se aconseja usar las versiones indicadas.
 
-\tablaSmall{Lista de librerias y versiones usadas en \project{Sign2Text-API}}
+\tablaSmall{Lista de librerías y versiones usadas en \project{Sign2Text-API}}
 {l r}{bibliotecasAPI}
 {\textbf{Biblioteca} & \textbf{Versión} \\}{
   fastapi & 0.78.0 \\
@@ -319,7 +319,7 @@ En este caso no se recomienda ningún IDE en concreto, ya que basta con tener la
 
 \subsection{Compilación, instalación y ejecución del proyecto}
 
-En estas secciones vamos a ver como instalar y ejecutar las distintas partes del proyecto. Antes de nada, debemos descargarnos el código fuente de GitHub. Para hacer esto usamos el comando \prog{git clone}. Puedes ver la url al comienzo de esta sección.
+En estas secciones vamos a ver como instalar y ejecutar las distintas partes del proyecto. Antes de nada, debemos descargarnos el código fuente de GitHub. Para hacer esto usamos el comando \prog{git clone}. Puedes ver la \loc{url} al comienzo de esta sección.
 
 Una vez hecho, entramos en la carpeta recién descargada para comenzar el paso de instalación.
 
@@ -375,14 +375,14 @@ si se desea información más extensa sobre el proceso de instalación o sobre e
 
 \subsection{Consumo de la API}
 
-Al ser una \sigla{API} cuyo intención es consumir de un modelo neuronal, se ha creado un único \loc{endpoint}. Este \loc{endpoint} se encarga de recibir una petición en formato <<datos de formulario>> \bib{formdata}, incluyendo un \loc{input} de tipo <<archivo>>. En este \loc{input} se recibirá el archivo con el vídeo necesario para la inferencia y devolverá el resultado extraido de la clasificación.
+Al ser una \sigla{API} cuyo intención es consumir de un modelo neuronal, se ha creado un único \loc{endpoint}. Este \loc{endpoint} se encarga de recibir una petición en formato <<datos de formulario>> \bib{formdata}, incluyendo un \loc{input} de tipo <<archivo>>. En este \loc{input} se recibirá el archivo con el vídeo necesario para la inferencia y devolverá el resultado extraído de la clasificación.
 
 En la figura \ref{fig:apiIn} podemos ver la estructura necesaria para hacer la petición de forma correcta. En este \loc{endpoint} se valida que el archivo sea de tipo <<mp4>>.
 
 \imagen{./img/anexos/api_in}{Esquema del cuerpo de la petición de entrada, con formato \loc{multipart} \bib{formdata}
 }{apiIn}
 
-Por otro lado, la respuesta del servidor al cliente se puede observar en la figura \ref{fig:apiOut}. El servidor nos devovlerá un objeto \prog{JSON} con un a entrada con el valor de la etiqueta clasificada.
+Por otro lado, la respuesta del servidor al cliente se puede observar en la figura \ref{fig:apiOut}. El servidor nos devolverá un objeto \prog{JSON} con un a entrada con el valor de la etiqueta clasificada.
 
 \imagen{./img/anexos/api_out}{Esquema de salida devuelto por el servidor. En el \loc{target} se devolverá la etiqueta clasificada}{apiOut}
 
@@ -403,7 +403,7 @@ Para poder probar entonces el correcto funcionamiento del servidor se ha usado u
 Por último, el tecer repositorio del proyecto implementa una aplicación de cliente en \prog{JavaScript} con \prog{Astro} \bib{astro} y \prog{Svelte} \bib{svelte}. El objetivo del proyecto es crear una web fácil de usar para que los usuarios puedan probar el modelo neuronal con solo arrastrar y soltar. Veremos como funciona en el apartado <<Manual de usuario>>. En esta sección estudiaremos la estructura del código, así como las fases de instalación y uso desde la perspectiva del desarrollador.
 
 \begin{itemize}
-  \item El respositorio está disponible en \url{https://github.com/irg1008/Sign2Text-Astro.git}
+  \item El repositorio está disponible en \url{https://github.com/irg1008/Sign2Text-Astro.git}
   \item La demo web está disponible libre para todo el mundo en \url{https://sign2text.com}
 \end{itemize}
 
@@ -413,7 +413,7 @@ La estructura de este proyecto es:
 
 \begin{itemize}
 
-  \item \prog{/}: En la raíz del proyecto encontramos archivos como el <<README>> y archivos de dependencias de \prog{JavaScript} y \prog{NPM}. También tenemos archivos de configuración del \loc{deployment}, así como de las librerias principales del proyecto. Por último tenemos los archivos <<.env>>. En estos guardamos variables secretas que no deben ser publicadas en el repositorio.
+  \item \prog{/}: En la raíz del proyecto encontramos archivos como el <<README>> y archivos de dependencias de \prog{JavaScript} y \prog{NPM}. También tenemos archivos de configuración del \loc{deployment}, así como de las librerías principales del proyecto. Por último tenemos los archivos <<.env>>. En estos guardamos variables secretas que no deben ser publicadas en el repositorio.
 
   \item \prog{/node\_modules}: Esta carpeta es la que alberga las dependencias del proyecto. No está subida a Github porque el peso es muy grande y no tiene sentido hacerlo, como veremos en el apartado de instalación.
 
@@ -425,9 +425,9 @@ La estructura de este proyecto es:
 
           \item \prog{/layout}: Un \loc{layout} representa una estructura de la \sigla{UI} que se repite en todas las páginas. En este caso, el \loc{layout} contiene un \loc{header} y un \loc{footer}.
 
-          \item \prog{/pages}: En esta carpeta podemos crear nuestras páginas de la aplicación. Cada archivo cerado aquí generará una ruta única en la \loc{URL}. En las páginas se pueden usar los componentes y los \loc{layouts}.
+          \item \prog{/pages}: En esta carpeta podemos crear nuestras páginas de la aplicación. Cada archivo creado aquí generará una ruta única en la \loc{URL}. En las páginas se pueden usar los componentes y los \loc{layouts}.
 
-          \item \prog{/services}: En esta carpeta albergamos la lógica de negocio relativa a las peticiones \sigla{HTTP} al servidor (\project{Sign2Text-API}). Podemos observar la lógica de creación de un formulario con un video (como vimos en el proyecto del servidor), el envio a la \sigla{API} y la espera de la respuesta.
+          \item \prog{/services}: En esta carpeta albergamos la lógica de negocio relativa a las peticiones \sigla{HTTP} al servidor (\project{Sign2Text-API}). Podemos observar la lógica de creación de un formulario con un vídeo (como vimos en el proyecto del servidor), el envió a la \sigla{API} y la espera de la respuesta.
         \end{itemize}
 
 \end{itemize}
@@ -445,7 +445,7 @@ El entorno de ejecución de este proyecto es:
 
 Las bibliotecas usadas en este proyecto se pueden ver en la tabla \ref{tabla:bibliotecasCliente}. Todas estás librerias se detallan en el archivo \prog{package.json} para una instalación más rápida. Es muy importante mantener las versiones indicadas en \ref{tabla:bibliotecasCliente} para asegurar el correcto funcionamiento del proyecto. Es posible que funcione con versiones más modernas, pero se aconseja usar las versiones indicadas.
 
-\tablaSmall{Lista de librerias y versiones usadas en \project{Sign2Text-Cliente}}
+\tablaSmall{Lista de librerías y versiones usadas en \project{Sign2Text-Cliente}}
 {l r}{bibliotecasCliente}
 {\textbf{Biblioteca} & \textbf{Versión} \\}{
   @astrojs/react & 0.1.3 \\
@@ -459,11 +459,11 @@ Las bibliotecas usadas en este proyecto se pueden ver en la tabla \ref{tabla:bib
   svelte & 3.48.0 \\
 }
 
-Para la realización de este proyecto se recomienda usar \loc{VSCode}, ya que es un editor orientado a la programación web. Además, gracias al ecosistema de extensiones, tenemos muchas herramientas que nos ayudan a desarrollar proyectos con las herrmientas listadas em \ref{tabla:bibliotecasCliente}.
+Para la realización de este proyecto se recomienda usar \loc{VSCode}, ya que es un editor orientado a la programación web. Además, gracias al ecosistema de extensiones, tenemos muchas herramientas que nos ayudan a desarrollar proyectos con las herramientas listadas em \ref{tabla:bibliotecasCliente}.
 
 \subsection{Compilación, instalación y ejecución del proyecto}
 
-En estas secciones vamos a ver como instalar y ejecutar las distintas partes del proyecto. Antes de nada, debemos descargarnos el código fuente de GitHub. Para hacer esto usamos el comando \prog{git clone}. Puedes ver la url al comienzo de esta sección.
+En estas secciones vamos a ver como instalar y ejecutar las distintas partes del proyecto. Antes de nada, debemos descargarnos el código fuente de GitHub. Para hacer esto usamos el comando \prog{git clone}. Puedes ver la \loc{url} al comienzo de esta sección.
 
 Una vez hecho, entramos en la carpeta recién descargada para comenzar el paso de instalación.
 
@@ -480,7 +480,7 @@ Comenzamos instalando las dependencias. No debemos preocuparnos de que se instal
 \begin{itemize}
   \item La ejecución del proyecto es muy sencilla. Lo primero que debemos hacer es ejecutar \prog{npm run dev} desde el directorio raíz. Esto nos abrirá el navegador (por defecto en el puerto 3000).
 
-  \item Una vez hecho esto, ya podemos consumir nuestra API (desarollo o producción). La \sigla{URL} de la \sigla{API} se debe cambiar en el archivo de configuración <<.env>>.
+  \item Una vez hecho esto, ya podemos consumir nuestra \sigla{API} (desarrollo o producción). La \sigla{URL} de la \sigla{API} se debe cambiar en el archivo de configuración <<.env>>.
 \end{itemize}
 
 \subsubsection{Compilación}
@@ -488,7 +488,7 @@ Comenzamos instalando las dependencias. No debemos preocuparnos de que se instal
 \begin{itemize}
   \item Si queremos crear una versión de producción, debemos entonces ejecutar el comando \prog{npm run build} para compilar todo el código. Tras esto ya podemos ejecutar nuestra versión de producción.
 
-  \item Para ejecutar la versión de producción ejecutamos ahora \loc{npm run start}. Entonces se nps abrirá el navegador como en la versión de desarrollo.
+  \item Para ejecutar la versión de producción ejecutamos ahora \loc{npm run start}. Entonces se nos abrirá el navegador como en la versión de desarrollo.
 
         Observaremos que la aplicación funciona de forma más rápida y sin menos saltos que la versión de desarrollo.
 \end{itemize}
@@ -497,6 +497,6 @@ Se puede obtener más información sobre este proyecto en el <<manual del usuari
 
 \subsection{Pruebas del sistema}
 
-No se han realizado pruebas del sistema paar el front, ni de E2E ni de ningun tipo. Esto es algo que se planea hacer como tarea en el futuro. De momento, debido a la simplicidad de la aplicación, se ha optado por hacer \loc{testing} manual.
+No se han realizado pruebas del sistema para el \loc{front-end}, ni de E2E (\loc{End to End) ni de ningún tipo. Esto es algo que se planea hacer como tarea en el futuro. De momento, debido a la simplicidad de la aplicación, se ha optado por hacer \loc{testing} manual.
 
-Otro de los aspectos que no se ha probado y también entra en las líneas futuras, es la comprobación de uso en dispositivos móviles. Se ha comprobado que el sitio es \loc{responsive} (adapta su tamaño correctamente al ancho de la pantalla) pero no se ha comprobado que un vídeo se envía de forma corercta.
+Otro de los aspectos que no se ha probado y también entra en las líneas futuras, es la comprobación de uso en dispositivos móviles. Se ha comprobado que el sitio es \loc{responsive} (adapta su tamaño correctamente al ancho de la pantalla) pero no se ha comprobado que un vídeo se envía de forma correcta.
