@@ -2,12 +2,396 @@
 
 \section{Introducción}
 
+En este proyecto se ha aplicado la metodología SCRUM de desarrollo ágil. Se han dividido todas las tareas del proyecto en \loc{sprints} o \loc{milestones} de 15 días cada uno. Cada sprint se compone de un \loc{backlog} de tareas que se deben intentar cumplir en ese periodo.
 
+Al comienzo de cada periodo, se ha realizado una reunión o \loc{sprint meeting} en la cual se establecían las tareas que iban a realizar a continuación. Por otro lado, al finalizar cada \loc{sprint}, se realizaba un \loc{sprint review} del mismo para comprobar que tareas se habían completado y cuales no. Estas dos reuniones se realizaban en una sola en la que primero repasábamos los cambios y luego estudiábamos que hacer a continuación.
+
+En un proyecto de software normal, se busca cumplir con todas las tareas establecidas en el \loc{sprint}, y avanzar una iteración o \loc{release} sobre el producto. En un proyecto de investigación como ha sido este, esta tarea se complica; ya que algunas de las \loc{issues} son más bien estimaciones sobre las posibles tareas que se puede realizar más que una garantía de que se cumplan. Veremos varios ejemplos de estos a lo largo de los \loc{sprints}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Planificación temporal}
 
+Para la planificación de tareas, \loc{milestones} y tiempos de entrega se han usado las \loc{issues} internas de Gitlab con la idea de mantener el proyecto lo más unificado posible.
+
+Un problema que tiene esto es que Gitlab tiene muchas características bajo un muro de pago. Por ejemplo, no es posible asignar puntos de historia a las \loc{issues} y tampoco podemos exportar gráficos de \loc{burn down}\footnote{Se ha pensado el uso de herramientas externas, como Zenhub; pero estas herramientas solo tiene conexión de terceros con Github}.
+
+Por otro lado, al ser un proyecto con repositorio cerrado y con administrador externo al autor, no se ha podido aumentar el plan a un plan \loc{premium} para usar dichas \loc{features}. Por esto vamos a remitirnos a mostrar el objetivo principal en cada \loc{sprint} así como las tareas que lo componen. Hablaremos del porcentaje de tareas completas y haremos un \loc{review} de aquellas no completas y que deban ser movidas a siguientes \loc{sprints}.
+
+En este proyecto se han usado etiquetas para catagorizar las \loc{issues} de forma ordenada según tipo, estado, prioridad y otros. Estas etiquetas están extraídas de \bib{abdonrd}, un repositorio con etiquetas para reutilizar entre proyectos. La lista completa es:
+
+\begin{itemize}
+  \item \textbf{Tipo}:
+        \begin{itemize}
+          \item \textbf{\loc{Bug}}: Simboliza un error en el código que no permite que continúe la ejecucuión
+          \item \textbf{\loc{Discussion}}: Esta etiqueta simboliza una \loc{issue} que debe ser debatida en el \loc{sprint review} o discutida en el propio foro de la tarea.
+          \item \textbf{\loc{Documentation}}: Una tarea marcada como \loc{documentation} simboliza una tarea que trata sobre el estudio de literatura necesaria para la comprensión de algunos contenidos, la realización de comentarios en el código o la creación de archivos <<Readme>>. Las tareas relacionadas con la memoria y los anexos que se están leyendo también entran en esta categoria.
+          \item \textbf{\loc{Enhancement}}: Esta etiqueta simboliza una tarea que se trata de una mejora en el código o de una mejora en la documentación.
+          \item \textbf{\loc{Epic}}: Esta etiqueta simboliza una \loc{issue} que se trata de una historia completa que se puede dividir en más \loc{issues} y que se puede tratar de una \loc{release} en el \loc{sprint}.
+          \item \textbf{\loc{Feature Request}}: Esta etiqueta simboliza una \loc{issue} que se trata de una petición de una nueva característica.
+          \item \textbf{\loc{Question}}: Esta etiqueta simboliza una \loc{issue} que se trata de una pregunta que se puede responder en el \loc{sprint review} o en el propio foro de la tarea. Se diferencia de \loc{discussion} en que \loc{question} solo se inicializa para ser preguntada en el \loc{sprint review}, mientras que \loc{discussion} es una tarea ya iniciada que no puede terminarse, o que, en su defecto, se ha vuelto a abrir tras cerrada.
+        \end{itemize}
+
+  \item \textbf{Estado}:
+        \begin{itemize}
+          \item \textbf{\loc{Can't Reproduce}}: Esta etiqueta simboliza una \loc{issue} que no se puede reproducir debido a que el estado del proyecto no ha llegado al punto esperado todavía.
+          \item \textbf{\loc{Confirmed}}: Simboliza una tarea que va a ser realizada de forma segura.
+          \item \textbf{\loc{Duplicate}}: Esta etiqueta simboliza una \loc{issue} que se trata de una duplicación de otra \loc{issue}.
+          \item \textbf{\loc{Needs Information}}: Cuando una \loc{issue} está marcada con esta etiqueta necesita información adicional para ser completada. Normalmente marcamos uns tarea así cuando necesitamos leer información de artículos para continuar.
+          \item \textbf{\loc{Won't do/fix}}: Simboliza una tarea que no va a ser realizada en el \loc{sprint}. Se usa para mantener la \loc{issue} pero para indicar que el proyecto se ha orientado hacia otro lado.
+        \end{itemize}
+
+  \item \textbf{Prioridad}:
+        \begin{itemize}
+          \item \textbf{\loc{Critical}}
+          \item \textbf{\loc{High}}
+          \item \textbf{\loc{Medium}}
+          \item \textbf{\loc{Low}}
+        \end{itemize}
+
+  \item \textbf{Otras}:
+        \begin{itemize}
+          \item \textbf{\loc{Help wanted}}: Esta etiqueta simboliza una \loc{issue} con la que se necesita ayuda.
+          \item \textbf{\loc{Good first issue}}: Identifica \loc{issues} al comienzo del proyecto, que marcan un buen paso en los objetivos generales.
+          \item \textbf{<<Gran issue de los tutores!!>>}: Esta \loc{label} especial es para indicar que una \loc{issue} ha sido propuesta por uno de los tutores en un \loc{sprint meeting}.
+        \end{itemize}
+\end{itemize}
+
+\subsection{Sprint 1: Toma de contacto}
+
+\begin{itemize}
+  \item  \textbf{Objetivo general}: Se busca tomar contacto con el \loc{framework} \prog{PyTorch}, \loc{datasets} públicos de lenguaje de signos, así como el comienzo de estudio de literatura sobre \loc{machine learning}.
+
+  \item \textbf{Intervalo}: 01/02/2022 - 15/02/2022
+
+  \item \textbf{Tareas}:
+        \begin{enumerate}
+          \item Movimiento de código de \loc{notebooks} de \prog{Jupyter} a módulos de \prog{Python}.
+          \item Estudio de la literatura sobre \loc{machine learning}, más concretamente \loc{supervised learning}, y dentro de este, las redes \sigla{CNN} y sus estructuras, como \loc{ResNet}.
+          \item Estudio de balance de \loc{dataset} usado. Comprobamos si las etiquetas tienen suficientes datos para que el \loc{framework} pueda ser entrenado y validado correctamente.
+          \item Aprendemos a usar el \loc{loader} interno de \prog{PyTorch} para cargar y transformar datos.
+          \item Creación de un monorepo para el repositorio del modelo, la demo web y la \sigla{API}
+          \item Creación de \loc{scripts} que nos permitan transformar distintos \loc{datasets} de video a \loc{frames}.
+          \item Elección de la plataforma de entrenamiento.
+          \item Descarga del dataset del sitio oficial.
+          \item Preparación del \loc{continous integration} en Gitlab.
+        \end{enumerate}
+
+  \item \textbf{\loc{Sprint Review}}: El primer \loc{sprint} comenzó con muchas tareas, la mayoría de ellas con dificultad mínima, por lo que se cumplieron todas. Elegimos desarrollar el modelo en local, por rapidez y porque el equipo en el que ha sido entrenado es suficientemente potente.
+
+        La única \loc{issue} que se transformo fue la <<creación de un monorepo>>, ya que se optó por crear un repositorio separado por proyecto (modelo/\loc{front}/\loc{back}).
+
+        Cabe destacar la utilidad de implementar el \loc{continous integration}, así como los \loc{scripts} de transformación de datos, que ayudaron muchísimo en la agilidad del proyecto en los siguientes \loc{sprints}.
+\end{itemize}
+
+\subsection{Sprint 2: Usando \loc{frames}}
+
+\begin{itemize}
+  \item  \textbf{Objetivo general}: En este sprint buscamos usar una red preentrenada para reconocer \loc{frames} de un vídeo. Debemos crear la forma de importar los \loc{frames} para el entrenamiento y estudiar como cambiar los parámetros de nuestra red para que se adapte a la entrada.
+
+  \item \textbf{Intervalo}: 16/02/2022 - 03/03/2022
+
+  \item \textbf{Tareas}:
+        \begin{enumerate}
+          \item Uso de imágenes concatenadas: debemos modificar los \loc{scripts} para poder exportar un conjunto de \loc{frames} de un vídeo como una única imagen de \loc{frames} concatenados horizontalmente.
+          \item comprobación de la red usando \loc{datasets} variados.
+          \item Se deben añadir más opciones a los \loc{scripts} para cuando usemos una entrada de la red en formato vídeo.
+          \item Estudio del uso de poses e \sigla{I3D} para la clasificación.
+          \item Creación de dataset de vídeo.
+        \end{enumerate}
+
+  \item \textbf{\loc{Sprint Review}}: En este segundo sprint avanzamos mucho. Alteramos una red \loc{ResNet} preentrenada para que sea capaz de reconocer \loc{frames} de un video. En el caso del \loc{dataset} original de signos, no funciona muy bien. Por esta razón probamos con un \loc{dataset} de imágenes estáticas de animales, así como uno de signos que identifican una sola letra del abecedario. Ambos funcionan de forma excepcional. En la reunión del \loc{sprint review} se sugiere entonces comenzar a crear una red basada en \sigla{CNNs} desde cero, también de clasificación de \loc{frames}.
+\end{itemize}
+
+\subsection{Sprint 3: ¿Transformers?}
+
+\begin{itemize}
+  \item  \textbf{Objetivo general}: Inicialmente, estaba previsto tener un clasificador de vídeo funcional antes de esta etapa. Por esto, en este \loc{sprint}, la idea era implementar una red \loc{transformers} para poder adaptar las salidas del clasificador a un formato más legible. Debido al retraso en tareas, se decidió no implementar la red \loc{transformer} y pasar directamente a la red convolucional.
+
+  \item \textbf{Intervalo}: 04/03/2022 - 19/03/2022
+
+  \item \textbf{Tareas}:
+        \begin{enumerate}
+          \item Uso de concatenación de \loc{frames} como entrada de la red.
+          \item Compresión de la red para la fase de inferencia en \loc{real time}.
+          \item (Cancelada) - Creación de una red \loc{transformers} para adaptar la salida del clasificador.
+          \item (Cancelada) - \loc{Tests} para la capacidad de generar frases y corregirlas.
+          \item Implementación de una red convolucional desde cero.
+        \end{enumerate}
+
+  \item \textbf{\loc{Sprint Review}}: Recordemos que en el anterior \loc{sprint}, el estado final fue la creación de una red de clasificación de \loc{frames} con una red preentrenada. El siguiente objetivo marcado fue la instanciación de un clasificador desde cero. En esta reunión estudiamos la red creada. Con ayuda de los tutores, comenzamos a crear las distintas capas que componen la red convolucional.
+\end{itemize}
+
+\subsection{Sprint 4: Inferencia ONNX}
+
+\begin{itemize}
+  \item  \textbf{Objetivo general}: El objetivo de este sprint es por fin implementar una red convolucional de clasificación de vídeo. Tras esto se pretende poder inferir las entradas a tiempo real con una \loc{webcam} mediante el uso de \sigla{ONNX}.
+
+  \item \textbf{Intervalo}: 20/03/2022 - 04/04/2022
+
+  \item \textbf{Tareas}:
+        \begin{enumerate}
+          \item Añadir inferencia con \sigla{ONNX} a tiempo real.
+          \item Añadir inferencia por webcam.
+          \item (Aplazada) - Preparación de la red para consumo con \sigla{API}.
+        \end{enumerate}
+
+  \item \textbf{\loc{Sprint Review}}: Tras la finalización de este \loc{sprint}, tenemos una red de clasificación de vídeo que funciona medianamente bien en clasificación de acciones, pero que funciona mucho peor con el \loc{dataset} de signos. En este punto, y tras ver que la red convolucional funciona y entrena, se comienza a estudiar la forma de mejorar el \loc{accuracy} de la red. Con la inferencia por webcam ya disponible, pensamos en añadir información de poses a la red, y así comprobar si mejora su rendimiento.
+\end{itemize}
+
+\subsection{Sprint 5: API Rest}
+
+\begin{itemize}
+  \item  \textbf{Objetivo general}: El objetivo original para estas fechas era la creación de una \sigla{API} \loc{rest} con la cual se pudiera consumir el modelo creado. En cambio, en este \loc{sprint}, se modifica la red convolucional creada para no solo clasificar los signos a texto, sino para detectar poses también.
+
+  \item \textbf{Intervalo}: 05/04/2022 - 19/04/2022
+
+  \item \textbf{Tareas}:
+        \begin{enumerate}
+          \item (Aplazada) - Crear plataforma de \sigla{API} rest.
+          \item Aplicación de una doble salida de la red (Pose + Texto)
+        \end{enumerate}
+
+  \item \textbf{\loc{Sprint Review}}: Repasamos que en este \loc{sprint} se ha aplicado una doble salida de la red neuronal (Pose + Texto) con la idea de que el cálculo de las poses ayude a mejorar el \loc{accuracy} del modelo. En la reunión vemos como funciona esto. Observamos un aumento del \loc{accuracy} sustancial. En este punto se decide implementar alguna forma con la que los usuarios puedan probarlo.
+\end{itemize}
+
+\subsection{Sprint 6: Una demo Web}
+
+\begin{itemize}
+  \item  \textbf{Objetivo general}: El objetivo de este \loc{sprint} es la creación de una plataforma de cliente con la que se pueda usar el modelo entrenado en el anterior \loc{sprint}. Por otro lado se debe crear una \sigla{API} desde la que se consuma dicho modelo.
+
+  \item \textbf{Intervalo}: 20/04/2022 - 04/05/2022
+
+  \item \textbf{Tareas}:
+        \begin{enumerate}
+          \item (Aplazado) - Creación de un pequeño \loc{front-end} para que los usuarios puedan probar el modelo.
+          \item (Aplazado) - Compra del dominio del proyecto
+          \item Creación de servidor con \sigla{API} \loc{rest}
+        \end{enumerate}
+
+  \item \textbf{\loc{Sprint Review}}: En este \loc{sprint} se ha comenzado a crear un \loc{endpoint} con un servidor usando \prog{FastAPI}. Esta reunión de \loc{sprint} se anula por que los avances no son muy extensos y no se iban a añadir nuevas tareas al próximo \loc{sprint}.
+\end{itemize}
+
+\subsection{Sprint 7: \loc{Deploy}}
+
+\begin{itemize}
+  \item  \textbf{Objetivo general}: En este sprint se busca terminar la implementación de la \sigla{API}, así como la creación de la demo web. Por otro lado se pretende poder hacer \loc{deploy} de la \sigla{API} en la nube, así como encapsular el modelo en un contenedor docker.
+
+  \item \textbf{Intervalo}: 05/05/2022 - 15/06/2022
+
+  \item \textbf{Tareas}:
+        \begin{enumerate}
+          \item Terminar la \sigla{API} \loc{rest} y abrirla para su uso.
+          \item Estudio de los \loc{IaaS} para ver dónde se va a tener el \loc{host} del modelo.
+          \item Creación de la \loc{landing page} con info de los repositorios
+          \item Arreglar \prog{pylint} para la versión final
+          \item Creación de contenedor con Docker
+          \item Subida del contenedor a Dockerhub
+        \end{enumerate}
+
+  \item \textbf{\loc{Sprint Review}}: En este último \loc{sprint}, de doble duración, desarrollamos finalmente la \sigla{API} \loc{rest} y la demo web.
+
+        En la segunda mitad del sprint, con la \loc{API} creada, buscamos la forma de hacer \loc{deploy}. Primero estudiamos el uso de AWS y Azure para la \sigla{API}, usando finalmente Google Cloud. Contenedorizamos el modelo y el servidor con Docker para que sea de dominio público y lo subimos a Dockerhub. Asignamos un subdominio a la \loc{API}.
+
+        Por otro lado, la demo se sube a \prog{Vercel}, y se le asigna el dominio comprado.
+
+        Con esto hecho, nos ponemos a terminar la documentación.
+\end{itemize}
+
+\subsection{Conclusión}
+
+El uso de la metodología \sigla{SCRUM} en proyectos de \loc{software} es muy útil. Ayuda a mantener una buena organización de los proyectos y a tener una buena comunicación entre los equipos. Te permite mantener un \loc{record} de todas las tareas que se cumplen, y da más o menos importancias a unas u otras.
+
+De echo, en la parte más relacionada con \loc{software}, como es la demo web o la creación de la \sigla{API}, ha sido muy útil. Donde no lo ha sido tanto es en la parte de creación del modelo.
+
+Debido a que es un proyecto con mucha base en la investigación, el establecimiento de tareas con límites de tiempo no tiene mucho sentido. Esto es porque no sabes si una mejora que estás aplicando en el modelo va a derivar en lo que estás buscando, o por el contrario va a ser prácticamente <<inútil>>.
+
+En este proyecto, hemos experimentado e iterado sobre el modelo con muchísimos pequeños cambios en parámetros para encontrar la forma correcta de entrenar a la red. Estos cambios nos han llevado a veces semanas, cosa que no podíamos saber al principio. El tener tareas que pongan <<presión>> sobre el proyecto es al final contraproducente y produce un estrés sobre el investigador, que no sabe si puede o no cumplir las tareas porque no sabe si los métodos investigados funcionarán o no.
+
+Por esto creo que la aplicación del método \sigla{SCRUM} en el apartado de investigación del proyecto, no ha sido la mejor opción, pudiendo sustituirlo en esta parte por un <<método ágil intuitivo>>, con el cual se trabaja de forma ágil, pero adaptando intervalos y tareas en cada momento según el estado del proyecto.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Estudio de viabilidad}
+
+En esta sección vamos a estudiar la viabilidad económica y legal del proyecto. Al ser mayoritariamente de investigación, es normal, como veremos, que los costes superen en creces a los posibles beneficios que se puedan obtener. Vamos a estudiar los costes en el \loc{hardware} empleado, tiempo de desarrollo y gasto en herramientas y \loc{software} de terceros. Estudiaremos entonces formas de conseguir transformar el modelo en un producto viable.
+
+Por otro lado, veremos en el apartado de la viabilidad legal, como existen algunos factores limitantes que reducen la capacidad de salida a producción, como las licencias impuestas por las librerías o por los creadores de \loc{datasets}.
 
 \subsection{Viabilidad económica}
 
+Para el estudio de la viabilidad económica del proyecto, vamos a estudiar los costos en distintos apartados. El primero de ellos, el costo de equipamiento y \loc{hardware}.
+
+\subsubsection{Costes}
+
+La realización de este proyecto conlleva una serie de costes. Estos costos se van a dividir en \loc{hardware}, \loc{software}, de <<personal>> y otros.
+
+\textbf{Costes \loc{hardware}}
+
+Podemos observar en la tabla \ref{tabla:hardware} un desglose de gastos de \loc{hardware}. Entre los costes se encuentra el dispositivo principal de sobremesa en el que se ha desarrollado el proyecto. Este equipo tiene un procesador AMD Ryzen 3900X de 12 núcleos a 4.6 GHz, con 32GB de memoria RAM y GPU Nvidia RTX 3060ti, con un precio de mercado de aproximadamente 3100€. El dispositivo tiene una antigüedad de 2 años.
+
+Por otro lado tenemos un portátil ASUS ROG con un procesador Ryzen 5900HX, 16GB de RAM y GPU RTX 3070 con un precio aproximado de 1700€. Este dispositivo tiene una antigüedad de 8 meses.
+
+Se considera que la amortización de ambos equipos ronda los 6 años, por lo que al haberlos usado 6 meses, se ha amortizado el 10\% de la inversión.
+
+\tablaSmallSinColores{Costes de \loc{hardware}}
+{l r r}{hardware}
+{\textbf{Concepto} & \textbf{Coste (€)} & \textbf{Amortizado (€)} \\}{
+  Ordenador sobremesa & 3100 & 310 \\
+  Ordenador portátil & 1700  & 170 \\
+  \midrule
+  \textbf{Total} & 4800 & 480 \\
+}
+
+\textbf{Costes \loc{software}}
+
+En este apartado vamos a revisar los costes en \loc{software} y programas de terceros usados en el proyecto. Vamos a considerar la amortización a 1 año (la mayoría de licencias listadas ofrecen una versión de 1 año). Como \loc{software} incluiremos también el sistema operativo. Al haber usado estos programas 6 meses, consideramos un 50\% de amortización. Podemos ver el desglose en la tabla \ref{tabla:software}
+
+\tablaSmallSinColores{Costes de \loc{software}}
+{l r r}{software}
+{\textbf{Concepto} & \textbf{Coste (€)} & \textbf{Amortizado (€)} \\}{
+  IDE VSCode & 0 & 0 \\
+  x2 Windows 10 PRO & 399,98  & 199,99 \\
+  \TeX Maker & 0 & 0 \\
+  Gitlab DevOps - CI & 1188 & 594 \\
+  Dropbox & 120 & 60 \\
+  Vercel Hosting & 240 & 120 \\
+  Docker & 252 & 126 \\
+  \midrule
+  \textbf{Total} & 2199,98 & 1099,99 \\
+}
+
+\textbf{Costes según uso}
+
+En la tabla \ref{tabla:byuse} analizamos costes según uso. Estos incluyen los gastos del uso de servicios \loc{cloud}.
+
+\tablaSmallSinColores{Costes de herramientas o servicios que funcionan por uso}
+{l r r r}{byuse}
+{\textbf{Concepto} & \textbf{Tiempo (h)} & \textbf{Coste/hora (€/h)} & \textbf{Coste (€)} \\}{
+  Google Cloud Build - CI & 10   & 0,18 & 1,8 \\
+  Google Cloud Run        & 300  & 0,03 & 9   \\
+  AWS Elastic Registry    & 100  & 0,12 & 12  \\
+  AWS Elastic Compute     & 100  & 0,10 & 10  \\
+  AWS Elastic Balancing    & 100  & 0,10 & 10  \\
+  AWS Route 53            & 2    & 0,25 & 0,50 \\
+  \midrule
+  \textbf{Total}          & 612  & -    & 34,3 \\
+}
+
+\textbf{Costes de personal}
+
+Analizamos ahora el coste de personal. El proyecto ha sido llevado a cabo por un desarrollador empleando aproximadamente 3 horas diarias durante 6 meses. A una media de 25 días por mes, obtenemos 450 horas totales de trabajo. Si las horas trabajadas semanales se reducen a 40 horas; entonces, se han trabajado $450/40 = 11,25$ semanas. Por facilidad vamos a redondear hacia arriba a 12 semanas (o 3 meses).
+
+Podemos observar en \bib{sueldo_junior} que el sueldo base medio neto en España para un desarrollador Junior es de $25698$€. Si a esto le deducimos las cuotas de seguridad social e IRPF, calculadas con \bib{irpf}, obtenemos los datos de la tabla \ref{tabla:personal}
+
+\tablaSmallSinColores{Costes de personal}
+{l r r}{personal}
+{\textbf{Concepto} & \textbf{Coste (€)} \\}{
+  Salario neto anual & 20354  \\
+  Cuota IRPF (2%) & 3712,2 \\
+  Cuota Seguridad Social & 1631,8 \\
+  \midrule
+  Salario bruto anual & 25698 \\
+  \midrule
+  \textbf{Salario bruto 3 meses} & 6424,5 \\
+}
+
+\textbf{Otros costes}
+
+Estos costes identificas costes adicionales que no pertenecen a ningún grupo anterior. Estos identifican compras únicas, gastos de luz, agua, entre otros. Puedes ver la lista completa en la tabla \ref{tabla:others}
+
+\tablaSmallSinColores{Costes adicionales}
+{l r r}{others}
+{\textbf{Concepto} & \textbf{Coste (€)} \\}{
+  Dominio web & 12 \\
+  Impresión de documentación & 45 \\
+  Conexión a internet & 180 \\
+  Agua & 80 \\
+  Calefacción & 259 \\
+  Electricidad & 205 \\
+  Diseño de logo & 130 \\
+  \midrule
+  \textbf{Total} & 911 \\
+}
+
+\textbf{Costes totales}
+
+Podemos ver en la tabla \ref{tabla:total} la suma de costes del proyecto.
+
+\tablaSmallSinColores{Costes totales del proyecto}
+{l r r }{total}
+{\textbf{Concepto} & \textbf{Coste (€)} \\}{
+  \loc{Hardware} & 4800 \\
+  \loc{Software} & 1099,99 \\
+  \loc{Según uso} & 34,3 \\
+  \loc{Personal} & 6424,5 \\
+  \loc{Otros} & 911 \\
+  \midrule
+  \textbf{Total} & 13269,89 \\
+}
+
+\subsubsection{Beneficios}
+
+El presente proyecto puede obtener ingreso del alquiler del uso del modelo neuronal. El acceso al modelo se puede obtener de tres formas:
+
+\begin{itemize}
+  \item Descarga directa del contenedor docker que lo alberga: El modelo se encuentra alojado de forma pública en un contenedor docker en Dockerhub. Si queremos monetizar este aspecto, debemos asignar un precio al contenedor y cobrar por la descarga. Se plantea por ejemplo un precio único de descarga de 999€.
+  \item Acceso al modelo por \sigla{API} \loc{rest}: En la actualidad, se puede acceder a una \sigla{API} \loc{rest} también de acceso público. Contiene un \loc{endpoint} con el cual se puede consumir el modelo. Aquí se plantea una forma de cobro por uso o petición: \pe 1€ cada 1000 peticiones.
+  \item El otro modo de acceso está más orientado a usuarios no-expertos. Esto es una web en la cual se puede usar el modelo arrastrando un vídeo y recibiendo el resultado. Esta web se podría comerciar mediante la creación de una cuenta con una subscripción mensual. Podemos ver en la tabla \ref{tabla:subscripcion} un planteamiento sobre dicha subscripción. Una persona beneficiada es una persona que usa lenguaje de signos como su principal medio de comunicación.
+\end{itemize}
+
+\tablaSmallSinColores{Precios de una teórica subscripción sobre la web de \project{Sign2Text}}
+{l r r r}{subscripcion}
+{\textbf{Tipo de subscripción} & \textbf{Intervalo} & \textbf{Precio/mes (€)} \\}{
+  Beneficiado &  Cualquiera & Gratis \\
+  Estudiante &  Mensual & 4,99 \\
+  Estudiante &  Anual & 2,99 \\
+  Normal &  Mensual & 6,99 \\
+  Normal &  Anual & 4,99 \\
+  \loc{Enterprise} &  Mensual & 10,99 \\
+  \loc{Enterprise} &  Anual & 8,99 \\
+}
+
+
 \subsection{Viabilidad legal}
+
+En esta sección vamos a hablar sobre las licencias asociadas al desarrollo de este proyecto. Comenzaremos primero con las licencias establecidas singularmente por cada librería o \loc{framework} usados. Veremos cuales de las licencias usadas tienen mayor prioridad y como nos obligan a aplicar una u otra licencia en nuestro propio proyecto.
+
+En la tabla \ref{tabla:libraryLicenses} vemos una lista de las librerias y \loc{frameworks} usados asociados a su licencia. En la tabla \ref{tabla:toolsLicenses} podemos ver lo mismo pero para las herramientas usadas en el desarrollo. En las tablas se incluyen todas las librerias usadas a lo largo de todo el desarrollo, incluida la \sigla{API} y la demo web.
+
+\tablaSmallSinColores{Licencias de las librerías usadas en el desarrollo de \project{Sign2Text}, la \sigla{API} y la demo web}
+{l r r r}{libraryLicenses}
+{\textbf{Libreria} & \textbf{Licencia} & \textbf{Administrador de paquetes} \\}{
+  OpenCV Python & MIT & pip \\
+  PyLint & GPLv2 & pip \\
+  ONNX & Apache v2.0 & pip \\
+  Black & MIT & pip \\
+  Numpy & BSD & pip \\
+  Matplotlib & Python Software Foundation & pip \\
+  Matplotlib Inline & BSD 3-Clause & pip \\
+  MyPy & MIT & pip \\
+  Pillow & BSD & pip \\
+  FastAPI & MIT & pip \\
+  onnxruntime-gpu & MIT & pip \\
+  tensorboard & Apache & pip \\
+  torch (PyTorch) & BSD & pip \\
+  torchinfo & MIT & pip \\
+  torchvision & BSD & pip \\
+  uvicorn & BSD & Pip \\
+  astro & MIT & npm \\
+  tailwind & MIT & npm \\
+  svelte & MIT & npm \\
+}
+
+\tablaSmallSinColores{Licencias de las herramientas}
+{l r r r}{libraryLicenses}
+{\textbf{Libreria} & \textbf{Licencia} \\}{
+  VSCode & MIT \\
+  Jupyer Notebook & BSD Modificada \\
+}
+
+Podemos ver una lista con todas licencias y sus características en \bib{licenses}
+
+Todas las licencias son licencias permisivas. Esto nos permite marcar todas las partes de este proyecto con la licencia \sigla{MIT}. Podemos ver las características de esta licencia en la figura \ref{fig:licencia_mit}.
+
+\imagen{./img/anexos/licencia_mit}{Características de la licencia MIT. Extraido de \bib{jla}}{licencia_mit}

@@ -4,30 +4,19 @@ Vamos a analizar las conclusiones extraídas de la realización de este proyecto
 
 \section{Conclusiones}
 
-Este proyecto ha sido una aventura y me ha abierto los ojos al mundo del \loc{deep learning} y la investigación. Cuando comencé pensaba que iba a ser capaz de crear una red neuronal con un \loc{accuracy} alto y que iba a poder crear una red \loc{transformers} con la que sintetizar las salidas de la \sigla{CNN}. También pensaba que todo esto lo iba a hacer en los cuatro primeros \loc{sprints}. Tras esto, la idea era poder crear una aplicación web que usará el modelo en los dos últimos meses.
+De forma general, se han cumplido las características buscadas al inicio del proyecto.
+\begin{itemize}
+  \item Disposición del modelo neuronal a la comunidad. Hemos podido crear un contenedor docker con el modelo listo para ser usado. También hemos creado una \sigla{API} abierta para que cuualquier desarrollador la consuma en su aplicación de cliente. Y también hemos creado una web con una demo para que cualquier usuario lo use de forma sencilla.
+  \item Se ha aprendio a usar el \loc{framework} \prog{PyTorch} de forma general, así como en detalle los módulos de \loc{supervised learning} y tratamiento y procesado de imagen y vídeo.
+  \item Hemos conseguido implementar una red convolucional desde cero, comprendiendo de forma profunda su estructura y las conexiones entre las disitntas capas, así como la modificación de los vectores de salida para adaptarse a los distintos problemas.
+  \item Se ha mejorado considerablemente la lectura de árticulos científicos relacionados con el campo de la ciencia de datos y el aprendizaje automático. Al finalizar, eramos capaces de analizar y comprender lo principal de un árticulo y de este modo sustraer la información útil en el desarrollo del proyecto.
+  \item Se ha ampliado el número de tecnologías conocidas en tanto en el campo de la ciencia de datos como en el desarrollo \loc{software} en general.
+  \item Hemos podido usar las últimas herramientas y servicio de \loc{cloud} con las que hemos posido hacer \loc{deploy} de un modelo que consume sustanciales recursos. Se ha aprendido a usar plaatformas como AWS, Azure y Google Cloud, entre otras.
+\end{itemize}
 
-\textbf{Nada más lejos de la realidad}.
-
-Este proyecto ha sido una prueba a la paciencia: prueba tras prueba, cambio tras cambio. El avance era lento, y había semanas en las que me quedaba atascado cambiando la estructura de la red, o probando una y otra vez con distintos hiperparámetros.
-
-El hecho de tratar con datos que producían un tensor de entrada de la red de 5 dimensiones ha hecho que las iteraciones y mejoras sobre el modelo sean lentas, muy lentas. En ocasiones el modelo ha estado entrenando durante casi un día completo (¡y en GPU!), inhabilitando cualquier posibilidad de trabajar en él.
-
-Aun así, este proyecto me ha hecho comprender mucho más a fondo el comportamiento de la redes neuronales en general, y sobre todo, de las redes neuronales convolucionales. Comencé sin saber lo que era una convolución y un \loc{kernel}, con miedo a averiguar lo que significaba \loc{ResNet}; y he terminado creando una \loc{CNN} con un accuracy alto (aunque con relativas pocas etiquetas) y he perdido el miedo a investigar y leer artículos.
-
-Por otro lado, he podido realizar una demo web para que cualquier usuario pueda probar el modelo con tan solo subir un vídeo. Esto me ha permitido aprender tecnologías web que todavía no había descubierto. También he creado una \sigla{API} en \prog{Python}, con lo que he aprendido un \loc{framework} más.
-
-Y además me he tenido que enfrentar a los tres grandes de la computación en la nube hasta que he conseguido subir el pesado modelo a una de ellas. De esta experiencia salió una guía que se puede leer en el repositorio del servidor.
-
-En general, la experiencia ha sido genial y el aprendizaje ha sido inmenso. Me ha hecho ver que el campo del \loc{machine learning} es el futuro en todos los ámbitos tanto en investigación como cotidianos. El uso de tecnologías que usen \loc{deep learning} está creciendo enormemente en la actualidad, y esta experiencia me impulsa a seguir investigando en este campo e intentar trabajar con y de esto en el futuro.
-
-Para finalizar, me gustaría agradecer a todos los tutores la paciencia que han tenido conmigo. Desde el primer día me han explicado lo básico de la mejor manera posible, aportando fuentes y ayudando en todo.
-Muchas gracias a Bruno y Daniel, los tutores de la \sigla{UBU}, y muchas muchísimas gracias a María, Alejandro y Pablo, los tutores de HP SCDS, no se que habría hecho sin vosotros.
-
-Tanto me ha gustado el proyecto, tanto he aprendido, y tanto me he dado cuenta que no se, que lo único que quiero hacer es seguir, y hacerlo mejor, con mejor información. Veamos las líneas de futuro.
+Y, aunque el modelo actual basado en \sigla{CNNs} funciona  y es medianamente escalable, no es nada comparado con el \loc{State of the Art} \bib{fang2017deepasl} \bib{li2020word} en la actualidad. Por esto, veamos como podemos orientar el proyecto en el futuro.
 
 \section{Líneas futuras}
-
-El modelo actual está bien. Funciona y es medianamente escalable, pero no es nada comparado con el \loc{State of the Art} \bib{fang2017deepasl} \bib{li2020word} en la actualidad.
 
 Ha habido pasos en la creación del modelo, en los que podría haber tomado mejores decisiones. Como en la carga y transformación de los datos, en la creación de la estructura de la \sigla{CNN} o en la elección de \loc{schedulers} y \loc{optimizers}.
 
@@ -49,6 +38,25 @@ Por lo tanto, quedan muchas aspectos que mejorar. Algunas son los siguientes:
   \item Buscar la forma de compartirlo en la comunidad \loc{Open Source}. Me gustaría buscar la forma de expandir el proyecto, y así encontrar personas que estén interesadas en continuar con el proyecto o en colaborar de algún modo.
 
   \item Y mucho más. Me encantaría poder seguir mejorando el modelo e intentar terminar creando un producto viable con el que las personas se puedan beneficiar. Me parece que el objetivo es muy noble y con un poco de impulso por mi parte, o por cualquier desarrollador que siga con el proyecto; podemos conseguir algo que funcione genial.
-
 \end{itemize}
 
+
+\section{Experiencia personal}
+
+Este proyecto ha sido una aventura y me ha abierto los ojos al mundo del \loc{deep learning} y la investigación. Cuando comencé pensaba que iba a ser capaz de crear una red neuronal con un \loc{accuracy} alto y que iba a poder crear una red \loc{transformers} con la que sintetizar las salidas de la \sigla{CNN}. También pensaba que todo esto lo iba a hacer en los cuatro primeros \loc{sprints}. Tras esto, la idea era poder crear una aplicación web que usará el modelo en los dos últimos meses.
+
+\textbf{Nada más lejos de la realidad}.
+
+Este proyecto ha sido una prueba a la paciencia: prueba tras prueba, cambio tras cambio. El avance era lento, y había semanas en las que me quedaba atascado cambiando la estructura de la red, o probando una y otra vez con distintos hiperparámetros.
+
+El hecho de tratar con datos que producían un tensor de entrada de la red de 5 dimensiones ha hecho que las iteraciones y mejoras sobre el modelo sean lentas, muy lentas. En ocasiones el modelo ha estado entrenando durante casi un día completo (¡y en GPU!), inhabilitando cualquier posibilidad de trabajar en él.
+
+Aun así, este proyecto me ha hecho comprender mucho más a fondo el comportamiento de la redes neuronales en general, y sobre todo, de las redes neuronales convolucionales. Comencé sin saber lo que era una convolución y un \loc{kernel}, con miedo a averiguar lo que significaba \loc{ResNet}; y he terminado creando una \loc{CNN} con un accuracy alto (aunque con relativas pocas etiquetas) y he perdido el miedo a investigar y leer artículos.
+
+Por otro lado, he podido realizar una demo web para que cualquier usuario pueda probar el modelo con tan solo subir un vídeo. Esto me ha permitido aprender tecnologías web que todavía no había descubierto. También he creado una \sigla{API} en \prog{Python}, con lo que he aprendido un \loc{framework} más.
+
+Y además me he tenido que enfrentar a los tres grandes de la computación en la nube hasta que he conseguido subir el pesado modelo a una de ellas. De esta experiencia salió una guía que se puede leer en el repositorio del servidor.
+
+En general, la experiencia ha sido genial y el aprendizaje ha sido inmenso. Me ha hecho ver que el campo del \loc{machine learning} es el futuro en todos los ámbitos tanto en investigación como cotidianos. El uso de tecnologías que usen \loc{deep learning} está creciendo enormemente en la actualidad, y esta experiencia me impulsa a seguir investigando en este campo e intentar trabajar con y de esto en el futuro.
+
+Tanto me ha gustado el proyecto, tanto he aprendido, y tanto me he dado cuenta que no se, que lo único que quiero hacer es seguir, y hacerlo mejor, con mejor información.

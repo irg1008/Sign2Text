@@ -65,8 +65,6 @@
 	\end{figure}
 }
 
-
-
 % El comando \figura nos permite insertar figuras comodamente, y utilizando
 % siempre el mismo formato. Los parametros son:
 % 1 -> Porcentaje del ancho de página que ocupará la figura (de 0 a 1)
@@ -112,7 +110,7 @@
 \newcommand{\tablaSmall}[5]{%
  \begin{table}[h]
   \begin{center}
-   \rowcolors {2}{gray!35}{}
+   \rowcolors {2}{lightgray!35}{}
    \begin{tabular}{#2}
     \toprule
     #4
@@ -148,7 +146,7 @@
 \begin{landscape}
   \begin{table}
    \begin{center}
-    \rowcolors {2}{gray!35}{}
+    \rowcolors {2}{lightgray!35}{}
     \begin{tabular}{#2}
      \toprule
      #4
@@ -186,7 +184,7 @@
       \hline
     }
     \bottomcaption{#1}
-    \rowcolors {2}{gray!35}{}
+    \rowcolors {2}{lightgray!35}{}
     \begin{xtabular}{#2}
       #6
       \bottomrule
@@ -289,8 +287,6 @@
   \end{center}
 }
 
-
-
 \graphicspath{ {./img/} }
 
 % Capítulos
@@ -332,6 +328,7 @@
 \usepackage{xcolor}
 \newcommand{\tutor}[1]{\def\@tutor{#1}}
 \newcommand{\course}[1]{\def\@course{#1}}
+
 \definecolor{cpardoBox}{HTML}{E6E6FF}
 \def\maketitle{
   \thispagestyle{empty}
@@ -375,7 +372,7 @@
 \makeatother
 
 \newcommand{\project}[1]{{\textsf{#1}}}
-\newcommand{\titulo}{Sign2Text - Transcripción de lenguaje de signos (a nivel de palabra) mediante DL}
+\newcommand{\titulo}{Sign2Text - Transcripción de lenguaje de signos (a nivel de palabra) mediante deep learning}
 \newcommand{\tutores}{Dr. Daniel Urda Muñoz y Dr. Bruno Baruque Zanon}
 \newcommand{\nombre}{Iván Ruiz Gázquez}
 \newcommand{\dni}{71311599F}
@@ -394,7 +391,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \thispagestyle{empty}
-
 
 \noindent\includegraphics[width=\textwidth]{cabecera}\vspace{1cm}
 
@@ -420,14 +416,14 @@ y
 \begin{minipage}{0.45\textwidth}
   \begin{flushleft} %\large
     Vº. Bº. del Tutor:\\[2cm]
-    D. nombre tutor
+    Dr. Daniel Urda Muñoz
   \end{flushleft}
 \end{minipage}
 \hfill
 \begin{minipage}{0.45\textwidth}
   \begin{flushleft} %\large
     Vº. Bº. del co-tutor:\\[2cm]
-    D. nombre co-tutor
+    Dr. Bruno Baruque Zanon
   \end{flushleft}
 \end{minipage}
 \hfill
@@ -439,9 +435,7 @@ y
 %Vº. Bº. del Tutor:\\[2cm]
 %D. nombre tutor
 
-
 \newpage\null\thispagestyle{empty}\newpage
-
 
 \frontmatter
 

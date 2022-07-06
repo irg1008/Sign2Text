@@ -14,24 +14,10 @@ Por eso, lo primero que hicimos, fue crear unos \loc{scripts} con los que transf
 
 Puedes ver más con detalle la estructura del script en el anexo <<Manual del programador>> pero básicamente el \loc{script} se puede ejecutar con las siguiente opciones:
 
-GLOBALES
 \begin{itemize}
-  \item -i, --input: Carpeta con los videos a procesar (Opcional).
-  \item -o, --output: Carpeta donde se guardaran los frames (Opcional).
-  \item -l, --labels: Número de labels a procesar. Puede ser un número o ``all`` para procesar todos (Opcional).
-  \item -c, --config: Archivo de configuración con las etiquetas (Opcional).
-  \item -h, --help: Muestra esta ayuda.
-\end{itemize}
-
-EXTRACCIÓN DE FRAMES
-\begin{itemize}
-  \item -m, --merge: Indica si se debe unir los frames en una imagen (Opcional).
-  \item -f, --frames: Número de frames aleatorios del video (Opcional).
-\end{itemize}
-
-EXTRACCIÓN DE VIDEOS
-\begin{itemize}
-  \item -v, --video: Extrae todos los frames del video en una carpeta única para ese video. Deshabilita las opciones -f y -m (Opcional).
+  \item Globales
+  \item Extracción de frames
+  \item Extracción de video
 \end{itemize}
 
 Con estas opciones nos ahorramos tener que estar transformando los datos de forma <<manual>> o haciendo cambios a los \loc{scripts} cada vez que queríamos usar unas u otras etiquetas.
@@ -56,7 +42,7 @@ Una vez hemos hecho la concatenación, ya tenemos nuestro dataset tarnsformado e
 
 \section{Tratamiento de los datos}
 
-Una vez hemos cargado los datos, comienza una de las parte más importantes en el \loc{machine learning} y la minería de datos: la transformación de los datos y adaptación para el entrenamiento.
+Una vez hemos cargado los datos, comienza una de las parte más importantes en el aprendizaje automático y la minería de datos: la transformación de los datos y adaptación para el entrenamiento.
 
 En nuestro caso, al usar \sigla{CCNs}, y como hemos visto en el apartado teórico, el tratamiento de datos no es tán importante. Esto se debe a que en la fase de convolución, el \loc{kernel} tendrá en cuenta todas las dimensiones presentes en nuestro tensor de entrada, y se entrenará para sacar las caracterísitcas que más importen.
 
@@ -76,7 +62,7 @@ Pero no es la mejor opción. normalizar los datos es una práctica común para c
 
 El \loc{data augmentation}, como hemos visto en los conceptos teóricos, consiste en aumentar el tamaño del \loc{dataset} duplicando datos del mismo y alterándolos para que parezcan distintos.
 
-En nuestro caso no hemos incluido esta técnica tratando con videos. Al tener la transformación de los datos a nivel imágen (\loc{resize} y normalización), se nos complicaba la aumentación de los datos ya que debiamos <<alterar>> los datos para todos los \loc{frames} del mismo video, con tal de no alterar la información espacial de dicho video.
+En nuestro caso no hemos incluido esta técnica tratando con videos. Al tener la transformación de los datos a nivel imágen (\loc{resize} y normalización), se nos complicaba el aumento de los datos ya que debiamos <<alterar>> los datos para todos los \loc{frames} del mismo video, con tal de no alterar la información espacial de dicho video.
 
 En el caso de \loc{SimpleNet}, hemos aplicado \loc{data augmentation} con un \loc{random crop}.
 
@@ -124,9 +110,11 @@ Al ver esto, decidimos entonces pasar ya a crear nuestra propia red convoluciona
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Estructuras de la redes convolucionales}
+\section{Pruebas de arquitecturas}
 
-La estructura de nuestra primera red convolucional (denominada <<SimpleNet>>), usada para clasificación de video, es mucho más simple que la que vemos en una red \loc{ResNet}. Se compone de tres capas de convolución con \loc{pooling} y una capa densa (o \loc{fully connected}) con activación \loc{softmax} al final. Podemos ver la estructura en la figura \ref{fig:1stCNN}.
+A media que avanzaba el proyecto, probamos con redes preentrenadas \loc{ResNet}, que daban buenos resultados al ser aplicadas con imágenes. Esto funcionaba a la perfección, pero llegaría el momento en el que tendríamos que comenzar a clasificar entradas de vídeo.
+
+En este punto, decidimos cerar nuestra propia red convolucional desde cero y aplicar una estructura personalizada. La estructura de nuestra primera red convolucional (denominada <<SimpleNet>>), usada para clasificación de video, es algo más simple que la que vemos en una red \loc{ResNet}. Se compone de tres capas de convolución con \loc{pooling} y una capa densa (o \loc{fully connected}) con activación \loc{softmax} al final. Podemos ver la estructura en la figura \ref{fig:1stCNN}.
 
 \imagen{./img/memoria/aspectos/1stCNN}{Estructura de una \sigla{CNN} exportada con \loc{Netron}}{1stCNN}
 
@@ -140,51 +128,77 @@ Para saber más sobre el porque de la doble capa de salida, avance al apartado d
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Entrenamiento e hiperparametrización}
+% \section{Entrenamiento e hiperparametrización}
 
-Los hiperparámetros que hemos cambiado en las pruebas son:
+% Los hiperparámetros que hemos cambiado en las pruebas son:
 
-\begin{itemize}
-  \item Número de segmentos: Esto indica el número de partes en los que dividimos un video.
+% \begin{itemize}
+%   \item Número de segmentos: Esto indica el número de partes en los que dividimos un video.
 
-  \item \loc{Frames} por segmento: Con este valor cambiamos el número de frames que seleccionamos en cada segmento.
+%   \item \loc{Frames} por segmento: Con este valor cambiamos el número de frames que seleccionamos en cada segmento.
 
-  \item \loc{Batch size}: El tamaño del \loc{batch} de entrada de la red. Un número muy alto necesita mucha memoria de \sigla{GPU}.
+%   \item \loc{Batch size}: El tamaño del \loc{batch} de entrada de la red. Un número muy alto necesita mucha memoria de \sigla{GPU}.
 
-  \item Tamaño de la imagen de entrada: En píxeles, aquí indicamos el tamaño que se debe usar en la fase de transformación de los datos antes de entrar en la red.
+%   \item Tamaño de la imagen de entrada: En píxeles, aquí indicamos el tamaño que se debe usar en la fase de transformación de los datos antes de entrar en la red.
 
-  \item Número de \loc{epochs}: El número de iteraciones de entrenamiento de la red. Como vimos en la teoría, hay un punto en que el \loc{accuracy} de validación de la red disminuye y comienza a sobreajustarse.
+%   \item Número de \loc{epochs}: El número de iteraciones de entrenamiento de la red. Como vimos en la teoría, hay un punto en que el \loc{accuracy} de validación de la red disminuye y comienza a sobreajustarse.
 
-  \item \loc{Learning rate}: El learning rate nos indica lo rápido que aprende la red.
-\end{itemize}
+%   \item \loc{Learning rate}: El learning rate nos indica lo rápido que aprende la red.
+% \end{itemize}
 
-\subsection{Optimizer}
+% \subsection{Optimizer}
 
-Un optimizador es un algoritmo usado en \loc{deep learning} para disminuir las funciones de pérdida. Son funciones que dependen de los parámetros de pesos, bias y en algunos casos, del \loc{learning rate}. Hay muchos optimizadores como el descenso de gradiente, \sigla{SGD} (\loc{Stochastic Gradient Descent}), \sigla{AdaGrad} (\loc{Adaptive Gradient Descent}), \sigla{RMS-Prop} (\loc{Root Mean Square Propagation}) o \sigla{Adam} (\loc{Adaptive Moment Estimation}).
+% Un optimizador es un algoritmo usado en \loc{deep learning} para disminuir las funciones de pérdida. Son funciones que dependen de los parámetros de pesos, bias y en algunos casos, del \loc{learning rate}. Hay muchos optimizadores como el descenso de gradiente, \sigla{SGD} (\loc{Stochastic Gradient Descent}), \sigla{AdaGrad} (\loc{Adaptive Gradient Descent}), \sigla{RMS-Prop} (\loc{Root Mean Square Propagation}) o \sigla{Adam} (\loc{Adaptive Moment Estimation}).
 
-En nuestro caso hemos usado \sigla{Adam} y \sigla{SGD}, siendo este último el que mejores resultados nos ha dado.
+% En nuestro caso hemos usado \sigla{Adam} y \sigla{SGD}, siendo este último el que mejores resultados nos ha dado.
 
-\subsection{Scheduler}
+% \subsection{Scheduler}
 
-Un \loc{scheduler} se encarga de disminuir el \loc{learning rate} (\loc{lr}) en las distintas \loc{epochs} del entrenamiento.En neustro caso, el \loc{lr} utilizado es <<ReduceLROnPlateau>>. This \loc{scheduler} funciona reduciendo el \loc{lr} cuando la red deja de funcionar durante $n$ número de \loc{epochs}. El número de iteraciones que deben pasar para actualizar el \loc{lr} se denomina <<paciencia>>. En el momento en que la red no mejore el número de iteraciones establecidos, se multiplicará el valor actual del \loc{lr} por un factor de disminución.
+% Un \loc{scheduler} se encarga de disminuir el \loc{learning rate} (\loc{lr}) en las distintas \loc{epochs} del entrenamiento.En neustro caso, el \loc{lr} utilizado es <<ReduceLROnPlateau>>. This \loc{scheduler} funciona reduciendo el \loc{lr} cuando la red deja de funcionar durante $n$ número de \loc{epochs}. El número de iteraciones que deben pasar para actualizar el \loc{lr} se denomina <<paciencia>>. En el momento en que la red no mejore el número de iteraciones establecidos, se multiplicará el valor actual del \loc{lr} por un factor de disminución.
 
-\subsection{Criterion}
+% \subsection{Criterion}
 
-O funciones de pérdida, nos ayudan a calcular la calidad del entrenamiento de la red. Esta medida es mucho más fiable que el \loc{accuracy} global, ya que este puede estar contaminado por un valor que se está clasificando especialmente bien. A la hora de calcular la perdida entre la salida de la red y el \loc{ground truth}, buscamos que el valor sea el mínimo posible.
+% O funciones de pérdida, nos ayudan a calcular la calidad del entrenamiento de la red. Esta medida es mucho más fiable que el \loc{accuracy} global, ya que este puede estar contaminado por un valor que se está clasificando especialmente bien. A la hora de calcular la perdida entre la salida de la red y el \loc{ground truth}, buscamos que el valor sea el mínimo posible.
 
-Las funciones de pérdida usadas son:
+% Las funciones de pérdida usadas son:
 
-\begin{itemize}
-  \item \loc{Cross Entropy Loss} \bib{crossentropyloss}: Esta función forma parte de las llamadas funciones de pérdida \sigla{NLL} (\loc{Negative Log-Likelihood }). Esta familia de funciones se usa únicamente en clasificación.
-  \item \sigla{MSLoss} (\loc{Median Square Error Loss}) \bib{mseloss}: Esta función de pérdida se usa en la regresión de las poses. Compara el vector salido de la red con las poses correctas y calcula el error cuadrático medio.
-\end{itemize}
-
+% \begin{itemize}
+%   \item \loc{Cross Entropy Loss} \bib{crossentropyloss}: Esta función forma parte de las llamadas funciones de pérdida \sigla{NLL} (\loc{Negative Log-Likelihood }). Esta familia de funciones se usa únicamente en clasificación.
+%   \item \sigla{MSLoss} (\loc{Median Square Error Loss}) \bib{mseloss}: Esta función de pérdida se usa en la regresión de las poses. Compara el vector salido de la red con las poses correctas y calcula el error cuadrático medio.
+% \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Dos salidas en la misma red}
+\section{Experimento: Concatenación directa de imágenes}
 
-En los apartados anteriores hemos hablado de clases y poses cuando nos hemos referido a la salida de la red. Esto es porque en nuestra última \sigla{CNN} creada, tenemos dos salidas, una con las probabilidades de cada clase y otra con un vector de poses sobre el gesto de entrada.
+Voy por último a hablar de uno de los experimentos realizados en el proyecto.
+
+Antes de pasar a crear la \sigla{CNN} para clasificación de vídeo, y cuando estábamos en la fase en la que los datos de entrada eran únicamente \loc{frames}; se pensó que se podía incluir la secuencia de \loc{frames} de un vídeo en una única imagen.
+
+Podemos ver uno de los ejemplos en la figura \ref{fig:framesConcat}.
+
+\imagen{./img/memoria/aspectos/framesConcat}{Concatenación de \loc{frames} con la intención de representar un vídeo (gesto es <<Before>>). Imágenes del \loc{dataset} WLASL \cite{li2020word}}{framesConcat}
+
+Esto fue un auténtico fracaso, el \loc{accuracy} de la red era mínimo, y cuando concatenábamos números \loc{frames} de una imagen, acabábamos con un tensor único enorme.
+
+El problema principal es que una entrada de este estilo confunde mucho a una red convolucional, ya que esta intenta buscar características espaciales en la dimensión, pero se está encontrando con muchos problemas:
+
+\begin{enumerate}
+  \item Píxeles <<muertos>>: Para empezar, al concatenar la imagen, hemos añadido píxeles negros entre \loc{frames}. El \loc{kernel} va a pasar por ellos y no va a recibir ningún tipo de información espacial.
+  \item Demasiada información para una dimensión: Estamos dando información sobre las características espaciales de la imagen al mismo tiempo que buscamos encontrar el movimiento de los gestos entre \loc{frames}
+        . Para que esto funcione correctamente, el movimiento de los gestos entre \loc{frames}
+        debe estar en otra dimensión, y que sea el \loc{kernel} de esa dimensión el que produzca la convolución que detecte los movimientos.
+\end{enumerate}
+
+Tras esto, pudimos comprender que necesitábamos pasarnos a la clasificación de un vídeo, uniendo los \loc{frames}, no como una imagen única, sino como una nueva dimensión en el tensor de entrada.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Aplicando clasificación con regresión}
+
+Las redes descritas en los apartados anterior estaban compuestas de una salida con \loc{softmax} de clasificación de signos y una salida con sigmoide para regresión de cálculo de poses y marcas de movimiento.
+
+Esto es porque en nuestra última \sigla{CNN} creada, tenemos dos salidas, una con las probabilidades de cada clase y otra con un vector de poses sobre el gesto de entrada.
 
 Esto significa que nos enfrentamos a dos problemas, uno de clasificación y uno de regresión. Es por esto que cada salida tiene una función de pérdida distinta.
 
@@ -192,7 +206,10 @@ La hipotesis que fundamento la creación de está estructura fue:
 
 ``A la hora de clasificar gestos, la red \loc{SimpleNet} se centra más en los sujetos que hacen los gestos que en los propios gestos. Se comprueba que cuando el sujeto es completamente distinto, la salida de la red identifica el gesto por la persona más que por los movimientos de las manos. Por esto se piensa que añadiendo el factor movimiento con las poses, podemos <<hacer olvidar>> a la red del sujeto y conseguir centrarla en la detección de los gestos.``
 
-Tras pensar esto, añadimos la segunda salida de la red, creamos la fución de pérdida, y sumamos el valor del coste para dicha salida al ya existente de la clasificación. Tras esto, hacemos el \loc{backpropagation} con la suma de las pérdidas. La mejora en \loc{accuracy} es mínima pero vemos que es capaz de centrarse mucho mejor en los gestos que en la persona en concreto. Incluso es capaz de adivinar un gesto dada una entrada de un dibujo animado, como vemos en la figura \ref{fig:DrawingSign}.
+Tras pensar esto, añadimos la segunda salida de la red, creamos la fución de pérdida, y sumamos el valor del coste para dicha salida al ya existente de la clasificación. Tras esto, hacemos el \loc{backpropagation} con la suma de las pérdidas. La mejora en \loc{accuracy} es mínima pero vemos que es capaz de centrarse mucho mejor en los gestos que en la persona en concreto.
+
+Para comprobar que la mejora en \loc{accuracy} proviende de la nueva funcionalidad y no del factor aleatorio del entrenamiento, vamos a probar con videos que se salgan de lo normal \footnote{Con normal nos referimos a videos extraidos del \loc{set} de test del \loc{dataset}}, como videos de dibujos animados o videos distorsionados, como vemos en la figura \ref{fig:DrawingSign}.
+
 
 \imagen{./img/memoria/aspectos/DrawingSign}{La red es capaz de adivinar un signo hecho por un dibujo animado}{DrawingSign}
 
@@ -237,34 +254,11 @@ Un ejemplo claro de esa pérdida de \loc{accuracy} la vemos a la hora de inferir
 
 Por otro lado, la cuantización nos ha permitido poder subir el modelo contenedorizado de forma más sencilla y rápida.
 
-\section{Repasemos un experimento}
-
-Voy por último a hablar de uno de los experimentos realizados en el proyecto.
-
-Antes de pasar a crear la \sigla{CNN} para clasificación de vídeo, y cuando estaba en la fase en la que los datos de entrada eran únicamente \loc{frames}; pensé que podía incluir la secuencia de \loc{frames} de un vídeo en una única imagen.
-
-Podemos ver uno de los ejemplos en la figura \ref{fig:framesConcat}.
-
-\imagen{./img/memoria/aspectos/framesConcat}{Concatenación de \loc{frames} con la intención de representar un vídeo (gesto es <<Before>>). Imágenes del \loc{dataset} WLASL \cite{li2020word}}{framesConcat}
-
-Esto fue un auténtico fracaso, el \loc{accuracy} de la red era mínimo, y cuando concatenábamos números \loc{frames} de una imagen, acabábamos con un tensor único enorme.
-
-El problema principal es que una entrada de este estilo confunde mucho a una red convolucional, ya que esta intenta buscar características espaciales en la dimensión, pero se está encontrando con muchos problemas:
-
-\begin{enumerate}
-  \item Píxeles <<muertos>>: Para empezar, al concatenar la imagen, hemos añadido píxeles negros entre \loc{frames}. El \loc{kernel} va a pasar por ellos y no va a recibir ningún tipo de información espacial.
-  \item Demasiada información para una dimensión: Estamos dando información sobre las características espaciales de la imagen al mismo tiempo que buscamos encontrar el movimiento de los gestos entre \loc{frames}
-        . Para que esto funcione correctamente, el movimiento de los gestos entre \loc{frames}
-        debe estar en otra dimensión, y que sea el \loc{kernel} de esa dimensión el que produzca la convolución que detecte los movimientos.
-\end{enumerate}
-
-Tras esto, pudimos comprender que necesitábamos pasarnos a la clasificación de un vídeo, uniendo los \loc{frames}, no como una imagen única, sino como una nueva dimensión en el tensor de entrada.
-
 \section{Estado actual del modelo}
 
 El modelo ha sido entrenado con 8 etiquetas (\loc{all, before, book, drink, help, no, walk, yes}) y mantiene los siguientes \loc{accuracies} (tabla {tabla:accs})
 
-\tablaSmall{Accuracy actual tra}
+\tablaSmall{Accuracy actual tras la combinación de clasificación y regresión}
 {c c c}{accs}
 { Entrenamiento & Test & Validación \\}{
   99,3\% & 79,88\% & 78,65\%  \\

@@ -4,15 +4,19 @@
 
 \subsection{Python}
 
-Hemos usado \prog{Python} como lenguaje de programación en la creación del modelo. La versión utilizada ha sido la \prog{3.9.8}. Se ha usado este lenguaje porque es el más común en \loc{computer science} y es el lenguaje con más librerias de matemáticas, tensores y \loc{machine learning} en general. En nuestro caso hemos usado \prog{PyTorch}, una alternativa a \prog{Tensorflow} con un paradigma más programático.
+Hemos usado \prog{Python} como lenguaje de programación en la creación del modelo. La versión utilizada ha sido la \prog{3.9.8}. Se ha usado este lenguaje porque es el más común en ciencia de datos y es el lenguaje con más librerias de matemáticas, tensores y \loc{machine learning} en general. En nuestro caso hemos usado \prog{PyTorch}, una alternativa a \prog{Tensorflow} con un paradigma más programático.
 
 Por otro lado usar \prog{Python} nos ha permitido crear \loc{scripts} rápidos con muy poco código que han facilitado mucho el desarrollo y prueba de distintos \loc{datasets}.
 
-Y no solo eso, sino que por facilidad y reutilización de código, hemos creado el servidor y \sigla{API} con \prog{FastAPI}, un \loc{framework} para crear \sigla{APIs}, con un rendimiento similar a \prog{NodeJS} o \prog{Go}.
+Y no solo eso, sino que por facilidad y reutilización de código, hemos creado el servidor y \sigla{API} con \prog{FastAPI}, un \loc{framework} para crear \sigla{APIs}, con un rendimiento similar a \prog{NodeJS} o \prog{Go} \bib{performanceFastAPI}.
 
 \subsection{HTML y CSS}
 
 A la hora de crear nuestro \prog{front-end} para el usuario, hemos usado \prog{HTML} paar el marcado y \prog{CSS} para los estilos. En este último lenguaje, hemos usado un \loc{framework} de prototipado rápido llamado \prog{Tailwind} (hablaremos de él un poco más adelante).
+
+\begin{itemize}
+  \item Accede al \loc{framework} tailwind desde \url{https://tailwindcss.com/}
+\end{itemize}
 
 \subsection{JavaScript}
 
@@ -21,6 +25,11 @@ Con \prog{HTML} y \prog{CSS} podemos crear una \loc{landing page} simple (aunque
 JavaScript es un lenguaje dinámicamente tipado y orientado a objetos que sigue el estándar \prog{ECMAScript}. Es un lenguaje multi-paradigma que soporta estilos de programación funcionales, basados en eventos e imperativos. El lenguaje nos ofrece distintas \sigla{APIs} para trabajar con el navegador: desde expresiones regulares, el \sigla{DOM}, hasta \loc{webworkers}, y una larga lista.
 
 En el apartado Web veremos que librerías hemos usado para facilitar la creación de la \sigla{UI} así como la carga del modelo en este entorno. Allí hablaremos de dos \loc{frameworks} muy interesantes para construcción de páginas estáticas y \sigla{SSR}: \prog{Astro} y \prog{Svelte}.
+
+\begin{itemize}
+  \item Puedes acceder a la web de astro en: \url{https://astro.build}
+  \item \prog{Svelte} se puede visitar en \url{https://svelte.dev}
+\end{itemize}
 
 \subsection{Markdown}
 
@@ -90,7 +99,7 @@ Gitlab es una alternativa a Github. Las características ofrecidas son práctica
 
 \subsection{PyTorch}
 
-\prog{Pytorch} es un \loc{framework} de \loc{machine learning} para \prog{Python} que acelera la creación de prototipos y salida de modelos a producción. Fue creado por Facebook para rivalizar con \prog{Tensorboard}. \prog{Pytorch} nos ofrece un ecosistema con numerosas librerías y herramientas para acelerar el desarrollo. Algunas son \prog{PyTorch3D} (computación 3D), \prog{ONNX Runtime} (para ejecutar modelos en el formato estándar \sigla{ONNX}), \prog{Transformers} (herramientas para procesado de lenguaje natural), \prog{PyTorch Lighting} (para crear modelos de forma rápida, al estilo \prog{Keras}) y \prog{Ensemble-PyTorch} (para generar \loc{ensambles} de modelos).
+\prog{Pytorch} es un \loc{framework} de \loc{machine learning} para \prog{Python} que acelera la creación de prototipos y salida de modelos a producción. Fue creado por Facebook para rivalizar con \prog{Tensorflow}. \prog{Pytorch} nos ofrece un ecosistema con numerosas librerías y herramientas para acelerar el desarrollo. Algunas son \prog{PyTorch3D} (computación 3D), \prog{ONNX Runtime} (para ejecutar modelos en el formato estándar \sigla{ONNX}), \prog{Transformers} (herramientas para procesado de lenguaje natural), \prog{PyTorch Lighting} (para crear modelos de forma rápida, al estilo \prog{Keras}) y \prog{Ensemble-PyTorch} (para generar \loc{ensambles} de modelos).
 
 Por otro lado nos ofrece librerías para tratar con distintos formatos de datos: \prog{torchaudio} (audio), \prog{torchtext} (texto) y \prog{torchvision} (imágenes y vídeos). También nos ofrece distintas clases para cargar \loc{datasets}  y transformar los datos que hemos cargado.
 
@@ -122,6 +131,7 @@ Pytorch nos otorga cientos de herramientas que hacen fácil cargar y transformar
 \prog{ONNX} (\loc{Open Neural Network Exchange}) es un formato abierto construido para representar modelos de \loc{machine learning}. Busca ofrecer un formato estándar para poder compartir modelos entre distintos lenguajes, herramientas, \loc{frameworks}, \loc{runtimes} y compiladores. El proyecto es de código abierto con más de 200 \loc{contributors} y está escrito en \prog{C++}.
 
 
+
 \prog{PyTorch} tiene un módulo para exportar y cargar modelos en \prog{ONNX}. Por otro lado \prog{ONNX} nos ofrece una librería, \prog{ONNXRuntime} para inferencia y serialización de los modelos, así como \loc{quantization}.
 
 Y por mantener el espíritu de la estandarización y reutilización entre lenguajes y ecosistemas, tenemos también una libreria para usar los modelos en la web con \prog{NodeJS}: \prog{ONNX.js}.
@@ -133,6 +143,11 @@ Netron es una aplicación web en la que podemos subir nuestros modelos con forma
 \imagen{./img/memoria/herramientas/Netron}{Estructura de un modelo con \sigla{CNNs} en formato \prog{ONNX}. Visualización con Netron}{Netron}
 
 Nos muestra de que <<tipo>> es cada capa de la red, el tamaño de entrada y salida, las funciones de activación usadas, la capa \loc{flatten} y muchos datos más.
+
+\begin{itemize}
+  \item Accede a la web de ONNX en \url{https://onnx.ai/}
+  \item Al app de Netron está disponible en: \url{https://netron.app/}
+\end{itemize}
 
 \subsection{Docker}
 
@@ -148,6 +163,9 @@ Por otro lado y para poder compartir la imagen con la comunidad, también la hem
 
 \begin{itemize}
   \item Accede a la imagen de \project{Sign2Text-API} en \url{https://hub.docker.com/repository/docker/gazquez/sign2text}
+  \item ¿Deseas probarlo directamente? Accede en \url{https://api.sign2text.com/docs}
+  \item La demo web se encuentra disponible en \url{https://sign2text.com}
+  \item Videos para probar disponibles en \url{https://bit.ly/3bPWve6}
 \end{itemize}
 
 \subsection{\loc{Deployment}}
@@ -160,11 +178,9 @@ Comencemos con el modelo. El modelo está alojado en \loc{Google Drive}. \loc{Go
 
 De esta forma podemos descargar el modelo programáticamente cuando nos movemos al entorno de producción. Para esto usamos una pequeña librería de \prog{Python}: \prog{gdown} con la que ejecutamos la descarga del modelo en el \prog{Dockerfile} en la fase de construcción de la imagen.
 
-Esto nos ha ayudado mucho a reducir el tamaño del repositorio y la dependencia entre proyectos (\project{Sign2Text} y \project{Sign2Text-API}).
-
 \begin{itemize}
   \item Librería gdown: \url{https://github.com/wkentaro/gdown.git}
-  \item Repositorio \project{Sign2Text-API}: \url{https://github.com/irg1008/Sign2Text-API.git}
+  \item Repositorio \project{Sign2Text-API} con la \sigla{API}: \url{https://github.com/irg1008/Sign2Text-API.git}
 \end{itemize}
 
 \subsubsection{Google Cloud}
@@ -211,7 +227,7 @@ De forma transparente, Vercel usa AWS y Cloudflare (Cloudflare Workers) para oto
   \item \prog{Next.JS} está disponible en \url{https://nextjs.org}
 \end{itemize}
 
-\subsection{Front-end}
+\subsection{Front-end (Cliente)}
 
 El \loc{front-end} es la interfaz que se ofrece a un <<cliente>> para acceder de forma sencilla a la plataforma y las características ofrecidas por una aplicación en el \loc{back-end} (lado del servidor).
 
@@ -271,7 +287,7 @@ Las figuras y dibujos que se ven en esta memoria están hechos con esta herramie
 
 Puedes acceder a figma en \url{https://figma.com}.
 
-\subsection{Back-end}
+\subsection{Back-end (Servidor)}
 
 El back-end es la parte más importante de una aplicación web, ya que es donde tenemos toda la lógica de negocio, los accesos a las bases de datos, llamadas a \sigla{APIs} externas, entre otras cosas. El código del \loc{back-end} se ejecuta en servidores (o en nodos de borde) y el cliente no modificar ni acceder a este código (como si pasa en el  \loc{front-end}).
 

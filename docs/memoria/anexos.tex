@@ -67,8 +67,6 @@
 	\end{figure}
 }
 
-
-
 % El comando \figura nos permite insertar figuras comodamente, y utilizando
 % siempre el mismo formato. Los parametros son:
 % 1 -> Porcentaje del ancho de página que ocupará la figura (de 0 a 1)
@@ -114,7 +112,7 @@
 \newcommand{\tablaSmall}[5]{%
  \begin{table}[h]
   \begin{center}
-   \rowcolors {2}{gray!35}{}
+   \rowcolors {2}{lightgray!35}{}
    \begin{tabular}{#2}
     \toprule
     #4
@@ -154,7 +152,7 @@
 \begin{landscape}
   \begin{table}
    \begin{center}
-    \rowcolors {2}{gray!35}{}
+    \rowcolors {2}{lightgray!35}{}
     \begin{tabular}{#2}
      \toprule
      #4
@@ -192,7 +190,7 @@
       \hline
     }
     \bottomcaption{#1}
-    \rowcolors {2}{gray!35}{}
+    \rowcolors {2}{lightgray!35}{}
     \begin{xtabular}{#2}
       #6
       \bottomrule
@@ -259,7 +257,8 @@
   \end{center}
 }
 
-
+% Comando para términos de programación, como lenguajes, herramientas.
+\newcommand{\prog}[1]{\texttt{#1}}
 
 \definecolor{cgoLight}{HTML}{EEEEEE}
 \definecolor{cgoExtralight}{HTML}{FFFFFF}
@@ -293,9 +292,6 @@
   \end{center}
 }
 
-
-
-
 \graphicspath{ {./img/} }
 
 % Capítulos
@@ -319,6 +315,17 @@
 	\chapter{#1}
 }
 
+% Sublistas
+\usepackage{enumitem}
+\setlist[enumerate]{label*=\arabic*.}
+
+% Algoritmos (docs: https://en.wikibooks.org/wiki/LaTeX/Algorithms)
+\usepackage[spanish, spanishkw, ruled, longend, linesnumbered]{algorithm2e}
+
+% Bibliografía.
+\newcommand{\bib}[1]{\cite{#1}}
+\newcommand{\et}{\textit{et al.}}
+
 \renewcommand*\cftappendixname{\appendixname\ }
 
 % Formato de portada
@@ -326,7 +333,6 @@
 \usepackage{xcolor}
 \newcommand{\tutor}[1]{\def\@tutor{#1}}
 \newcommand{\course}[1]{\def\@course{#1}}
-
 
 \definecolor{cpardoBox}{HTML}{E6E6FF}
 \def\maketitle{
@@ -343,7 +349,7 @@
       \textbf{TFG del Grado en Ingeniería Informática}\vspace{.6cm}\\
       \textbf{\LARGE\@title{}}
       \end{center}
-      \vspace{.2cm}
+      \vspace{0cm}
     \end{minipage}
 
   }%
@@ -374,7 +380,7 @@
 \date{\today}
 
 \newcommand{\project}[1]{{\textsf{#1}}}
-\newcommand{\titulo}{Sign2Text - Transcripción de lenguaje de signos (a nivel de palabra) mediante DL - Documentación técnica}
+\newcommand{\titulo}{Sign2Text - Transcripción de lenguaje de signo mediante deep learning - Documentación técnica}
 \newcommand{\tutores}{Dr. Daniel Urda Muñoz y Dr. Bruno Baruque Zanon}
 \newcommand{\nombre}{Iván Ruiz Gázquez}
 
@@ -388,18 +394,11 @@
 
 \maketitle
 
-
-
 \cleardoublepage
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
 \frontmatter
-
 
 \clearpage
 

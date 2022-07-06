@@ -1,5 +1,13 @@
 \capitulo{1}{Introducción}
 
+Antes de empezar, me gustaría agradecer:
+A todos los tutores, la paciencia que han tenido conmigo. Desde el primer día me han explicado lo más básico de la mejor manera posible, aportando fuentes y ayudando en todo. Muchas
+gracias a Bruno y Daniel, los tutores de la UBU, y muchas muchísimas
+gracias a María, Alejandro y Pablo, los tutores de HP SCDS, no se que
+habría hecho sin vosotros.
+
+\noindent\rule{2cm}{0.4pt}
+
 En este proyecto vamos a implementar una transcripción automática de lenguaje de signos a texto a nivel palabra usando técnicas de inteligencia artificial.
 
 El lenguaje de signos es una forma de comunicación por gestos gracias a la cual más de 72 millones de personas con discapacidad auditiva pueden comunicarse. Hay más de 300 lenguas de signo distintas y dentro de un mismo lenguaje hay varios gestos que pueden significar palabras distintas dependiendo del contexto.
@@ -8,7 +16,7 @@ En la actualidad existen transcriptores a nivel letra o nivel palabra, solo que 
 
 \project{Sign2Text} tiene el propósito de crear un transcriptor a tiempo real usando redes neuronales, \loc{deep learning} y procesado de imagen y vídeo. Para esto se ha usado un \loc{dataset} muy completo de \sigla{ASL} (\loc{American Sign Language}) \bib{li2020word} compuesto por secuencias cortas de vídeo e información de poses de distintos sujetos. Se van a aplicar técnicas de \loc{deep learning} como redes neuronales convolucionales, \loc{transformers} y procesado 3D (dos dimensiones para la imagen y otra para el tiempo).
 
-Tras crear la red que transcriba el texto, se pretende crear una demo \loc{web} para que cualquier usuario alrededor del mundo prueba probarlo. También se busca poder contenedorizar el modelo y dejarlo libre para que cualquier desarrollador pueda descargarlo y crear su propia aplicación.
+Tras crear la red que transcriba el texto, se pretende crear una demo \loc{web} y \loc{API} para que cualquier usuario alrededor del mundo prueba probarlo. También se busca poder encapsular el modelo en un contenedor y dejarlo disponible para que cualquier desarrollador pueda descargarlo y crear su propia aplicación.
 
 \section{Estructura del trabajo}
 
