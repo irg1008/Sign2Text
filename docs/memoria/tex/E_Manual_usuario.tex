@@ -1,11 +1,94 @@
 \apendice{Documentación de usuario}
 
+
 \section{Introducción}
+
+En este manual vamos a detallar los pasos que debe seguir un usuario para usar la plataforma de cliente. Recordemos que este proyecto está dividido entre tres repositorios: el \href{https://github.com/irg1008/Sign2Text.git}{principal} con el modelo, la \href{https://github.com/irg1008/Sign2Text-API.git}{aplicación de servidor} y la \href{https://github.com/irg1008/Sign2Text-Astro.git}{aplicación de cliente}. Esta última es la que nos compite en este manual.
 
 \section{Requisitos de usuarios}
 
+Los requisitos necesarios para utilizar \project{Sign2Text - Aplicación de client} son:
+
+\begin{itemize}
+  \item Tener un dispositivo con un navegador web (\pe: chrome, brave, firefox, etc).
+  \item La aplicación es accesible en todos los dispositivos pero se recomienda el uso de ordenador para una experiencia óptima.
+  \item Se necesita conexión a internet, la aplicación no funciona \loc{offline}.
+  \item No es necesario tener \prog{JavaScript} instalado ya que la aplicación es \sigla{SSR} (renderizada en el servidor).
+\end{itemize}
+
 \section{Instalación}
+
+No es necesario instalar ninguna herramienta para usar la aplicación. Podemos acceder a ella desde \url{https://sign2text.com} con cualquier navegador (excepto \sigla{IE}\footnote{Internet Explorer ya no está soportado por Microsoft, por lo que nosotros tampoco lo soportamos}).
+
+El idioma de la interfaz está en español y no se necesita ningún tipo de usuario ni contraseña.
 
 \section{Manual del usuario}
 
+\subsection{Toma de contacto}
 
+Una vez accedemos a la web veremos la pantalla que observamos en la figura \ref{fig:home}.
+
+\imagen{./img/anexos/usuario/home}{Página de incio}{home}
+
+En esta pantalla tenemos tres partes diferenciadas: la parte superior, la parte central y la parte inferior.
+
+En la parte superior vemos un mensaje de indicación sobre el estado del modelo. También se ofrece un \loc{link} con el que podemos enviar un e-mail al correo de soporte de la aplicación: \href{mailto://support@sign2text.com}{support@sign2text.com}.
+
+En la parte inferior observamos un acceso directo al repositorio del proyecto principal. También tenemos la lista de las etiquetas disponibles para la clasificación del modelo. Podemos ver esto más de cerca en la figura \ref{fig:footer}.
+
+\imagen{./img/anexos/usuario/footer}{Vista del pie de página}{footer}
+
+En la parte intermedia observamos una zona en la que pone <<Arrastre y suelte el vídeo aquí>> junto con el logo. Esta parte es la que nos servirá para subir un vídeo a la aplicación y así detectar el gesto correcto.
+
+\subsection{Subir vídeo a la aplicación}
+
+\begin{enumerate}
+  \item Para detectar un gesto, necesitamos:
+
+        \begin{itemize}
+          \item Un vídeo o varios para probar, que estén entre las etiquetas disponibles. Si no se tiene ninguno se puede obtener alguno en el siguiente enlace: \url{https://sign2text.com/examples}.
+        \end{itemize}
+
+  \item Una vez tengamos el vídeo, podemos arrastrarlo al navegador. En el momento en el que comencemos a arrastrar el archivo encima de la web, se nos mostrará el mensaje que vemos en la figura \ref{fig:hovering}.
+
+        \imagen{./img/anexos/usuario/hovering}{Interfaz mostrada cuando arrastramos un archivo por encima de la web}{hovering}
+
+  \item Soltamos el archivo. En este momento la aplicación comprobará si el formato del archivo es el correcto (<<mp4>>).
+
+        \begin{enumerate}
+          \item Si no lo es nos avisará con un mensaje de error, como vemos en \ref{fig:formatError}. Podemos eliminar la notificación haciendo \loc{click} sobre ella.
+
+                \imagen{./img/anexos/usuario/formatError}{Mensaje de error de formato erróneo. El formato aceptado es <<mp4>>}{formatError}
+
+          \item Si el formato es correcto, se mostrará el video recién subido al lado derecho, junto con un botón <<detectar signo>>. Con este botón podremos inferir el gesto enviando el vídeo al servidor con el modelo. Puedes ver en la figura \ref{fig:videoPreview} el resultado tras una subida correcta.
+
+                \imagen{./img/anexos/usuario/videoPreview}{Interfaz cuando subimos un vídeo correctamente}{videoPreview}
+        \end{enumerate}
+\end{enumerate}
+
+
+Con el vídeo subido, vamos ahora a inferir el resultado.
+
+\subsection{Detectar el signo del vídeo}
+
+Una vez tenemos subido el vídeo, podemos inferir el resultado de forma muy sencilla.
+
+\begin{enumerate}
+  \item Como vemos en la figura \ref{fig:videoPreview}, tenemos un botón en color azul con el que podemos enviar el vídeo al servidor. Este proceso puede tardar unos segundos dependiendo del peso del vídeo y el estado del servidor.
+        Mientras esté cargando, el botón se mostrará como <<cargando signo>>.
+
+        \begin{itemize}
+          \item Si todo va bien, se nos mostrará el resultado donde antes estaba el botón de detectar signo, como vemos en la figura \ref{fig:detected}
+
+                \imagen{./img/anexos/usuario/detected}{Resultado tras la inferencia de un vídeo enviado al servidor}{detected}
+
+          \item Si ocurre algún error en el lado del servidor se nos mostrará una notificación abajo a la derecha indicándolo. Ver figura \ref{fig:serverError}.
+
+                \imagen{./img/anexos/usuario/serverError}{Notificación de un error ocurrido en el lado del servidor}{serverError}
+        \end{itemize}
+\end{enumerate}
+
+\subsection{Página de error}
+
+Si un usuario va a una página que no existe, se mostrará un mensaje de error como vemos en la figura \ref{fig:notFound}.
+\imagen{./img/anexos/usuario/notFound}{Página <<404>> en caso de no encontrar la ruta especificada}{notFound}

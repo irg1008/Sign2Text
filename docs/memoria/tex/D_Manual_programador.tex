@@ -237,9 +237,9 @@ Los siguientes archivos que podemos ejecutar son los cuadernillos de \prog{Jupyt
 
 \end{itemize}
 
-\imagen{./img/anexos/pose_super}{Superposición de información de pose sobre \loc{frame} estático de una instancia de entrada en formato video. Imagen del \loc{dataset} \sigla{WLASL} \bib{li2020word}}{pose_super}
+\imagen{./img/anexos/programador/pose_super}{Superposición de información de pose sobre \loc{frame} estático de una instancia de entrada en formato video. Imagen del \loc{dataset} \sigla{WLASL} \bib{li2020word}}{pose_super}
 
-\imagen{./img/anexos/tensorboard}{Utilización de la librería \prog{Tensorboard} para visualizar \loc{logs} y estructuras de redes neuronales a tiempo real}{tensorboard}
+\imagen{./img/anexos/programador/tensorboard}{Utilización de la librería \prog{Tensorboard} para visualizar \loc{logs} y estructuras de redes neuronales a tiempo real}{tensorboard}
 
 \subsection{Pruebas del sistema}
 
@@ -247,12 +247,12 @@ Debido a la naturaleza de prueba/error del proyecto, no se han realizado pruebas
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{\project{Sign2Text - API}}
+\section{\project{Sign2Text - API (Aplicación de servidor)}}
 
 Este es uno de los dos proyectos secundarios. Este proyecto implementa una \sigla{API} en \prog{Python} con \prog{FastAPI}. El objetivo del proyecto es crear una plataforma con la que los desarrolladores puedan consumir del modelo sin necesidad de tener conocimientos relacionados con \loc{deep learning} o el \loc{framework} \prog{PyTorch}.
 
 \begin{itemize}
-  \item \sigla{API}: La \sigla{API} se puede acceder a través de \url{https://api.sign2text.com}
+  \item \sigla{API}: La \sigla{API} se puede acceder a través de \url{https://api.sign2text.com/docs}
   \item O descargar el repositorio de Github: \url{https://github.com/irg1008/Sign2Text-API.git}
 \end{itemize}
 
@@ -379,12 +379,12 @@ Al ser una \sigla{API} cuyo intención es consumir de un modelo neuronal, se ha 
 
 En la figura \ref{fig:apiIn} podemos ver la estructura necesaria para hacer la petición de forma correcta. En este \loc{endpoint} se valida que el archivo sea de tipo <<mp4>>.
 
-\imagen{./img/anexos/api_in}{Esquema del cuerpo de la petición de entrada, con formato \loc{multipart} \bib{formdata}
+\imagen{./img/anexos/programador/api_in}{Esquema del cuerpo de la petición de entrada, con formato \loc{multipart} \bib{formdata}
 }{apiIn}
 
 Por otro lado, la respuesta del servidor al cliente se puede observar en la figura \ref{fig:apiOut}. El servidor nos devolverá un objeto \prog{JSON} con un a entrada con el valor de la etiqueta clasificada.
 
-\imagen{./img/anexos/api_out}{Esquema de salida devuelto por el servidor. En el \loc{target} se devolverá la etiqueta clasificada}{apiOut}
+\imagen{./img/anexos/programador/api_out}{Esquema de salida devuelto por el servidor. En el \loc{target} se devolverá la etiqueta clasificada}{apiOut}
 
 
 
@@ -394,7 +394,7 @@ En este caso, al ser un proyecto tan pequeño en número de \loc{endpoints}, se 
 
 Para poder probar entonces el correcto funcionamiento del servidor se ha usado un cliente \sigla{HTTP} llamado Insomnia \bib{insomnia}. Podemos ver un ejemplo de una petición en la que enviamos un archivo <<.pdf>> en vez de <<.mp4>> en la figura \ref{fig:wrongTypeError}. El servidor comprueba correctamente esto y devuelve un objeto \prog{JSON} con una entrada <<detalle>> con el error.
 
-\imagen{./img/anexos/wrongTypeError}{Ejemplo de uso de Insomnia \bib{insomnia} para probar si el \loc{endpoint} comprueba el tipo de archivo recibido. Podemos ver señalado de rojo que la extensión del archivo es <<.pdf>> y no <<.mp4>>}{wrongTypeError}
+\imagen{./img/anexos/programador/wrongTypeError}{Ejemplo de uso de Insomnia \bib{insomnia} para probar si el \loc{endpoint} comprueba el tipo de archivo recibido. Podemos ver señalado de rojo que la extensión del archivo es <<.pdf>> y no <<.mp4>>}{wrongTypeError}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -499,4 +499,4 @@ Se puede obtener más información sobre este proyecto en el <<manual del usuari
 
 No se han realizado pruebas del sistema para el \loc{front-end}, ni de E2E (\loc{End to End}) ni de ningún tipo. Esto es algo que se planea hacer como tarea en el futuro. De momento, debido a la simplicidad de la aplicación, se ha optado por hacer \loc{testing} manual.
 
-Otro de los aspectos que no se ha probado y también entra en las líneas futuras, es la comprobación de uso en dispositivos móviles. Se ha comprobado que el sitio es \loc{responsive} (adapta su tamaño correctamente al ancho de la pantalla) pero no se ha comprobado que un vídeo se envía de forma correcta.
+Otro de los aspectos que no se ha probado y también entra en las líneas futuras, es la comprobación de uso en dispositivos móviles. Se ha comprobado que el sitio es \loc{responsive} (adapta su tamaño correctamente al ancho de la pantalla) pero no se ha probado que un vídeo pueda ser añadido y enviado de forma correcta.
