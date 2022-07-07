@@ -107,6 +107,7 @@
 }
 % Para las tablas
 \newcommand{\otoprule}{\midrule [\heavyrulewidth]}
+
 %
 % Nuevo comando para tablas pequeñas (menos de una página).
 \newcommand{\tablaSmall}[5]{%
@@ -255,6 +256,24 @@
   \end{xtabular}
   \label{tabla:#4}
   \end{center}
+}
+
+% Tabla de casos de uso.
+\newcommand{\casoUso}[4]{
+\begin{table}[p]
+  \centering
+  \begin{tabularx}{\linewidth}{p{0.20\columnwidth} p{0.80\columnwidth}}
+    \toprule
+    #3
+    \otoprule
+    \textbf{Autor} & \nombre \\
+    \textbf{Versión} & 1.0 \\
+    #4
+    \bottomrule
+  \end{tabularx}  
+  \caption{#1}
+  \label{tabla:#2}
+\end{table}
 }
 
 % Comando para términos de programación, como lenguajes, herramientas.

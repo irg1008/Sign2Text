@@ -2,28 +2,28 @@
 
 \section{Introducción}
 
-En este anexo se recoge la especificación de los requisitos que definen las caracterísitcas necesarias de nuestro proyecto.
+En este anexo se recoge la especificación de los requisitos que definen las características necesarias de nuestro proyecto.
 
 Estos requisitos se han especificado siguiendo la recomendación del estándar \sigla{IEEE 830-1998} \bib{ieee830} que especifica las siguientes características:
 
 \begin{itemize}
-  \item \textbf{Corrección}: Todo requisito especificado es correcto si y solo si refleja una necesidad real y una implementación final en el \loc{software}.
+  \item \textbf{Corrección}: Todo requisito especificado es correcto si refleja una necesidad real y una implementación final en el \loc{software}.
 
   \item \textbf{Ambigüedad}: Todo requisito debe tener una sola interpretación. Para eliminar cualquier ambigüedad se usaran elementos gráficos o notaciones formales.
 
   \item \textbf{Completitud}: Una especificación de requisitos es completa sí:
         \begin{itemize}
           \item Incluye todos los requisitos importantes del \loc{software} (funcionalidad, ejecución, diseño, interfaces, etc).
-          \item Para todas las posibles entradas y situaciones, existe una resuesta definida correctamente.
+          \item Para todas las posibles entradas y situaciones, existe una respuesta definida correctamente.
           \item Aparecen todas las etiquetas en las figuras y diagramas, así como definidos todos los términos y unidades de medida.
           \item En el caso de que no se cumpla el estándar de algún modo en algún apartado, se debe razonar suficientemente el porqué.
         \end{itemize}
 
-  \item \textbf{Verificalidad}: Un requisito es verificable si existe un proceso no muy costoso por el cual una persona o máquina puede comprobar que el \loc{software} cumple dicho requisito.
+  \item \textbf{Verificabilidad}: Un requisito es verificable si existe un proceso no muy costoso por el cual una persona o máquina puede comprobar que el \loc{software} cumple dicho requisito.
 
   \item \textbf{Consistencia}: La especificación se considera consistente sí y solo sí ningún requisito descrito entra en conflicto con otro. Por ejemplo
         \begin{enumerate}
-          \item Dos requisitos describen un mismo objeto con términos distinos.
+          \item Dos requisitos describen un mismo objeto con términos distintos.
           \item Se describe una función con distintas implementaciones.
           \item Existe un conflicto lógico entre dos acciones o se llega a un punto en el que dos acciones son válidas en el mismo punto temporal.
         \end{enumerate}
@@ -39,9 +39,9 @@ Estos requisitos se han especificado siguiendo la recomendación del estándar \
           \item Estabilidad: según como afecten los cambios en el requisito.
         \end{itemize}
 
-  \item \textbf{Mofificabilidad}: Una especificación es modificable si permite realizar cambios de manera sencilla manteniendo la consistencia y estilo. Para ello es deseable tener un índice o tabla de contenidos accesible y fácil de entender.
+  \item \textbf{Modificación}: Una especificación es modificable si permite realizar cambios de manera sencilla manteniendo la consistencia y estilo. Para ello es deseable tener un índice o tabla de contenidos accesible y fácil de entender.
 
-  \item \textbf{Explorabilidad}: Se considera explorable a una especificación de requisitos si el origen de cada requisito es claro tanto hacía atrás (origen del requisito) como hacia delante (componentes que realizan requisito).
+  \item \textbf{Exploración}: Se considera explorable a una especificación de requisitos si el origen de cada requisito es claro tanto hacía atrás (origen del requisito) como hacia delante (componentes que realizan requisito).
 \end{itemize}
 
 \section{Objetivos generales}
@@ -49,41 +49,259 @@ Estos requisitos se han especificado siguiendo la recomendación del estándar \
 Lso objetivos principales del proyecto son los siguientes:
 
 \begin{enumerate}
-  \item
-\end{enumerate}
+  \item Desarrollar un modelo neuronal capaz de traducir de lenguaje de signos a texto a tiempo real.
 
-\subsection{Objetivos teóricos}
-
-\begin{enumerate}
-  \item Crear de un modelo de \sigla{DL}\footnote{\textit{Deep Learning}} capaz de clasificar ASL\footnote{\textit{American Sign Language}} a nivel palabra.
   \item Poner en producción un método para que los usuarios puedan probar el modelo de forma libre y transparente.
-  \item Generar una \sigla{API} de código abierto para que otros desarrolladores puedan crear plataformas de cliente, con el objeto de aumentar la audiencia y alcance del proyecto.
+
+  \item Generar una \sigla{API} de código abierto para que otros desarrolladores puedan crear plataformas de cliente, con el objeto de aumentar la audiencia y alcance del proyecto
+
   \item Hacer disponible y encapsular el modelo en un contenedor Docker para su libre distribución.
-  \item Crear de herramientas que permitan el tratamiento de datos y la transformación entre distintos formatos\footnote{\pe: extracción de fotogramas de un vídeo, concatenación de imágenes}.
-  \item Estudiar del comportamiento, estructura e hiperparametrización de redes neuronales convolucionales.
-  \item Aprender a fondo el uso de \prog{PyTorch}\cite{PYTORCH}, un \loc{framework} para acelerar la creación y prototipado de redes neuronales.
-  \item Exportar del modelo entrenado a un formato estándar que facilite la compatibilidad con el mayor número de librerías en distintos lenguajes de programación.
-  \item Mantener de una \loc{codebase} que favorezca la integración continua (\loc{linting}\footnote{Voz ingl. Estudio de limpieza, orden, calidad y redundancia}, \loc{formatting}\footnote{Formatear: Correcta estructura y legibilidad} y \loc{type-checking}\footnote{Comprobación de tipados de variables y funciones}) de código, siguiendo así los estándares en contribuciones \loc{Open Source}.
+
+  \item Crear herramientas que permitan el tratamiento de datos y la transformación entre distintos formatos.
+
+  \item Crear una forma de observar estadísticas a tiempo real de la fase de \loc{training} y \loc{test}.
+
+  \item Investigar la literatura sobre aprendizaje supervisado y redes neuronales convolucionales.
+
+  \item Estudiar comportamiento, estructura, aplicación e hiperparametrización de redes neuronales convolucionales.
 \end{enumerate}
-
-
-Estos objetivos representan en general la filosofía y los objetivos teóricos del proyecto. Si entramos más en detalle sobre los aspectos técnicos y las \loc{features} que se esperan obtener al finalizar el proyecto, obtenemos los siguientes puntos:
-
-\subsection{Caracterísitcas esperadas}
-
-\begin{itemize}
-  \item el sistema debe ser capaz de inferir resultados del modelo entrenado a tiempo real.
-  \item Se desarrollará un modelo fácilmente escalable y adaptable a distintos dataset de cualquier tamaño.\footnote{El formato de los \loc{datasets} debe ser el mismo. Un modelo entrenado para clasificación de imágenes no podrá clasificar en formato vídeo o audio.}
-  \item Se realizará una fase de \loc{data augmentation} sobre los datos iniciales.
-  \item Se implementarán distintas redes neuronales para los distintos formatos de datos (imagen y vídeo). Deben ser fácilmente refactorizables y mantenibles.
-  \item Cada vez que se estudie el uso de un nuevo formato de dataset, se creará una nueva red, manteniendo la usabilidad de la anterior intacta.
-  \item A lo largo de las pruebas y entrenamientos de la red, vamos a probar distintos \loc{schedulers}, \loc{optimizers} y \loc{criterions}\footnote{Funciones de cálculo de pérdida} buscando el que mejor se adecúe al formato de los datos y la estructura de la red.
-  \item Se mantendrán unas estadísticas a tiempo real de la fase de \loc{training} y \loc{test} mediante el uso de \prog{Tensorboard}, una herramienta analítica que permite mantener un \loc{log} de imágenes generadas en la ejecución; así como gráficas de costes y \loc{accuracies}.
-\end{itemize}
-
 
 \section{Catalogo de requisitos}
 
+A continuación vamos a definir los requisitos funcionales y no funcionales del proyecto. Debido a que este proyecto está principalmente orientado a la investigación, se incluyen requisitos de los otros dos repositorios que completan este proyecto: el proyecto con la \sigla{API} y la aplicación de cliente.
+
+\subsection{Requisitos funcionales}
+
+\begin{itemize}
+  \item \textbf{RF-1}: El usuario podrá enviar un vídeo al servidor.
+        \begin{itemize}
+          \item \textbf{RF-1.1}: El usuario debe poder arrastrar y soltar un vídeo en la ventana de la aplicación.
+          \item \textbf{RF-1.2}: Debe poder subir un vídeo en formato <<mp4>>.
+          \item \textbf{RF-1.3}: Debe haber un sitio que muestre el estado actual del envío del vídeo y la petición \loc{HTTP}.
+        \end{itemize}
+
+  \item \textbf{RF-2}: La \loc{app} debe detectar errores en cliente y servidor.
+        \begin{itemize}
+          \item \textbf{RF-2.1}: Se debe mostrar un error en caso de que el usuario suba con un formato incorrecto.
+          \item \textbf{RF-2.2}: Se debe mostrar un error en caso de que el servidor produzca un error o no sea capaz de procesar el vídeo enviado.
+          \item \textbf{RF-2.3}: Se debe mostrar un error en caso de que haya un problema en la conexión con el servidor.
+        \end{itemize}
+
+  \item \textbf{RF-3}: El servidor debe procesar el vídeo y devolver la clasificación.
+        \begin{itemize}
+          \item \textbf{RF-3.1}: Debe procesar el vídeo y adaptarlo al formato correcto de entrada al modelo.
+          \item \textbf{RF-3.2}: Debe recoger y procesar la salida del modelo.
+          \item \textbf{RF-3.3}: Debe devolver la clasificación en una respuesta \sigla{HTTP}.
+        \end{itemize}
+
+  \item \textbf{RF-4}: Se tiene que habilitar una forma de ponerse en contacto con soporte para recibir ayuda en caso de que haya algún problema.
+        \begin{itemize}
+          \item \textbf{RF-4.1}: Debe existir algún botón o link que nos mande directamente al envío de un correo electrónico.
+          \item \textbf{RF-4.2}: Se debe mostrar de forma clara el correo electrónico de soporte.
+        \end{itemize}
+
+  \item \textbf{RF-5}: Se debe visualizar tanto el vídeo enviado como el resultado.
+        \begin{itemize}
+          \item \textbf{RF-5.1}: Se debe mostrar una \loc{preview} del vídeo subido en grande, y reproducirse al instante.
+          \item \textbf{RF-5.2}: el resultado de la clasificación debe mostrarse cerca del vídeo subido.
+        \end{itemize}
+
+  \item \textbf{RF-6}: Se debe crear una página de error en caso de que el usuario vaya a una ruta no existente (404).
+
+\end{itemize}
+
+\subsection{Requisitos no funcionales}
+
+\begin{itemize}
+  \item \textbf{RNF-1 Documentación}: Debe existir documentación para la \sigla{API}, para desarrolladores.
+  \item \textbf{RNF-2 Información}: Se debe mostrar información de las limitaciones del modelo, como las etiquetas que es capaz de clasificar.
+  \item \textbf{RNF-3 \loc{Branding}}: La aplicación debe tener un estilo y diseño simple y amigable. Se debe usar el logo en lugares como el \loc{favicon} \footnote{El \loc{favicon} es el logo que vemos en la pestaña de la página web junto al título de la página que estamos visistando} y la página inicial.
+  \item \textbf{RNF-4 Velocidad}: La aplicación tiene que ser rápida y fluida. Se pueden usar animaciones para aumentar la sensación de fluidez entre elementos.
+  \item \textbf{RNF-5 Accesibilidad}: La aplicación debe ser accesible para todos. Debe tener textos suficientemente grandes y colores con altos contrastes.
+\end{itemize}
+
 \section{Especificación de requisitos}
 
+En esta sección vamos a mostrar el diagrama de casos de uso y a especificar algunos de los requisitos listados en el catálogo anterior. El número de actores de la aplicación es únicamente el usuario consumidor, ya que no se tiene ningún usuario administrador ni similar; y la entidad encargada de procesar el vídeo y devolver el resultado (servidor, \sigla{API} y modelo). A esta entidad la vamos a llamar <<Sistema de clasificación>>.
 
+\subsection{Diagrama de casos de uso}
+
+En la figura \ref{fig:casosUso} podemos observar el diagrama de casos de uso extendido o <<diagrama de comportamiento UML mejorado>>. A continuación se detallan las especificaciones de los casos de uso.
+
+\imagen{./img/anexos/requisitos/casosUso}{Diagrama de casos de uso}{casosUso}
+
+\subsection{Actores}
+
+\begin{itemize}
+  \item \textbf{Usuario}: puede subir vídeos a la aplicación para que sean clasificados por el modelo en el servidor.
+
+  \item \textbf{Sistema de clasificación}: procesa el vídeo y devuelve la etiqueta del signo identificado.
+\end{itemize}
+
+\subsection{Casos de uso}
+
+\casoUso{CU-1 Subir Video}{cu-1}
+{\textbf{CU-01} & \textbf{Subir vídeo} \\}{
+  \textbf{Requisitos asociados} & RF-1, RF-5.1, RF-2, RF-3 \\
+  \textbf{Descripción}          & El usuario puede subir un vídeo a la plataforma \\
+  \textbf{Precondiciones}       &
+  \begin{itemize}
+    \tightlist
+    \item El usuario debe tener un vídeo o varios para probar.
+    \item Debe estar conectado con un ordenador.
+  \end{itemize} \\
+  \textbf{Acciones}             &
+  \begin{enumerate}
+    \tightlist
+    \item Seleccionar el vídeo a subir.
+    \item Arrastrar el vídeo a la pantalla principal de la aplicación.
+  \end{enumerate} \\
+
+  \textbf{Postcondición}        & El vídeo se muestra correctamente en la pantalla \\
+  \textbf{Excepciones}          & El formato de vídeo es erróneo (no es <<mp4>>) \\
+  \textbf{Importancia}          & Alta \\
+}
+
+\casoUso{CU-2 Obtener clasificación}{cu-2}
+{\textbf{CU-02} & \textbf{Obtener clasificación} \\}{
+  \textbf{Requisitos asociados} & RF-1, RF-5.2, RF-2, RF-3.2, RF-3.1, RF-3.3 \\
+  \textbf{Descripción}          & El sistema de clasificación recibe un vídeo e infiere y devuelve el signo \\
+  \textbf{Precondiciones}       &
+  \begin{itemize}
+    \tightlist
+    \item Se recibe un vídeo por petición \sigla{HTTP}.
+    \item La petición \sigla{HTTP} tiene el formato correcto.
+    \item El origen de la petición está marcado como un origen válido (lista blanca).
+  \end{itemize} \\
+  \textbf{Acciones}             &
+  \begin{enumerate}
+    \tightlist
+    \item Se recibe el vídeo por petición.
+    \item Se procesa el vídeo transformándolo en un conjunto de \loc{frames}.
+    \item Se alimenta el modelo con el conjunto de \loc{frames} para inferir un signo.
+    \item Se envuelve el signo en un objeto \prog{JSON}.
+    \item Devolvemos el objeto al cliente con una respuesta \sigla{HTTP}.
+  \end{enumerate} \\
+
+  \textbf{Postcondición}        & El cliente sigue conectado y esperando la respuesta del servidor. \\
+  \textbf{Excepciones}          &
+  \begin{itemize}
+    \item El archivo recibido no es un vídeo.
+    \item El archivo recibido es un vídeo pero no tiene extensión <<.mp4>>.
+    \item Se produce un error en la inferencia del vídeo con el modelo.
+    \item Se produce un error de conexión con el cliente.
+  \end{itemize} \\
+  \textbf{Importancia}          & Alta \\
+}
+
+\casoUso{CU-3 Mostrar resultado}{cu-3}
+{\textbf{CU-03} & \textbf{Mostrar resultado} \\}{
+  \textbf{Requisitos asociados} & RF-3 \\
+  \textbf{Descripción}          & Mostramos el resultado recibido del servidor y lo asignamos con el vídeo \\
+  \textbf{Precondiciones}       &
+  \begin{itemize}
+    \tightlist
+    \item El servidor a devuelto correctamente el signo detectado en el vídeo.
+  \end{itemize} \\
+  \textbf{Acciones}             &
+  \begin{enumerate}
+    \tightlist
+    \item Recibimos el signo esperado.
+    \item Mostramos el signo al lado del vídeo clasificado.
+  \end{enumerate} \\
+
+  \textbf{Postcondición}        & El cliente no ha añadido un nuevo vídeo mientras se esperaba la clasificación del actual \\
+  \textbf{Excepciones}          & Recibimos un objeto de error \\
+  \textbf{Importancia}          & Alta \\
+}
+
+\casoUso{CU-4 Enviar correo a soporte}{cu-4}
+{\textbf{CU-04} & \textbf{Enviar correo a soporte} \\}{
+  \textbf{Requisitos asociados} & RF-4 \\
+  \textbf{Descripción}          & Permite al usuario enviar un correo a soporte en caso de que ocurra algún problema \\
+  \textbf{Precondiciones}       &
+  \begin{itemize}
+    \tightlist
+    \item El usuario debe tener una aplicación de e-mail instalada en su ordenador.
+  \end{itemize} \\
+  \textbf{Acciones}             &
+  \begin{enumerate}
+    \tightlist
+    \item El usuario hace \loc{click} en el correo electrónico de soporte.
+    \item Se abre la aplicación de correo con el destinatario y el asunto establecidos.
+    \item El usuario puede ahora enviar un correo a soporte.
+  \end{enumerate} \\
+
+  \textbf{Postcondición}        & Ninguna \\
+  \textbf{Excepciones}          & El usuario no tiene ninguna aplicación de correo electrónico instalada \\
+  \textbf{Importancia}          & Media \\
+}
+
+\casoUso{CU-5 Visualizar vídeo}{cu-5}
+{\textbf{CU-05} & \textbf{Visualizar vídeo} \\}{
+  \textbf{Requisitos asociados} & RF-1 \\
+  \textbf{Descripción}          & Permite al usuario previsualizar el vídeo después de subirlo. De esta forma puede decidir si pedir o no la clasificación de signo \\
+  \textbf{Precondiciones}       &
+  \begin{itemize}
+    \tightlist
+    \item En la fase de subida del vídeo, no debe ocurrir ningún error de formato.
+    \item El vídeo está codificado correctamente.
+  \end{itemize} \\
+  \textbf{Acciones}             &
+  \begin{enumerate}
+    \tightlist
+    \item Se recibe el vídeo de la operación de salida.
+    \item Se muestra el vídeo en bucle sin opciones de pausa.
+    \item Añadimos el botón con el que el usuario puede pedir la clasificación del vídeo.
+  \end{enumerate} \\
+
+  \textbf{Postcondición}        & El vídeo se muestra correctamente y se da la opción de inferir el signo \\
+  \textbf{Excepciones}          & Si el vídeo no tiene una codificación correcta o está corrompido, se mostrará transparente \\
+  \textbf{Importancia}          & Media \\
+}
+
+\casoUso{CU-6 Mostrar página de error}{cu-6}
+{\textbf{CU-06} & \textbf{Mostrar página de error} \\}{
+  \textbf{Requisitos asociados} & RF-6 \\
+  \textbf{Descripción}          & Se muestra al usuario que no se encuentra en la página inicial. \\
+  \textbf{Precondiciones}       &
+  \begin{itemize}
+    \tightlist
+    \item El usuario ha navegado a una página no existente.
+  \end{itemize} \\
+  \textbf{Acciones}             &
+  \begin{enumerate}
+    \tightlist
+    \item Se muestra un mensaje con el código de error.
+    \item Se da la opción de redirigirse a la página de inicio.
+  \end{enumerate} \\
+
+  \textbf{Postcondición}        & Se ha redirigido a la página de inicio \\
+  \textbf{Excepciones}          & Ninguna \\
+  \textbf{Importancia}          & Baja \\
+}
+
+\casoUso{CU-7 Mostrar notificación de error}{cu-7}
+{\textbf{CU-07} & \textbf{Mostrar notificación de error} \\}{
+  \textbf{Requisitos asociados} & RF-1, RF-3 \\
+  \textbf{Descripción}          & Muestra al usuario una notificación emergente de error en caso de que el servidor falle o el formato introducido sea incorrecto. \\
+  \textbf{Precondiciones}       &
+  \begin{itemize}
+    \tightlist
+    \item El usuario ha introducido un formato incorrecto.
+    \item Ha ocurrido un error en el servidor.
+    \item Se ha perdido la conexión con la \sigla{API}.
+    \item El archivo subido no es un vídeo.
+  \end{itemize} \\
+  \textbf{Acciones}             &
+  \begin{enumerate}
+    \tightlist
+    \item Se recibe un error y se envía al módulo de notificaciones.
+    \item Se muestra una notificación de error con el mensaje.
+    \item Se mantiene hasta que sea eliminada por el usuario.
+  \end{enumerate} \\
+
+  \textbf{Postcondición}        & Se muestra el mensaje correctamente. Y se permite descartarla al hacer \loc{click} \\
+  \textbf{Excepciones}          & Se produce una excepción no controlada en la ejecución. Esto puede ocurrir en el caso de fallo del servidor de \loc{hosting} de la aplicación \\
+  \textbf{Importancia}          & Media \\
+}

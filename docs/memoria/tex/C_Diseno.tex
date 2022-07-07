@@ -1,11 +1,46 @@
 \apendice{Especificación de diseño}
 
-\section{Introducción}
-
 \section{Diseño de datos}
+
+Debido a que uno de los objetivos principales de la práctica era la creación de una plataforma abierta en la que cualquier usuario pueda probar el modelo, se ha optado por no crear ningún tipo de base de datos de almacenamiento de información de sesión y usuarios.
+
+Por otro lado, no se ha necesitado una base de datos para ningún otro proceso. Podemos pensar como línea de futuro la creación de una tabla o registro para las inferencias realizadas por los usuarios, pero, como hemos comentado, este proyecto no tiene ninguna base de datos y los vídeos subidos al servidor para ser analizados se almacenan de forma temporal en directorios temporales del sistema operativo del servidor.
+
+Por otro lado, si analizamos los \loc{datasets} disponibles dentro del diseño de datos, podemos dividirlos en \loc{datasets} de \loc{frames} y \loc{datasets} de vídeo.
+
+Los primeros se usan con la red neuronal llamada <<res\_net>>. Los últimos por otro lado son los implementados con las redes neuronales de <<simple\_net>> y <<two\_set\_net>>.
 
 \section{Diseño procedimental}
 
+En este paso vamos a ver el proceso completo que debe seguir un usuario para subir un vídeo y realizar una detección de signos. En la figura \ref{fig:ds} podemos observar en detalle todos los pasos.
+
+Es importante tener en cuenta las siguientes características:
+
+\begin{itemize}
+  \item El objeto usuario será el encargado de subir un vídeo a la aplicación.
+  \item Los objetos de secuencia serán la aplicación cliente, \sigla{API} y el modelo. Se comunicarán entre ellos para completar la inferencia.
+  \item Se marcarán los errores posibles que pueden ocurrir en algunos de los flujos.
+\end{itemize}
+
+\imagen{./img/anexos/diseno/ds}{Diagrama de secuencias de una predicción de una traducción de vídeo a texto}{ds}
+
 \section{Diseño arquitectónico}
 
+\subsection{Cliente-Servidor}
+En esta sección detallamos la arquitectura del proyecto. Observamos una arquitectura cliente-servidor desde la aplicación a la \sigla{API}. Tanto en el cliente como en el servidor se hacen validaciones sobre los datos enviados y recibidos.
 
+El cliente se encarga de la parte visual y de recibir el vídeo por parte del usuario, mientras que el servidor se encarga de procesar los datos, inferir en la red y devolver el resultado.
+
+El servidor tiene una \sigla{API} que cumple los estándares de \prog{OpenAPI}.
+
+\subsection{Modelo Vista Presentador (\sigla{MVP})}
+
+Se utiliza un presentador para separar la vista del modelo de datos de la aplicación. Esta arquitectura tiene las siguientes tres capas:
+
+\begin{enumerate}
+  \item Modelo: El modelo se encarga del acceso a los datos, las reglas de negocio. El modelo es nuestro servidor de \loc{Python}.
+  \item Vista: La vista es la parte visual de la aplicación. Esta parte está programada en \loc{JavaScript}.
+  \item Presentador: El presentador es el encargado de comunicar la vista con el modelo. En nuestro caso los hemos llamado <<servicios>> y están escritos en \prog{JavaScript} también.
+\end{enumerate}
+
+Tanto la vista como el presentador son parte de la aplicación del cliente o \loc{front-end}.

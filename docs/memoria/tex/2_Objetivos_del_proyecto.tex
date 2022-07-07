@@ -10,15 +10,15 @@ La principal motivación del proyecto es:
 \section{Objetivos teóricos}
 
 \begin{enumerate}
-  \item Crear de un modelo de \sigla{DL}\footnote{\textit{Deep Learning}} capaz de clasificar ASL\footnote{\textit{American Sign Language}} a nivel palabra.
+  \item Crear un modelo de \sigla{DL}\footnote{\textit{Deep Learning}} capaz de clasificar ASL\footnote{\textit{American Sign Language}} a nivel palabra.
   \item Poner en producción un método para que los usuarios puedan probar el modelo de forma libre y transparente.
   \item Generar una \sigla{API} de código abierto para que otros desarrolladores puedan crear plataformas de cliente, con el objeto de aumentar la audiencia y alcance del proyecto.
   \item Hacer disponible y encapsular el modelo en un contenedor Docker para su libre distribución.
-  \item Crear de herramientas que permitan el tratamiento de datos y la transformación entre distintos formatos\footnote{\pe: extracción de fotogramas de un vídeo, concatenación de imágenes}.
-  \item Estudiar del comportamiento, estructura e hiperparametrización de redes neuronales convolucionales.
-  \item Aprender a fondo el uso de \prog{PyTorch}\cite{PYTORCH}, un \loc{framework} para acelerar la creación y prototipado de redes neuronales.
-  \item Exportar del modelo entrenado a un formato estándar que facilite la compatibilidad con el mayor número de librerías en distintos lenguajes de programación.
-  \item Mantener de una \loc{codebase} que favorezca la integración continua (\loc{linting}\footnote{Voz ingl. Estudio de limpieza, orden, calidad y redundancia}, \loc{formatting}\footnote{Formatear: Correcta estructura y legibilidad} y \loc{type-checking}\footnote{Comprobación de tipados de variables y funciones}) de código, siguiendo así los estándares en contribuciones \loc{Open Source}.
+  \item Crear herramientas que permitan el tratamiento de datos y la transformación entre distintos formatos\footnote{\pe: extracción de fotogramas de un vídeo, concatenación de imágenes}.
+  \item Estudiar el comportamiento, estructura e hiperparametrización de redes neuronales convolucionales.
+  \item Aprender a fondo el uso de \prog{PyTorch}\bib{PYTORCH}, un \loc{framework} para acelerar la creación y prototipado de redes neuronales.
+  \item Exportar el modelo entrenado a un formato estándar que facilite la compatibilidad con el mayor número de librerías en distintos lenguajes de programación.
+  \item Mantener una \loc{codebase} que favorezca la integración continua (\loc{linting}\footnote{Voz ingl. Estudio de limpieza, orden, calidad y redundancia}, \loc{formatting}\footnote{Formatear: Correcta estructura y legibilidad} y \loc{type-checking}\footnote{Comprobación de tipados de variables y funciones}) de código, siguiendo así los estándares en contribuciones \loc{Open Source}.
 \end{enumerate}
 
 
@@ -27,7 +27,7 @@ Estos objetivos representan en general la filosofía y los objetivos teóricos d
 \section{Caracterísitcas esperadas}
 
 \begin{itemize}
-  \item el sistema debe ser capaz de inferir resultados del modelo entrenado a tiempo real.
+  \item El sistema debe ser capaz de inferir resultados del modelo entrenado a tiempo real.
   \item Se desarrollará un modelo fácilmente escalable y adaptable a distintos dataset de cualquier tamaño.\footnote{El formato de los \loc{datasets} debe ser el mismo. Un modelo entrenado para clasificación de imágenes no podrá clasificar en formato vídeo o audio.}
   \item Se realizará una fase de \loc{data augmentation} sobre los datos iniciales.
   \item Se implementarán distintas redes neuronales para los distintos formatos de datos (imagen y vídeo). Deben ser fácilmente refactorizables y mantenibles.
